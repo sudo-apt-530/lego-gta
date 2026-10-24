@@ -1221,7 +1221,7 @@ function updatePlayer(dt){
 function playerDown(){P.busy=1;P.wanted=0;P.reports=[];P.arrestProg=0;P.gps=null;P.hold=null;if(P.car)exitCar(true);const lost=Math.floor(P.money*0.1);P.money-=lost;const dr=P.drugs;P.drugs=0;
   $('overT').textContent='Вас разобрали!';$('overP').textContent=`Врачи соберут вас ${P.house>=0?'дома':'в больнице'}. Потеряно ${lost} монет`+(dr?' и весь товар':'');$('over').hidden=false;
   setTimeout(()=>{$('over').hidden=true;spawnPlayer(P.house>=0?HOUSES[P.house].door.clone().add(new V3(0,0,1.5)):SPOTS.hospital);P.busy=0;feed('Вас собрали. Здоровье восстановлено','good')},3200)}
-function arrestPlayer(){P.busy=1;P.hold=null;if(P.car)exitCar(true);const fine=Math.min(P.money,100*Math.max(1,P.wanted));P.money-=fine;P.wanted=0;P.arrestProg=0;P.reports=[];P.gps=null;player.pose='cuffed';player.speedNow=0;
+function arrestPlayer(){P.busy=1;P.hold=null;if(P.car)exitCar(true);const fine=Math.min(P.money,100*Math.max(1,P.wanted));P.money-=fine;P.wanted=0;P.arrestProg=0;P.reports=[];P.gps=null;P.known=null;P.maskCrimes=0;player.pose='cuffed';player.speedNow=0;
   const keep=ROLES[P.role].inv;const lostW=Object.keys(P.inv).filter(k=>!keep[k]);lostW.forEach(k=>delete P.inv[k]);if(!P.inv[P.cur])P.cur=ROLES[P.role].cur;const dr=P.drugs;P.drugs=0;
   const fired=P.role==='police';if(fired){P.ban.police=Date.now()+5*60*1000;saveGame()}
   $('overT').textContent=fired?'Вы арестованы и уволены':'Вы арестованы';$('overP').textContent=`Штраф ${fine} монет${lostW.length?'. Конфисковано: '+lostW.map(k=>WPN[k].name).join(', '):''}${dr?'. Изъяты наркотики':''}${fired?'. Вернуться в полицию можно через 5 минут':''}`;$('over').hidden=false;
