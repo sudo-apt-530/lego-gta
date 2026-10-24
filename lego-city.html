@@ -104,6 +104,40 @@ body.mp .feed{top:calc(env(safe-area-inset-top,0px) + 200px + var(--prows,1) * 1
 .over div{text-align:center}
 .over h2{margin:0;font-family:var(--f-display);font-weight:900;font-size:clamp(32px,7vw,72px);color:var(--brick-yellow);text-shadow:0 5px 0 var(--brick-red)}
 .over p{font-weight:800;font-size:18px}
+.wcur{display:grid;gap:2px;min-width:170px;border-color:var(--brick-yellow)}
+.wcur b{font-family:var(--f-display);font-weight:900;font-size:17px;color:var(--brick-yellow)}
+.wcur span{font-variant-numeric:tabular-nums;font-weight:800;font-size:15px}
+.wcur em{font-style:normal;font-size:11px;color:var(--muted);font-weight:800}
+.slot b{display:block;font-size:10px;color:var(--brick-yellow)}
+.tags{position:absolute;bottom:calc(env(safe-area-inset-bottom,0px) + 16px);left:50%;transform:translateX(-50%);display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:40vw}
+.tag{background:rgba(15,20,28,.85);border:2px solid var(--plate-edge);border-radius:4px;padding:3px 8px;font-weight:800;font-size:12px;white-space:nowrap}
+.tag.red{border-color:var(--bad);color:#ffb3a6}.tag.yel{border-color:var(--brick-yellow);color:var(--brick-yellow)}.tag.grn{border-color:var(--good);color:#bfe8be}
+.job{position:absolute;top:calc(env(safe-area-inset-top,0px) + 20px);right:calc(max(16px,env(safe-area-inset-right,0px)) + 206px);width:250px;font-size:13px;border-color:var(--good)}
+.job b{display:block;font-family:var(--f-display);font-size:15px;color:#bfe8be;margin-bottom:3px}
+.bar{position:absolute;bottom:calc(env(safe-area-inset-bottom,0px) + 132px);left:50%;transform:translateX(-50%);width:260px;text-align:center;font-weight:800}
+.bar i{display:block;height:12px;margin-top:4px;border-radius:3px;background:#0e131a;border:1px solid #000;overflow:hidden}
+.bar i u{display:block;height:100%;width:0;background:var(--brick-yellow)}
+.panel{position:fixed;inset:0;display:grid;place-items:center;background:rgba(10,20,40,.55);pointer-events:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px;overflow:auto}
+.panel .card{max-width:760px}
+.ph{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.ph h2{margin:0;font-family:var(--f-display);font-weight:900;font-size:26px;color:var(--brick-yellow)}
+.ph button,.it button{pointer-events:auto;cursor:pointer;font:800 13px var(--f-body);border:0;border-radius:4px;padding:7px 12px;background:var(--brick-yellow);color:#111}
+.ph button.x{background:var(--paper)}
+.ph button:focus-visible,.it button:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.it button:disabled{opacity:.4;cursor:default}
+.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;max-height:60vh;overflow:auto}
+.it{display:grid;grid-template-columns:1fr auto;gap:2px 8px;align-items:center;background:var(--plate);border:2px solid var(--plate-edge);border-radius:5px;padding:8px 10px}
+.it b{font-weight:800}.it small{grid-column:1;color:var(--muted);font-size:11.5px;font-weight:700}.it button{grid-row:1/3;grid-column:2}
+.sec{grid-column:1/-1;margin-top:4px}
+.navwrap{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:12px;align-items:start}
+.navwrap canvas{width:100%;height:auto;aspect-ratio:1;border-radius:6px;border:3px solid var(--plate-edge);cursor:crosshair;max-width:560px}
+.navlist{display:grid;gap:5px;max-height:70vh;overflow:auto}
+.navlist button{pointer-events:auto;cursor:pointer;text-align:left;font:700 13px var(--f-body);color:var(--paper);background:var(--plate);border:2px solid var(--plate-edge);border-radius:4px;padding:6px 9px}
+.navlist button:hover,.navlist button:focus-visible{border-color:var(--brick-yellow);outline:none}
+#surgCv{width:100%;height:auto;border-radius:6px;background:#10202a}
+.rl{margin:0;padding-left:16px;font-size:12px;line-height:1.45;color:#d5dce6;font-weight:600}
+.role.locked{opacity:.45;cursor:not-allowed}
+@media (max-width:820px){.navwrap{grid-template-columns:1fr}.job{right:16px;top:230px}}
 @media (max-width:820px){.laws{display:none}.event{max-width:calc(100vw - 32px);top:240px;min-width:0}.feed{width:240px}}
 @media (prefers-reduced-motion:reduce){.stars.flash{animation:none}}
 </style>
@@ -126,12 +160,18 @@ body.mp .feed{top:calc(env(safe-area-inset-top,0px) + 200px + var(--prows,1) * 1
       <li><em>Ст. 2</em><span>Не убивай мирных жителей</span><b>★★</b></li>
       <li><em>Ст. 3</em><span>Не трогай полицию</span><b>★★–★★★</b></li>
       <li><em>Ст. 4</em><span>Не стреляй, когда нет угрозы</span><b>★</b></li>
-      <li><em>Ст. 5</em><span>Не грабь магазины</span><b>★</b></li>
-      <li><em>Ст. 6</em><span>Не бей сдавшихся (руки вверх)</span><b>★</b></li>
+      <li><em>Ст. 5</em><span>Не грабь магазины (без маски)</span><b>★–★★★</b></li>
+      <li><em>Ст. 6</em><span>Не бей сдавшихся (полицейскому)</span><b>★–★★</b></li>
+      <li><em>Ст. 7</em><span>Не угоняй машины</span><b>★–★★</b></li>
+      <li><em>Ст. 8</em><span>Не взламывай чужие дома</span><b>★</b></li>
+      <li><em>Ст. 9</em><span>Наркотики без сумки</span><b>★★★</b></li>
     </ol>
-    <p>Можно защищаться и помогать полиции против вооружённых преступников. Митингующих не бей: уговори разойтись клавишей E.<br>★ полиция задерживает и штрафует. ★★ и выше открывает огонь. Спрячься от патрулей, и розыск спадёт. <b>L</b> скрыть.</p>
+    <p>В маске тебя не узнают: за 5 нападений — всего ★. Полиция запоминает одежду и машину. Тихое убийство ножом со спины — без розыска, но в людном месте ★★★. Подошедший вплотную коп ставит GPS-трекер.<br>★ задерживают, ★★ и выше стреляют. <b>L</b> скрыть.</p>
   </div>
   <div class="weapons" id="weapons"></div>
+  <div class="tags" id="tags"></div>
+  <div class="brick job" id="jobBox" hidden><b id="jobT"></b><span id="jobI"></span></div>
+  <div class="bar" id="bar" hidden><span id="barT"></span><i><u id="barF"></u></i></div>
   <div class="prompt" id="prompt" hidden></div>
   <div class="banner" id="banner" hidden></div>
   <button class="pausebtn" id="pauseBtn" type="button" hidden>Пауза · Esc</button>
@@ -146,11 +186,18 @@ body.mp .feed{top:calc(env(safe-area-inset-top,0px) + 200px + var(--prows,1) * 1
     <div class="roles" id="roles"></div>
     <div class="brick controls" id="controls">
       <div><kbd>Esc / P</kbd>пауза</div>
-      <div><kbd>W A S D</kbd>ходить</div>
+      <div><kbd>W A S D</kbd>ходить, в машине — ехать</div>
       <div><kbd>Shift</kbd>бежать</div>
+      <div><kbd>Ctrl / C</kbd>бесшумный шаг вкл/выкл</div>
       <div><kbd>Мышь</kbd>прицел, клик — удар или выстрел</div>
-      <div><kbd>1 – 6</kbd>оружие</div>
-      <div><kbd>E</kbd>арестовать, уговорить, вылечить, ограбить кассу</div>
+      <div><kbd>1 – 9, 0</kbd>группа оружия, ещё раз — следующее</div>
+      <div><kbd>R</kbd>перезарядка (3 секунды)</div>
+      <div><kbd>F</kbd>сесть в машину / выйти</div>
+      <div><kbd>V</kbd>вид: сверху, от третьего, от первого лица</div>
+      <div><kbd>M</kbd>навигатор и маршрут</div>
+      <div><kbd>E</kbd>действие: магазин, работа, арест, дом</div>
+      <div><kbd>Q</kbd>первая помощь, GPS-трекер</div>
+      <div><kbd>K</kbd>надеть или снять маску</div>
       <div><kbd>Колесо</kbd>приблизить камеру</div>
       <div><kbd>N</kbd>вызвать происшествие сейчас</div>
       <div><kbd>L</kbd>законы города</div>
@@ -169,6 +216,28 @@ body.mp .feed{top:calc(env(safe-area-inset-top,0px) + 200px + var(--prows,1) * 1
     <div class="label pick" id="rolesHint" hidden>Новая профессия: персонаж появится на её стартовой точке, розыск обнулится</div>
     <div class="roles" id="roles2" hidden></div>
     <div id="pauseControls"></div>
+  </div>
+</div>
+<div class="panel" id="shopPanel" hidden>
+  <div class="card brick">
+    <div class="ph"><h2 id="shopT">Магазин</h2><button class="x" id="shopX" type="button">Выйти · Esc</button></div>
+    <div class="note" id="shopN" style="text-align:left"></div>
+    <div class="items" id="shopItems"></div>
+  </div>
+</div>
+<div class="panel" id="navPanel" hidden>
+  <div class="card brick" style="max-width:860px">
+    <div class="ph"><h2>Навигатор</h2><button class="x" id="navX" type="button">Закрыть · M</button></div>
+    <div class="note" style="text-align:left">Выбери место из списка или кликни по карте. Жёлтая линия на дороге и на мини-карте ведёт к цели.</div>
+    <div class="navwrap"><canvas id="navCv" width="600" height="600"></canvas><div class="navlist" id="navList"></div></div>
+  </div>
+</div>
+<div class="panel" id="surgPanel" hidden>
+  <div class="card brick" style="max-width:560px">
+    <div class="ph"><h2>Операция</h2><span class="label" id="surgS"></span></div>
+    <div class="note" id="surgN" style="text-align:left"></div>
+    <canvas id="surgCv" width="520" height="220"></canvas>
+    <div class="note">Жми <b>Пробел</b> или кликай, когда бегунок в зелёной зоне. Три промаха — пациент теряет силы, этап начинается заново.</div>
   </div>
 </div>
 
@@ -190,8 +259,8 @@ const renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true});
 renderer.setPixelRatio(Math.min(devicePixelRatio,2));
 renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 const scene=new THREE.Scene();
-scene.background=new THREE.Color(0x8ec9f0);scene.fog=new THREE.Fog(0x8ec9f0,90,200);
-const camera=new THREE.PerspectiveCamera(48,1,0.5,400);
+scene.background=new THREE.Color(0x8ec9f0);scene.fog=new THREE.Fog(0x8ec9f0,110,330);
+const camera=new THREE.PerspectiveCamera(48,1,0.1,700);
 function resize(){renderer.setSize(innerWidth,innerHeight,false);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix()}
 addEventListener('resize',resize);resize();
 scene.add(new THREE.HemisphereLight(0xe8f4ff,0x5d7a45,0.72));
@@ -203,7 +272,7 @@ function canvasTex(w,h,fn){const c=document.createElement('canvas');c.width=w;c.
 let brickTex,studTex,groundTex;
 function makeBaseTextures(){
   brickTex=canvasTex(128,128,(g,w,h)=>{g.fillStyle='#ececec';g.fillRect(0,0,w,h);const rh=h/5;for(let r=0;r<5;r++){const y=r*rh;g.fillStyle='rgba(255,255,255,.9)';g.fillRect(0,y+1,w,2);g.fillStyle='rgba(0,0,0,.15)';g.fillRect(0,y+rh-2,w,2);const off=(r%2)*32;for(let x=off;x<=w;x+=64){g.fillStyle='rgba(0,0,0,.11)';g.fillRect(x-1,y,2,rh)}}});
-  const studDraw=(base)=>(g,w,h)=>{g.fillStyle=base;g.fillRect(0,0,w,h);for(let i=0;i<2;i++)for(let j=0;j<2;j++){const cx=16+i*32,cy=16+j*32;g.fillStyle='rgba(0,0,0,.2)';g.beginPath();g.arc(cx+2,cy+3,10,0,TAU);g.fill();const gr=g.createRadialGradient(cx-4,cy-4,1,cx,cy,10);gr.addColorStop(0,'#ffffff');gr.addColorStop(1,'#d6d6d6');g.fillStyle=gr;g.beginPath();g.arc(cx,cy,10,0,TAU);g.fill();g.strokeStyle='rgba(0,0,0,.12)';g.lineWidth=1.5;g.stroke()}};
+  const studDraw=(base)=>(g,w,h)=>{g.fillStyle=base;g.fillRect(0,0,w,h);for(let i=0;i<2;i++)for(let j=0;j<2;j++){const cx=16+i*32,cy=16+j*32;g.fillStyle='rgba(0,0,0,.38)';g.beginPath();g.ellipse(cx+3,cy+5,11,10,0,0,TAU);g.fill();const gr=g.createRadialGradient(cx-5,cy-5,1,cx,cy,11);gr.addColorStop(0,'#ffffff');gr.addColorStop(0.55,'#efefef');gr.addColorStop(1,'#b8b8b8');g.fillStyle=gr;g.beginPath();g.arc(cx,cy,10,0,TAU);g.fill();g.strokeStyle='rgba(0,0,0,.12)';g.lineWidth=1.5;g.stroke()}};
   studTex=canvasTex(64,64,studDraw('#e4e4e4'));
   groundTex=canvasTex(64,64,studDraw('#e4e4e4'));
   for(const t of [brickTex,studTex,groundTex])t.wrapS=t.wrapT=THREE.RepeatWrapping;
@@ -218,7 +287,13 @@ const MS=c=>cached('s'+c,()=>new THREE.MeshPhongMaterial({color:c,map:studTex,sh
 const GLASS=()=>cached('glass',()=>new THREE.MeshPhongMaterial({color:C.glass,shininess:120,specular:0xffffff}));
 const MBasic=c=>cached('bb'+c,()=>new THREE.MeshBasicMaterial({color:c}));
 function boxGeo(w,h,d,s=2){const g=new THREE.BoxGeometry(w,h,d);const uv=g.attributes.uv;const dims=[[d,h],[d,h],[w,d],[w,d],[w,h],[w,h]];for(let f=0;f<6;f++)for(let i=0;i<4;i++){const k=f*4+i;uv.setXY(k,uv.getX(k)*dims[f][0]/s,uv.getY(k)*dims[f][1]/s)}return g}
-function box(g,w,h,d,x,y,z,color,o={}){const m=new THREE.Mesh(boxGeo(w,h,d,o.studs?1:2),o.mat||(o.studs?MS(color):o.plain?M(color):MB(color)));m.position.set(x,y+h/2,z);m.castShadow=o.shadow!==false;m.receiveShadow=true;if(o.solid)m.userData.solid=true;g.add(m);return m}
+function box(g,w,h,d,x,y,z,color,o={}){const m=new THREE.Mesh(boxGeo(w,h,d,o.studs?1:2),o.mat||(o.studs?MS(color):o.plain?M(color):MB(color)));m.position.set(x,y+h/2,z);m.castShadow=o.shadow!==false;m.receiveShadow=true;if(o.solid)m.userData.solid=true;if(o.studs)m.userData.studTop=color;g.add(m);return m}
+// real raised studs on every studded top, one instanced mesh per colour
+function addStuds(){const byC=new Map(),bb=new THREE.Box3();scene.updateMatrixWorld(true);
+  scene.traverse(o=>{if(!o.isMesh||o.userData.studTop==null)return;bb.setFromObject(o);const w=bb.max.x-bb.min.x,d=bb.max.z-bb.min.z;if(w*d>700)return;
+    const nx=Math.max(1,Math.floor(w)),nz=Math.max(1,Math.floor(d)),sx=w/nx,sz=d/nz;const arr=byC.get(o.userData.studTop)||[];for(let i=0;i<nx;i++)for(let j=0;j<nz;j++)arr.push(bb.min.x+sx*(i+0.5),bb.max.y+0.11,bb.min.z+sz*(j+0.5));byC.set(o.userData.studTop,arr)});
+  const geo=new THREE.CylinderGeometry(0.3,0.3,0.22,14),m4=new THREE.Matrix4();
+  for(const [c,arr] of byC){const n=arr.length/3;const im=new THREE.InstancedMesh(geo,M(c,70),n);for(let k=0;k<n;k++){m4.makeTranslation(arr[k*3],arr[k*3+1],arr[k*3+2]);im.setMatrixAt(k,m4)}im.receiveShadow=true;scene.add(im)}}
 function cyl(g,rt,rb,h,x,y,z,color,o={}){const m=new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,o.seg||16),o.mat||M(color));m.position.set(x,y+h/2,z);m.castShadow=o.shadow!==false;m.receiveShadow=true;if(o.solid)m.userData.solid=true;g.add(m);return m}
 function faceG(g,side,W,D){const f=new THREE.Group();if(side==='f')f.position.z=D/2;else if(side==='b'){f.position.z=-D/2;f.rotation.y=Math.PI}else if(side==='r'){f.position.x=W/2;f.rotation.y=Math.PI/2}else{f.position.x=-W/2;f.rotation.y=-Math.PI/2}g.add(f);return f}
 function win(f,x,y,w,h,frame=C.white){box(f,w+0.3,h+0.3,0.14,x,y-0.15,0.02,frame,{plain:1,shadow:false});box(f,w,h,0.18,x,y,0.04,0,{mat:GLASS(),shadow:false});box(f,0.1,h,0.22,x,y,0.06,frame,{plain:1,shadow:false})}
@@ -229,9 +304,12 @@ const blinkers=[];
 function blinker(g,color,x,y,z,phase){const mat=new THREE.MeshPhongMaterial({color,emissive:color,emissiveIntensity:0.2,transparent:true,opacity:0.92});const m=new THREE.Mesh(new THREE.BoxGeometry(0.5,0.45,0.5),mat);m.position.set(x,y+0.22,z);g.add(m);blinkers.push({mat,phase});return m}
 
 // ---------- city layout
-const SPANS=[[-80,-55],[-45,-5],[5,45],[55,80]];
-const blocks=[];for(let bz=0;bz<4;bz++)for(let bx=0;bx<4;bx++)blocks.push({bx,bz,x0:SPANS[bx][0],x1:SPANS[bx][1],z0:SPANS[bz][0],z1:SPANS[bz][1]});
-const blockAt=(bx,bz)=>blocks[bz*4+bx];
+// 6x6 blocks between roads at -100,-50,0,50,100; the outer ring holds the quiet places, jobs and houses for sale
+const SPANS=[[-145,-105],[-95,-55],[-45,-5],[5,45],[55,95],[105,145]],NB=SPANS.length,ROADS=[-100,-50,0,50,100],MAPR=148;
+const blocks=[];for(let bz=0;bz<NB;bz++)for(let bx=0;bx<NB;bx++)blocks.push({bx,bz,x0:SPANS[bx][0],x1:SPANS[bx][1],z0:SPANS[bz][0],z1:SPANS[bz][1]});
+const blockAt=(bx,bz)=>blocks[bz*NB+bx];
+const QUIET=[{name:'Старый парк',x0:-145,x1:-105,z0:-145,z1:-105},{name:'Заброшенные склады',x0:105,x1:145,z0:-145,z1:-105},{name:'Гаражи',x0:-145,x1:-105,z0:105,z1:145},{name:'Пустырь',x0:105,x1:145,z0:105,z1:145}];
+const quietAt=p=>QUIET.find(q=>p.x>q.x0-4&&p.x<q.x1+4&&p.z>q.z0-4&&p.z<q.z1+4);
 function groundY(x,z){for(const b of blocks)if(x>=b.x0&&x<=b.x1&&z>=b.z0&&z<=b.z1)return 0.3;return 0.02}
 const cols=[], footprints=[];
 function place(g,x,z,rot,mapColor){g.position.set(x,0.3,z);g.rotation.y=rot;scene.add(g);g.updateMatrixWorld(true);const bb=new THREE.Box3();let fx0=1e9,fx1=-1e9,fz0=1e9,fz1=-1e9;g.traverse(o=>{if(o.isMesh&&o.userData.solid){bb.setFromObject(o);cols.push({x0:bb.min.x,x1:bb.max.x,z0:bb.min.z,z1:bb.max.z,h:bb.max.y});fx0=Math.min(fx0,bb.min.x);fx1=Math.max(fx1,bb.max.x);fz0=Math.min(fz0,bb.min.z);fz1=Math.max(fz1,bb.max.z)}});if(mapColor&&fx0<1e9)footprints.push({x0:fx0,x1:fx1,z0:fz0,z1:fz1,c:mapColor});return g}
@@ -243,8 +321,8 @@ function buildGraph(){
   blocks.forEach((b,i)=>{nodes.push(new V3(b.x0+ins,0.3,b.z0+ins),new V3(b.x1-ins,0.3,b.z0+ins),new V3(b.x1-ins,0.3,b.z1-ins),new V3(b.x0+ins,0.3,b.z1-ins));for(let k=0;k<4;k++)adj.push([])});
   const link=(a,b)=>{adj[a].push(b);adj[b].push(a)};
   blocks.forEach((b,i)=>{const n=i*4;link(n,n+1);link(n+1,n+2);link(n+2,n+3);link(n+3,n);
-    if(b.bx<3){const r=(i+1)*4;link(n+1,r+0);link(n+2,r+3);crossings.push([nodes[n+1],nodes[r]],[nodes[n+2],nodes[r+3]])}
-    if(b.bz<3){const d=(i+4)*4;link(n+3,d+0);link(n+2,d+1);crossings.push([nodes[n+3],nodes[d]],[nodes[n+2],nodes[d+1]])}});
+    if(b.bx<NB-1){const r=(i+1)*4;link(n+1,r+0);link(n+2,r+3);crossings.push([nodes[n+1],nodes[r]],[nodes[n+2],nodes[r+3]])}
+    if(b.bz<NB-1){const d=(i+NB)*4;link(n+3,d+0);link(n+2,d+1);crossings.push([nodes[n+3],nodes[d]],[nodes[n+2],nodes[d+1]])}});
 }
 const crossings=[];
 
@@ -258,11 +336,11 @@ function pushOut(p,r){for(const c of cols){if(p.x>c.x0-r&&p.x<c.x1+r&&p.z>c.z0-r
 
 // ---------- world building
 function buildGround(){
-  const pg=new THREE.PlaneGeometry(340,340);const uv=pg.attributes.uv;for(let i=0;i<uv.count;i++)uv.setXY(i,uv.getX(i)*170,uv.getY(i)*170);
+  const pg=new THREE.PlaneGeometry(700,700);const uv=pg.attributes.uv;for(let i=0;i<uv.count;i++)uv.setXY(i,uv.getX(i)*350,uv.getY(i)*350);
   const ground=new THREE.Mesh(pg,new THREE.MeshPhongMaterial({color:C.bgreen,map:groundTex,shininess:20}));ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
   const road=M(0x5a5d60,10), white=MBasic(0xf4f4f4);
-  for(const c of [-50,0,50]){const a=new THREE.Mesh(new THREE.BoxGeometry(170,0.04,10),road);a.position.set(0,0.02,c);a.receiveShadow=true;scene.add(a);const b=new THREE.Mesh(new THREE.BoxGeometry(10,0.04,170),road);b.position.set(c,0.021,0);b.receiveShadow=true;scene.add(b);
-    for(let t=-82;t<82;t+=4){if([-50,0,50].some(k=>Math.abs(t+1-k)<6.5))continue;const d1=new THREE.Mesh(new THREE.BoxGeometry(2,0.02,0.25),white);d1.position.set(t+1,0.05,c);scene.add(d1);const d3=new THREE.Mesh(new THREE.BoxGeometry(0.25,0.02,2),white);d3.position.set(c,0.05,t+1);scene.add(d3)}}
+  for(const c of ROADS){const a=new THREE.Mesh(new THREE.BoxGeometry(310,0.04,10),road);a.position.set(0,0.02,c);a.receiveShadow=true;scene.add(a);const b=new THREE.Mesh(new THREE.BoxGeometry(10,0.04,310),road);b.position.set(c,0.021,0);b.receiveShadow=true;scene.add(b);
+    for(let t=-152;t<152;t+=4){if(ROADS.some(k=>Math.abs(t+1-k)<6.5))continue;const d1=new THREE.Mesh(new THREE.BoxGeometry(2,0.02,0.25),white);d1.position.set(t+1,0.05,c);scene.add(d1);const d3=new THREE.Mesh(new THREE.BoxGeometry(0.25,0.02,2),white);d3.position.set(c,0.05,t+1);scene.add(d3)}}
   for(const [a,b] of crossings){const vert=Math.abs(a.x-b.x)<0.1;const mx=(a.x+b.x)/2,mz=(a.z+b.z)/2;for(let k=-4;k<=4;k+=1.4){const s=new THREE.Mesh(new THREE.BoxGeometry(vert?2.6:0.7,0.02,vert?0.7:2.6),white);s.position.set(vert?mx:mx+k,0.055,vert?mz+k:mz);scene.add(s)}}
   for(const b of blocks){const w=b.x1-b.x0,d=b.z1-b.z0;const s=new THREE.Mesh(boxGeo(w,0.3,d,1),MS(C.lgrey));s.position.set((b.x0+b.x1)/2,0.15,(b.z0+b.z1)/2);s.receiveShadow=true;scene.add(s)}
 }
@@ -322,7 +400,8 @@ function buildShop(kind){
   const g=new THREE.Group(),W=10,D=12,H=5;
   const spec={pizza:{wall:C.red,trim:C.white,text:'ПИЦЦА',bg:'#f2cd37',fg:'#c91a09',aw:['#c91a09','#ffffff']},
     market:{wall:C.white,trim:C.green,text:'СУПЕРМАРКЕТ',bg:'#237841',fg:'#ffffff',aw:['#237841','#ffffff']},
-    jewel:{wall:0x2b2b33,trim:C.gold,text:'ЮВЕЛИРНЫЙ',bg:'#1d1d1f',fg:'#dbac34',aw:['#5b3a8c','#dbac34']}}[kind];
+    jewel:{wall:0x2b2b33,trim:C.gold,text:'ЮВЕЛИРНЫЙ',bg:'#1d1d1f',fg:'#dbac34',aw:['#5b3a8c','#dbac34']},
+    clothes:{wall:C.azure,trim:C.white,text:'ОДЕЖДА',bg:'#36aebf',fg:'#ffffff',aw:['#36aebf','#ffffff']}}[kind];
   box(g,W,H,D,0,0,0,spec.wall,{solid:1});
   box(g,W+0.3,0.8,D+0.3,0,H,0,spec.trim,{plain:1});
   box(g,W,0.2,D,0,H+0.8,0,C.lgrey,{studs:1});
@@ -419,12 +498,49 @@ function buildCar(kind,color){
     box(g,1.8,0.7,0.1,0,1.35,0.75,0,{mat:GLASS()});box(g,1.8,0.6,0.1,0,1.4,-1.36,0,{mat:GLASS()});
     for(const s of [-1,1])box(g,0.1,0.6,1.6,s*1.01,1.45,-0.3,0,{mat:GLASS()});
     if(kind==='police'){for(const s of [-1,1]){box(g,0.06,0.3,4.2,s*1.11,0.85,0,C.dblue,{plain:1});const p=sign(g,'ПОЛИЦИЯ',1.9,0.32,s*1.15,1.2,0.9,{bg:'#f4f4f4',fg:'#0a3463'});p.rotation.y=s*Math.PI/2}box(g,1.4,0.1,0.4,0,2.2,-0.3,C.dgrey,{plain:1});blinker(g,0xff2a1a,-0.35,2.25,-0.3,0);blinker(g,0x2a6aff,0.35,2.25,-0.3,Math.PI)}
+    if(kind==='taxi'){box(g,1.1,0.35,0.45,0,2.2,-0.3,C.black,{plain:1});for(const s of [1,-1]){const p=sign(g,'ТАКСИ',1.05,0.3,0,2.38,-0.3+s*0.24,{bg:'#1d1d1f',fg:'#f2cd37'});if(s<0)p.rotation.y=Math.PI}for(const s of [-1,1]){const p=sign(g,'■ ■ ■ ■ ■',3,0.22,s*1.12,0.9,0,{bg:'#f2cd37',fg:'#1d1d1f'});p.rotation.y=s*Math.PI/2}}
   }
   box(g,2.2,0.25,0.2,0,0.55,2.25,C.lgrey,{plain:1});box(g,2.2,0.25,0.2,0,0.55,-2.25,C.lgrey,{plain:1});
   for(const s of [-0.7,0.7]){box(g,0.4,0.25,0.06,s,0.85,2.22,0xfff6c0,{plain:1,shadow:false});box(g,0.4,0.25,0.06,s,0.85,-2.22,C.red,{plain:1,shadow:false})}
   return g;
 }
-function parked(kind,color,x,z,rot){const g=buildCar(kind,color);const s=new THREE.Mesh(new THREE.BoxGeometry(2.2,1.6,4.4),M(0));s.visible=false;s.position.y=0.8;s.userData.solid=true;g.add(s);place(g,x,z,rot,0x888888)}
+
+// ---------- outer ring: quiet places, jobs, houses for sale
+function buildShed(W,D,H,wall,trim,text,o={}){
+  const g=new THREE.Group();box(g,W,H,D,0,0,0,wall,{solid:1});box(g,W+0.3,0.5,D+0.3,0,H,0,trim,{plain:1});box(g,W,0.2,D,0,H+0.5,0,C.lgrey,{studs:1});
+  const f=faceG(g,'f',W,D);const n=o.doors||2;
+  for(let i=0;i<n;i++){const x=(i-(n-1)/2)*(W/n);box(f,W/n-1.4,H*0.7,0.12,x,0,0.02,trim,{plain:1});for(let k=0;k<6;k++)box(f,W/n-1.6,0.06,0.16,x,0.3+k*H*0.11,0.06,C.dgrey,{plain:1,shadow:false})}
+  if(text)sign(f,text,Math.min(W-1,text.length*0.9+1),1,0,H*0.82,0.12,{bg:o.bg||'#1d1d1f',fg:o.fg||'#f2cd37',border:o.fg||'#f2cd37'});
+  return g}
+function crate(x,z,c=C.brown,s=1.2,y=0){const g=new THREE.Group();box(g,s,s,s,0,0,0,c,{studs:1,solid:1});place(g,x,z,rnd(-0.3,0.3)).position.y=0.3+y}
+function buildOuter(house){
+  // Old park: dense trees, no townspeople walk here
+  {const b=blockAt(0,0);lot(b,C.green);for(let i=0;i<34;i++)tree(rnd(b.x0+4,b.x1-4),rnd(b.z0+4,b.z1-4));
+    const w=new THREE.Mesh(new THREE.CylinderGeometry(5,5,0.1,24),new THREE.MeshPhongMaterial({color:0x4a8fc0,shininess:90}));w.position.set(-125,0.36,-125);scene.add(w);bench(-125,-118,Math.PI);lamp(-118,-118)}
+  // Abandoned warehouses with the black market stall
+  {const b=blockAt(5,0);lot(b,C.dgrey);place(buildShed(16,10,7,C.dgrey,C.dred,'',{doors:3}),115,-133,0,0x555555);place(buildShed(12,10,6,C.dtan,C.dgrey,'',{doors:2}),137,-134,0,0x555555);
+    for(const [x,z] of [[110,-118],[111.5,-118],[140,-120],[140,-118.5]])crate(x,z,pick([C.brown,C.dgrey,C.dred]));
+    const st=new THREE.Group();box(st,5,1,2,0,0,0,C.brown,{solid:1});for(const x of [-2.4,2.4])for(const z of [-1,1])cyl(st,0.08,0.08,3,x,0,z,C.dgrey,{seg:6});
+    box(st,5.6,0.15,2.8,0,3,0,C.black,{plain:1});sign(st,'ЧЁРНЫЙ РЫНОК',4.4,0.7,0,2.4,1.45,{bg:'#1d1d1f',fg:'#c91a09'});place(st,125,-112,0,C.black);
+    const d=new Fig({torso:C.black,c2:C.dgrey,print:'hoodie',legs:C.black,face:'crook',hat:{t:'beanie',c:C.dgrey}},'vendor');d.pos.set(125,0.3,-113.6);scene.add(d.g)}
+  // Garages and a wasteland
+  {const b=blockAt(0,5);lot(b,C.dgrey);for(let i=0;i<4;i++)place(buildShed(8,7,3.4,C.lgrey,C.dgrey,'',{doors:1}),-139+i*9.2,128,Math.PI,0x777777)}
+  {const b=blockAt(5,5);lot(b,C.dtan);for(const [x,z] of [[115,115],[132,125],[122,136]]){const g=buildCar('car',C.dgrey);g.rotation.z=0.06;place(g,x,z,rnd(0,TAU));g.traverse(o=>{if(o.isMesh&&o.material&&o.material.color)o.material=M(0x3a3a3a)})}for(let i=0;i<8;i++)cyl(scene,0.5,0.5,0.35,rnd(110,140),0.3,rnd(108,142),C.black,{seg:12})}
+  // Courier depot and taxi park
+  {const b=blockAt(5,2);lot(b,C.lgrey);place(buildShed(20,10,7,C.white,C.orange,'СКЛАД ДОСТАВКИ',{doors:3,bg:'#fe8a18',fg:'#ffffff'}),125,-30,0,C.orange);for(let i=0;i<6;i++)crate(110+i*1.5,-21,C.brown,1.2);
+    for(const x of [134,140])parked('van',C.orange,x,-14,0,'courier')}
+  {const b=blockAt(0,2);lot(b,C.dgrey);place(buildShed(20,10,6,C.yellow,C.black,'ТАКСОПАРК',{doors:3,bg:'#1d1d1f',fg:'#f2cd37'}),-125,-30,0,C.yellow);
+    for(const x of [-137,-131,-119,-113])parked('taxi',C.yellow,x,-15,0,'taxi')}
+  // Maple street: three houses for sale
+  {const b=blockAt(5,3);lot(b,C.bgreen);for(const h of HOUSES){const g=buildHouse(h.wall,h.roof,{door:C.brown});place(g,h.x,h.z,0,C.dtan);
+    const sg=new THREE.Group();cyl(sg,0.07,0.07,1.6,0,0,0,C.dgrey,{seg:6});h.sale=sign(sg,'ПРОДАЁТСЯ',2.2,0.6,0,1.9,0.05,{bg:'#c91a09',fg:'#ffffff'});place(sg,h.x-3,h.z+6.6,0)}}
+  place(buildShop('clothes'),85,21,Math.PI,C.azure);
+  // the rest of the ring is ordinary streets
+  const homes=[[1,0],[2,0],[3,0],[4,0],[1,5],[2,5],[3,5],[4,5],[0,1],[0,3],[0,4],[5,1],[5,4]];
+  homes.forEach(([bx,bz],i)=>{const b=blockAt(bx,bz),cx=(b.x0+b.x1)/2,cz=(b.z0+b.z1)/2,r=bz===0?Math.PI:bz===5?0:bx===0?Math.PI/2:-Math.PI/2;
+    if(i%4===1)place(buildApartment(pick([C.tan,C.white,C.sand]),C.white),cx,cz,r,C.tan);
+    else if(bx===0||bx===5){house(cx,cz-10,r);house(cx,cz+10,r)}else{house(cx-10,cz,r);house(cx+10,cz,r)}
+    tree(b.x0+3,b.z0+3);tree(b.x1-3,b.z1-3)})}
 
 // ---------- minifigures
 const TT={};
@@ -489,28 +605,75 @@ function hatMesh(spec,parent){const g=figGeos();const add=(geo,mat,x,y,z,sx=1,sy
     case 'hair':add(g.hemi,M(c),0,0.09,0,1.02,1.05,1.02);add(new THREE.BoxGeometry(0.5,0.26,0.12),M(c),0,0.02,-0.2);break;
     case 'long':add(g.hemi,M(c),0,0.09,0,1.04,1.05,1.04);add(new THREE.BoxGeometry(0.54,0.62,0.16),M(c),0,-0.12,-0.2);break;
   }}
+// weapons, grouped like the GTA weapon wheel; car = share of a car's health one hit takes (RPG/sniper 1, shotgun/AK 3 hits, other guns 5, melee 10)
 const WPN={
-  fist:{name:'Кулаки',melee:1,dmg:10,range:1.6,cd:0.45},
-  bat:{name:'Бита',melee:1,dmg:26,range:2.1,cd:0.65},
-  crowbar:{name:'Лом',melee:1,dmg:32,range:2.0,cd:0.8},
-  pistol:{name:'Пистолет',dmg:22,cd:0.35,spread:0.04,snd:1,npcCd:1.0},
-  mac10:{name:'MAC-10',dmg:10,cd:0.075,spread:0.14,snd:0.7,npcCd:0.38},
-  ak47:{name:'АК-47',dmg:19,cd:0.12,spread:0.06,snd:1.3,two:1,npcCd:0.5},
-  sign:{name:'Табличка',melee:1,dmg:6,range:1.9,cd:0.9},
+  fist:{name:'Кулаки',cat:0,melee:1,dmg:10,range:1.6,cd:0.45,car:0.1},
+  knife:{name:'Нож',cat:0,melee:1,dmg:30,range:1.6,cd:0.4,car:0.1,price:150},
+  knuckles:{name:'Кастет',cat:0,melee:1,dmg:18,range:1.5,cd:0.35,car:0.1,price:100},
+  bat:{name:'Бита',cat:0,melee:1,dmg:26,range:2.1,cd:0.65,car:0.1,price:120},
+  crowbar:{name:'Лом',cat:0,melee:1,dmg:32,range:2.0,cd:0.8,car:0.1,price:150},
+  golf:{name:'Клюшка',cat:0,melee:1,dmg:24,range:2.2,cd:0.6,car:0.1,price:120},
+  hammer:{name:'Молоток',cat:0,melee:1,dmg:28,range:1.7,cd:0.6,car:0.1,price:110},
+  machete:{name:'Мачете',cat:0,melee:1,dmg:38,range:2.0,cd:0.7,car:0.1,price:250},
+  pistol:{name:'Пистолет',cat:1,dmg:22,cd:0.35,spread:0.04,snd:1,npcCd:1.0,mag:12,ammo:'p',car:0.2,price:400},
+  beretta:{name:'Беретта',cat:1,dmg:20,cd:0.3,spread:0.035,snd:0.95,npcCd:1.0,mag:15,ammo:'p',car:0.2,price:450},
+  combat:{name:'Боевой пистолет',cat:1,dmg:25,cd:0.32,spread:0.035,snd:1,npcCd:1.0,mag:12,ammo:'p',car:0.2,price:600},
+  deagle:{name:'Пистолет .50',cat:1,dmg:40,cd:0.5,spread:0.03,snd:1.3,npcCd:1.1,mag:9,ammo:'p',car:0.2,price:900},
+  revolver:{name:'Тяжёлый револьвер',cat:1,dmg:62,cd:0.8,spread:0.025,snd:1.4,npcCd:1.3,mag:6,ammo:'p',car:0.2,price:1100},
+  mac10:{name:'MAC-10',cat:2,dmg:10,cd:0.075,spread:0.14,snd:0.7,npcCd:0.38,mag:16,ammo:'s',car:0.2,price:800},
+  smg:{name:'ПП',cat:2,dmg:13,cd:0.09,spread:0.09,snd:0.8,npcCd:0.4,mag:30,ammo:'s',car:0.2,price:1200},
+  asmg:{name:'Штурмовой ПП',cat:2,dmg:15,cd:0.085,spread:0.08,snd:0.85,npcCd:0.4,mag:30,ammo:'s',car:0.2,price:1600},
+  pump:{name:'Помповый дробовик',cat:3,dmg:10,pel:7,cd:0.9,spread:0.13,snd:1.5,two:1,npcCd:1.2,mag:8,ammo:'sh',car:1/3,price:1000},
+  sawed:{name:'Обрез',cat:3,dmg:11,pel:8,cd:0.75,spread:0.2,snd:1.5,npcCd:1.1,mag:2,ammo:'sh',car:1/3,price:800},
+  ashot:{name:'Штурмовой дробовик',cat:3,dmg:8,pel:6,cd:0.3,spread:0.15,snd:1.4,two:1,npcCd:0.9,mag:8,ammo:'sh',car:1/3,price:2200},
+  ak47:{name:'АК-47',cat:4,dmg:19,cd:0.12,spread:0.06,snd:1.3,two:1,npcCd:0.5,mag:30,ammo:'r',car:1/3,price:1800},
+  carbine:{name:'Карабин',cat:4,dmg:18,cd:0.1,spread:0.05,snd:1.25,two:1,npcCd:0.5,mag:30,ammo:'r',car:0.2,price:2000},
+  advanced:{name:'Продвинутая винтовка',cat:4,dmg:17,cd:0.085,spread:0.04,snd:1.2,two:1,npcCd:0.5,mag:30,ammo:'r',car:0.2,price:2600},
+  mg:{name:'Пулемёт',cat:5,dmg:18,cd:0.1,spread:0.09,snd:1.4,two:1,npcCd:0.5,mag:54,ammo:'m',car:0.2,price:3000},
+  cmg:{name:'Боевой пулемёт',cat:5,dmg:20,cd:0.09,spread:0.08,snd:1.5,two:1,npcCd:0.5,mag:100,ammo:'m',car:0.2,price:4200},
+  sniper:{name:'Снайперская винтовка',cat:6,dmg:95,cd:1.3,spread:0.004,snd:1.8,two:1,npcCd:2,mag:10,ammo:'sn',car:1,speed:160,life:1.4,price:3500},
+  hsniper:{name:'Тяжёлая снайперская',cat:6,dmg:150,cd:1.7,spread:0.003,snd:2,two:1,npcCd:2.5,mag:6,ammo:'sn',car:1,speed:170,life:1.5,price:5000},
+  rpg:{name:'РПГ',cat:7,dmg:130,cd:1.2,spread:0.01,snd:1.6,two:1,mag:1,ammo:'rk',car:1,exp:6,speed:34,life:2.5,price:6000},
+  gl:{name:'Гранатомёт',cat:7,dmg:90,cd:0.8,spread:0.02,snd:1.2,two:1,mag:10,ammo:'gr',car:1,exp:4.5,speed:26,life:1.4,price:5000},
+  minigun:{name:'Миниган',cat:7,dmg:12,cd:0.03,spread:0.1,snd:1.1,two:1,mag:300,ammo:'mi',car:0.2,price:9000},
+  grenade:{name:'Граната',cat:8,dmg:110,cd:1,mag:1,ammo:'g',car:1,exp:5.5,thrown:1,price:250},
+  molotov:{name:'Коктейль Молотова',cat:8,dmg:45,cd:1,mag:1,ammo:'mo',car:1,exp:4,fire:1,thrown:1,price:200},
+  sticky:{name:'Липкая бомба',cat:8,dmg:140,cd:1,mag:1,ammo:'st',car:1,exp:6,thrown:1,price:400},
+  taser:{name:'Электрошокер',cat:9,dmg:2,cd:5,spread:0.02,snd:0.4,stun:1,car:0,speed:40,life:0.3},
+  sign:{name:'Табличка',cat:0,melee:1,dmg:6,range:1.9,cd:0.9,car:0.1},
 };
-const SLOTS=['fist','bat','crowbar','pistol','mac10','ak47'];
+const CATS=['Холодное','Пистолеты','ПП','Дробовики','Автоматы','Пулемёты','Снайперские','Тяжёлое','Метательное','Спецсредства'];
+const AMMO={p:{name:'Патроны для пистолета',pack:24,price:60},s:{name:'Патроны для ПП',pack:60,price:120},sh:{name:'Дробь',pack:16,price:120},r:{name:'Патроны 7.62',pack:60,price:180},m:{name:'Пулемётная лента',pack:100,price:300},
+  sn:{name:'Снайперские патроны',pack:10,price:250},rk:{name:'Ракета для РПГ',pack:1,price:500},gr:{name:'Гранаты 40 мм',pack:5,price:600},mi:{name:'Лента для минигана',pack:300,price:900},g:{name:'Граната',pack:1,price:250},mo:{name:'Коктейль Молотова',pack:1,price:200},st:{name:'Липкая бомба',pack:1,price:400}};
+const SLOTS=Object.keys(WPN).filter(k=>k!=='sign');
 const signTexCache={};
 function weaponModel(type,text){const g=new THREE.Group();const bx=(w,h,d,x,y,z,c,rx=0)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),M(c));m.position.set(x,y,z);m.rotation.x=rx;m.castShadow=true;g.add(m);return m};
   const cy=(rt,rb,len,x,y,z,c)=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,len,10),M(c));m.rotation.x=Math.PI/2;m.position.set(x,y,z);m.castShadow=true;g.add(m);return m};
+  const w=WPN[type]||{};
   switch(type){
-    case 'pistol':bx(0.08,0.11,0.34,0,0.06,0.12,C.black);bx(0.07,0.2,0.09,0,-0.04,0,C.black,0.25);break;
+    case 'pistol':case 'beretta':case 'combat':bx(0.08,0.11,0.34,0,0.06,0.12,type==='beretta'?C.dgrey:C.black);bx(0.07,0.2,0.09,0,-0.04,0,C.black,0.25);break;
+    case 'deagle':case 'revolver':bx(0.09,0.13,0.44,0,0.06,0.16,C.lgrey);bx(0.08,0.22,0.1,0,-0.05,0,C.brown,0.25);if(type==='revolver')cy(0.07,0.07,0.12,0,0.05,0.05,C.dgrey);break;
     case 'mac10':bx(0.1,0.15,0.3,0,0.06,0.1,C.black);cy(0.035,0.035,0.16,0,0.08,0.32,C.dgrey);bx(0.06,0.32,0.07,0,-0.12,0.02,C.black);break;
+    case 'smg':case 'asmg':bx(0.1,0.15,0.46,0,0.06,0.16,C.black);bx(0.06,0.28,0.07,0,-0.12,0.12,C.dgrey);bx(0.07,0.1,0.22,0,0.06,-0.14,C.black);break;
     case 'ak47':bx(0.08,0.12,0.42,0,0.06,0.12,C.black);bx(0.08,0.14,0.3,0,0.04,-0.24,C.brown);bx(0.09,0.09,0.22,0,0.06,0.44,C.brown);cy(0.025,0.025,0.32,0,0.08,0.7,C.black);bx(0.06,0.24,0.09,0,-0.1,0.2,C.dred,0.35);bx(0.06,0.14,0.07,0,-0.04,0,C.black,0.25);break;
     case 'bat':cy(0.04,0.075,0.95,0,0,0.38,0xb5793c);break;
     case 'crowbar':cy(0.03,0.03,0.85,0,0,0.33,C.dgrey);{const h=cy(0.03,0.03,0.22,0,0.07,0.78,C.red);h.rotation.x=Math.PI/2-0.9}break;
+    case 'knife':cy(0.03,0.03,0.14,0,0,0.05,C.black);bx(0.02,0.07,0.3,0,0,0.26,C.lgrey);break;
+    case 'machete':cy(0.035,0.035,0.18,0,0,0.06,C.black);bx(0.02,0.12,0.62,0,0.02,0.45,C.lgrey);break;
+    case 'knuckles':bx(0.22,0.08,0.06,0,0,0.04,C.gold);break;
+    case 'golf':cy(0.02,0.02,1.0,0,0,0.42,C.lgrey);bx(0.06,0.06,0.16,0,-0.04,0.92,C.lgrey);break;
+    case 'hammer':cy(0.03,0.03,0.6,0,0,0.25,C.brown);bx(0.08,0.24,0.08,0,0,0.55,C.dgrey);break;
+    case 'grenade':case 'sticky':{const s=new THREE.Mesh(new THREE.SphereGeometry(0.1,10,8),M(type==='sticky'?C.dred:C.green));s.position.z=0.08;g.add(s)}break;
+    case 'molotov':cy(0.06,0.07,0.24,0,0,0.12,C.green);cy(0.02,0.02,0.1,0,0,0.29,C.white);break;
+    case 'taser':bx(0.08,0.12,0.26,0,0.05,0.1,C.yellow);bx(0.07,0.18,0.08,0,-0.05,0,C.black,0.25);break;
+    case 'rpg':cy(0.08,0.08,1.2,0,0.1,0.25,C.green);cy(0.05,0.13,0.24,0,0.1,0.95,C.dgrey);bx(0.06,0.2,0.08,0,-0.04,0.1,C.black);break;
+    case 'gl':cy(0.09,0.09,0.5,0,0.06,0.3,C.dgrey);cy(0.14,0.14,0.2,0,0.06,0.05,C.black);bx(0.08,0.12,0.3,0,0.04,-0.2,C.black);break;
+    case 'minigun':for(let i=0;i<6;i++){const a=i/6*TAU;cy(0.025,0.025,0.8,Math.cos(a)*0.06,0.06+Math.sin(a)*0.06,0.5,C.dgrey)}bx(0.22,0.22,0.3,0,0.06,0,C.black);break;
     case 'sign':{cy(0.035,0.035,1.3,0,0,0.5,C.brown);const tex=signTexCache[text]||(signTexCache[text]=signTex(text,{w:256,h:160,bg:'#f4f4f4',fg:'#c91a09',border:'#1d1d1f'}));
       const mats=[M(C.white),M(C.white),M(C.white),M(C.white),new THREE.MeshPhongMaterial({map:tex}),new THREE.MeshPhongMaterial({map:tex})];const b=new THREE.Mesh(new THREE.BoxGeometry(1.4,0.85,0.05),mats);b.geometry.rotateX(Math.PI/2);b.position.set(0,0,1.3);b.castShadow=true;g.add(b)}break;
-  }return g}
+    default:{const L=w.cat===3?0.8:w.cat===6?1.15:0.95;bx(0.08,0.12,L,0,0.06,L/2-0.15,w.cat===6?C.dgrey:C.black);bx(0.06,0.2,0.08,0,-0.06,0.05,C.black,0.3);
+      if(w.cat===5)bx(0.14,0.14,0.2,0,-0.08,0.25,C.green);if(w.cat===6)cy(0.04,0.04,0.3,0,0.18,0.2,C.black);if(w.cat!==3)bx(0.06,0.24,0.08,0,-0.12,0.25,C.black,0.2)}}
+  return g}
 
 let FID=0;
 class Fig{
@@ -547,6 +710,8 @@ function animFig(f,dt){
   if(f.swingT>0){f.swingT-=dt;const k=1-Math.max(0,f.swingT)/0.28;rx=-2.7+k*2.3}
   f.armR.rotation.x=rx;f.armL.rotation.x=lx;f.armR.rotation.z=rz;f.armL.rotation.z=lz;
   f.g.rotation.y=lerpAng(f.g.rotation.y,f.yaw,Math.min(1,dt*12));
+  f.g.scale.y=f.crouch?0.8:1;f.g.rotation.x=f.pose==='lie'?-Math.PI/2:0;
+  if(f.stunT>0){f.armL.rotation.z=-0.4+Math.sin(T*40)*0.3;f.armR.rotation.z=0.4-Math.sin(T*40)*0.3}
 }
 
 // ---------- looks
@@ -558,6 +723,8 @@ const LOOKS={
   player_police:()=>({torso:C.dblue,print:'police',back:'policeBack',legs:C.black,face:'smile',hat:{t:'police'},hp:100}),
   player_bandit:()=>({torso:C.white,print:'stripes',legs:C.black,face:'crook',hat:{t:'beanie',c:C.black},hp:100}),
   player_medic:()=>({torso:C.white,print:'doctor',legs:C.white,face:'smile',hat:{t:'hair',c:C.brown},hp:100}),
+  player_citizen:()=>({torso:C.mblue,c2:C.white,print:'jacket',legs:C.dblue,face:'smile',hat:{t:'hair',c:C.brown},hp:100}),
+  player_me:()=>playerLook(P.role,P.outfit,P.masked),
   police:()=>({torso:C.dblue,print:'police',back:'policeBack',legs:C.black,face:pick(['stern','smile']),hat:{t:'police'},hp:80}),
   doctor:()=>{const fem=Math.random()<0.5;return {torso:C.white,print:'doctor',legs:C.white,face:fem?'woman':'smile',hat:hairFor(fem)}},
   nurse:()=>({torso:C.azure,print:'nurse',legs:C.azure,face:'woman',hat:{t:'nurse',hair:pick(HAIR)}}),
@@ -583,18 +750,24 @@ const ROLE_NAMES={police:'Полицейский',doctor:'Врач',nurse:'Ме�
 // ---------- game state
 const figs=[],bullets=[],pieces=[],pickups=[],sparks=[],bubbles=[],cars=[],respawns=[];
 let player=null,T=0,started=false,paused=false,zoom=1;
-const P={role:'police',money:150,inv:{fist:1,pistol:1},cur:'pistol',wanted:0,seenT:0,arrestProg:0,busy:0,shotLawT:0,reports:[],stats:{kills:0,arrests:0,heals:0,events:0},god:0};
+const P={role:'citizen',money:200,inv:{fist:1},cur:'fist',clip:{},ammo:{},reload:0,wanted:0,seenT:0,arrestProg:0,busy:0,shotLawT:0,reports:[],stats:{kills:0,arrests:0,heals:0,events:0,jobs:0},god:0,
+  view:'iso',stealth:false,car:null,mask:false,masked:false,outfit:0,maskCrimes:0,known:null,gps:null,drugs:0,bag:false,job:null,stunT:0,ban:{},house:-1,stash:{d:0,w:{}},hold:null,lastInCat:{}};
 const ROLES={
-  police:{name:'Полицейский',desc:'Защищай город: стреляй в вооружённых бандитов без нарушения ст. 4, арестовывай сдавшихся и задерживай митингующих. Бандиты нападают на тебя первыми.',gear:'Старт: пистолет · у участка',c:['#0a3463','#cfe62a','#1d1d1f'],inv:{fist:1,pistol:1},cur:'pistol',spawn:'station'},
-  bandit:{name:'Бандит',desc:'Грабь кассы (вдвое больше денег) и получай долю, если банда уходит от полиции. Свои тебя не трогают, а полиция замечает нарушения издалека.',gear:'Старт: бита и пистолет · на стройке',c:['#f4f4f4','#1d1d1f','#1d1d1f'],inv:{fist:1,bat:1,pistol:1},cur:'bat',spawn:'site'},
-  medic:{name:'Медик',desc:'Лечи раненых жителей и полицейских клавишей E: +25 за пациента. Бандиты не трогают медика, пока он не подойдёт вплотную или не нападёт.',gear:'Старт: пистолет · у больницы',c:['#f4f4f4','#5a93db','#f4f4f4'],inv:{fist:1,pistol:1},cur:'fist',spawn:'hospital'},
+  police:{name:'Полицейский',desc:'Выезжай на происшествия и обезвреживай вооружённых бандитов.',abil:['Пистолет и электрошокер (оглушает, перезарядка 5 с)','Q вплотную — GPS-трекер на разыскиваемого игрока','E — арест оглушённого или сдавшегося','Убил сдавшегося — ★★. Арестуют — уволят на 5 минут'],
+    gear:'Старт у участка',c:['#0a3463','#cfe62a','#1d1d1f'],inv:{fist:1,pistol:1,taser:1},ammo:{p:48},cur:'pistol',spawn:'station'},
+  bandit:{name:'Бандит',desc:'Грабь кассы, бери заказы на чёрном рынке и уходи от погони.',abil:['Пистолет на старте, остальное — на чёрном рынке','Ограбление кассы 5 секунд; без маски сразу ★★★','Доставка наркотиков пешком или на машине, только в сумке','Маска: за 5 нападений всего ★'],
+    gear:'Старт на стройке',c:['#f4f4f4','#1d1d1f','#1d1d1f'],inv:{fist:1,pistol:1},ammo:{p:36},cur:'pistol',spawn:'site'},
+  medic:{name:'Медик',desc:'Езди на скорой по вызовам и спасай горожан.',abil:['Вызовы: раненые, переломы, операции','Q 5 секунд — первая помощь, E — в скорую','Операция в больнице — мини-игра','E — лечить раненых на улице'],
+    gear:'Старт у больницы',c:['#f4f4f4','#5a93db','#f4f4f4'],inv:{fist:1},ammo:{},cur:'fist',spawn:'hospital'},
+  citizen:{name:'Гражданин',desc:'Без оружия, зато с работой: выбери, где зарабатывать.',abil:['Курьер: склад → дом покупателя на фургоне','Кассир: 30% с покупки, разгрузка машины с продуктами','Таксист: бери такси в таксопарке и вози клиентов','Можно купить дом, одежду, еду и сумку'],
+    gear:'Старт на площади',c:['#5a93db','#f4f4f4','#0a3463'],inv:{fist:1},ammo:{},cur:'fist',spawn:'square'},
 };
-const roleAggro=r=>r==='police'?26:r==='medic'?8:0;
+const roleAggro=r=>r==='police'?26:r==='medic'?8:r==='citizen'?6:0;
 
 // ---------- network state (filled in by the multiplayer section at the end)
 const NET={on:false,room:null,user:null,me:null,host:true,hostPeer:null,since:Date.now(),hs:0,joinT:0,players:new Map(),mirrors:new Map(),defs:new Map(),
   need:new Set(),needT:0,defsQ:[],shots:[],shotSeq:0,myShots:[],mySeq:0,deaths:[],deathSeq:0,bub:[],bubSeq:0,seen:{s:0,d:0,b:0},fresh:false,
-  peerSeen:new Map(),tick:0,electT:0,plistT:0,evHelp:0,lastEv:null,evCenter:null,evNear:0,evEsc:0,cand:null,candT:0,names:{},roomName:''};
+  myEx:[],exSeq:0,peerSeen:new Map(),tick:0,electT:0,plistT:0,evHelp:0,lastEv:null,evCenter:null,evNear:0,evEsc:0,cand:null,candT:0,names:{},roomName:''};
 const isHost=()=>!NET.on||NET.host;
 const r1=v=>Math.round(v*10)/10,r2=v=>Math.round(v*100)/100;
 const ring=(arr,item,n)=>{arr.push(item);while(arr.length>n)arr.shift()};
@@ -602,11 +775,18 @@ function netEmit(topic,data){if(NET.on&&NET.room)NET.room.emit(topic,data).catch
 const busyOf=t=>t===player?!!P.busy:!!(t&&t.net&&t.net.bu);
 const wantedOf=t=>t===player?P.wanted:(t&&t.net&&t.net.wa)||0;
 const aggroOf=t=>roleAggro(t===player?P.role:(t.net&&t.net.r));
-function wantedNear(f){let wp=null,bd=75*75;for(const p of figs){if(p.team!=='player'||!p.alive||busyOf(p)||wantedOf(p)===0)continue;const dd=d2(p.pos,f.pos);if(dd<bd){bd=dd;wp=p}}return wp}
-const SPOTS={hospital:new V3(25,0.3,-10.5),station:new V3(-25,0.3,-10),pizza:new V3(13,0.3,12.5),market:new V3(25,0.3,12.5),jewel:new V3(37,0.3,12.5),square:new V3(-25,0.3,18),site:new V3(-30,0.3,56.5)};
+// a GPS-tracked player is chased from anywhere in the city
+const tracked=p=>p===player?!!P.gps:!!(p.net&&p.net.gp);
+function wantedNear(f){let wp=null,bd=75*75;for(const p of figs){if(p.team!=='player'||!p.alive||busyOf(p)||wantedOf(p)===0)continue;const dd=tracked(p)?d2(p.pos,f.pos)*0.05:d2(p.pos,f.pos);if(dd<bd){bd=dd;wp=p}}return wp}
+const SPOTS={hospital:new V3(25,0.3,-10.5),station:new V3(-25,0.3,-10),pizza:new V3(13,0.3,12.5),market:new V3(25,0.3,12.5),jewel:new V3(37,0.3,12.5),clothes:new V3(85,0.3,12.5),square:new V3(-25,0.3,18),site:new V3(-30,0.3,56.5),
+  bm:new V3(125,0.3,-109),depot:new V3(125,0.3,-9),taxi:new V3(-125,0.3,-9),home:new V3(-30,0.3,40)};
+// houses for sale on Maple street; the door is at the front right
+const HOUSES=[{name:'Кленовая, 1',price:2500,x:112,z:33,wall:C.yellow,roof:C.dred},{name:'Кленовая, 2',price:4000,x:125,z:33,wall:C.mblue,roof:C.dgrey},{name:'Кленовая, 3',price:6000,x:138,z:33,wall:C.white,roof:C.green}];
+HOUSES.forEach(h=>h.door=new V3(h.x+2.4,0.3,h.z+5.3));
+const HOUSE_DOORS=[];
 
 function spawnFig(kind,pos,team){const f=new Fig(LOOKS[kind](),team);f.kind=kind;f.pos.copy(pos);f.pos.y=groundY(pos.x,pos.z);pushOut(f.pos,0.4);scene.add(f.g);figs.push(f);f.yaw=Math.random()*TAU;f.g.rotation.y=f.yaw;if(NET.on&&NET.host&&team!=='player')NET.defsQ.push(f);return f}
-function spawnPlayer(pos){player=spawnFig('player_'+P.role,pos,'player');player.setWeapon(P.cur);player.hp=player.maxHp=100;
+function spawnPlayer(pos){player=spawnFig('player_me',pos,'player');player.setWeapon(P.cur);player.hp=player.maxHp=100;
   const ring=new THREE.Mesh(new THREE.RingGeometry(0.55,0.75,24),new THREE.MeshBasicMaterial({color:C.yellow,depthTest:false,transparent:true,opacity:0.9}));ring.rotation.x=-Math.PI/2;ring.position.y=0.05;ring.renderOrder=10;player.g.add(ring);
   const arrow=new THREE.Mesh(new THREE.ConeGeometry(0.22,0.45,4),new THREE.MeshBasicMaterial({color:C.yellow,depthTest:false}));arrow.rotation.x=Math.PI;arrow.position.y=2.75;arrow.renderOrder=10;player.g.add(arrow)}
 
@@ -614,7 +794,8 @@ function spawnPlayer(pos){player=spawnFig('player_'+P.role,pos,'player');player.
 let AC=null,lastSnd=0;
 function sfx(kind,pos,vol=1){if(!AC)return;let v=vol;if(pos&&player){v*=clamp(1-dist(pos,player.pos)/55,0,1)}if(v<0.02)return;if(kind==='shot'&&AC.currentTime-lastSnd<0.03)return;if(kind==='shot')lastSnd=AC.currentTime;
   const t=AC.currentTime,g=AC.createGain();g.connect(AC.destination);
-  if(kind==='shot'){const len=0.18,b=AC.createBuffer(1,AC.sampleRate*len,AC.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,3);const s=AC.createBufferSource();s.buffer=b;const fl=AC.createBiquadFilter();fl.type='lowpass';fl.frequency.value=1800;s.connect(fl);fl.connect(g);g.gain.value=0.35*v;s.start(t)}
+  if(kind==='boom'){const len=0.9,b=AC.createBuffer(1,AC.sampleRate*len,AC.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,2);const s=AC.createBufferSource();s.buffer=b;const fl=AC.createBiquadFilter();fl.type='lowpass';fl.frequency.value=420;s.connect(fl);fl.connect(g);g.gain.value=0.7*v;s.start(t)}
+  else if(kind==='shot'){const len=0.18,b=AC.createBuffer(1,AC.sampleRate*len,AC.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,3);const s=AC.createBufferSource();s.buffer=b;const fl=AC.createBiquadFilter();fl.type='lowpass';fl.frequency.value=1800;s.connect(fl);fl.connect(g);g.gain.value=0.35*v;s.start(t)}
   else{const o=AC.createOscillator();o.connect(g);if(kind==='hit'){o.type='square';o.frequency.setValueAtTime(140,t);o.frequency.exponentialRampToValueAtTime(60,t+0.1);g.gain.setValueAtTime(0.15*v,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.12);o.start(t);o.stop(t+0.13)}
     else if(kind==='coin'){o.type='sine';o.frequency.setValueAtTime(1300,t);o.frequency.setValueAtTime(1900,t+0.06);g.gain.setValueAtTime(0.12*v,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.2);o.start(t);o.stop(t+0.2)}
     else if(kind==='siren'){o.type='sawtooth';for(let i=0;i<4;i++){o.frequency.setValueAtTime(700,t+i*0.5);o.frequency.linearRampToValueAtTime(1000,t+i*0.5+0.25);o.frequency.linearRampToValueAtTime(700,t+i*0.5+0.5)}g.gain.setValueAtTime(0.05*v,t);g.gain.linearRampToValueAtTime(0.001,t+2);o.start(t);o.stop(t+2)}
@@ -639,33 +820,87 @@ const sparkGeo=new THREE.BoxGeometry(0.14,0.1,0.14);
 const flashMat=new THREE.SpriteMaterial({color:0xffd24a,transparent:true,opacity:0.9,depthWrite:false});
 function canHit(o,t){if(o===t||!t.alive)return false;if(o.team==='player')return !(P.role==='police'&&t.team==='police');if(o.team==='police')return t.team==='crim'||(t.team==='player'&&wantedOf(t)>=2);if(o.team==='crim')return !(t.team==='crim'&&t.gang===o.gang);return true}
 function fire(f,tx,tz,npc){
-  const w=WPN[f.weapon||'fist'];if(f.cd>0)return false;
+  const wk=f.weapon||'fist',w=WPN[wk];if(f.cd>0)return false;
+  // the player's guns use magazines; an empty one reloads by itself
+  if(f===player&&w.thrown){if(!(P.ammo[w.ammo]>0)){feed('Закончилось: '+w.name,'info');return false}}
+  else if(f===player&&w.mag){if(P.reload>0)return false;if((P.clip[wk]||0)<=0){startReload();return false}}
   const dx=tx-f.pos.x,dz=tz-f.pos.z;const yaw=Math.atan2(dx,dz);f.yaw=yaw;
-  if(w.melee){f.cd=w.cd*(npc?1.6:1);f.swingT=0.28;
-    setTimeout(()=>{if(!f.alive)return;let hit=false;for(const t of figs){if(!t.alive||t===f||t.team==='statue')continue;if(!canHit(f,t))continue;const ex=t.pos.x-f.pos.x,ez=t.pos.z-f.pos.z,dd=Math.hypot(ex,ez);if(dd>w.range||dd<0.01)continue;const dot=(ex*Math.sin(f.yaw)+ez*Math.cos(f.yaw))/dd;if(dot<0.35)continue;damage(t,w.dmg*(npc?(t.team==='player'?0.35:0.7):1),f,{x:ex/dd,z:ez/dd});hit=true}if(hit)sfx('hit',f.pos)},140);
+  if(w.melee){f.cd=w.cd*(npc?1.6:1);f.swingT=0.28;const silent=f===player&&wk==='knife'&&P.stealth;
+    setTimeout(()=>{if(!f.alive)return;let hit=false;for(const t of figs){if(!t.alive||t===f||t.team==='statue')continue;if(!canHit(f,t))continue;const ex=t.pos.x-f.pos.x,ez=t.pos.z-f.pos.z,dd=Math.hypot(ex,ez);if(dd>w.range||dd<0.01)continue;const dot=(ex*Math.sin(f.yaw)+ez*Math.cos(f.yaw))/dd;if(dot<0.35)continue;
+        // a knife from behind while sneaking is an instant, quiet kill
+        if(silent&&!t.remote&&behind(t,f)){P.silent=true;P.silentUntil=T+3;damage(t,999,f,{x:ex/dd,z:ez/dd});P.silent=false;hit=true;break}
+        damage(t,w.dmg*(npc?(t.team==='player'?0.35:0.7):1),f,{x:ex/dd,z:ez/dd});hit=true}
+      if(f===player){const c=carNear(f.pos.x+Math.sin(f.yaw)*1.4,f.pos.z+Math.cos(f.yaw)*1.4,0.6);if(c){carDamage(c,w.car,f);hit=true}}
+      if(hit)sfx('hit',f.pos)},140);
     return true}
-  f.cd=npc?Math.max(w.cd*2.6,w.npcCd)*rnd(0.8,1.5):w.cd;f.pose='aim';
-  const spread=w.spread+(npc?(f.team==='police'?0.07:0.16):0);const a=yaw+(Math.random()-0.5)*spread*2;
+  f.cd=npc?Math.max(w.cd*2.6,w.npcCd||1)*rnd(0.8,1.5):w.cd;f.pose='aim';
+  if(f===player&&w.thrown){P.ammo[w.ammo]--;renderWeapons()}
+  else if(f===player&&w.mag){P.clip[wk]--;if(P.clip[wk]<=0)setTimeout(startReload,w.cd*1000)}
   const sx=Math.sin(yaw),sz=Math.cos(yaw);
   const o=new V3(f.pos.x+sx*0.7+sz*0.3,f.pos.y+1.25,f.pos.z+sz*0.7-sx*0.3);
-  const m=new THREE.Mesh(bulletGeo,bulletMat);m.position.copy(o);m.rotation.y=a;scene.add(m);
-  bullets.push({m,vx:Math.sin(a)*75,vz:Math.cos(a)*75,owner:f,dmg:w.dmg*(npc?1:1),npc,life:0.9});
-  const fl=new THREE.Sprite(flashMat);fl.position.copy(o);fl.scale.setScalar(0.6);scene.add(fl);setTimeout(()=>scene.remove(fl),50);
-  sfx('shot',f.pos,w.snd);noise(f.pos,24,f);
-  if(NET.on){const s=[0,r1(o.x),r1(o.z),r2(a)];if(f===player){s[0]=++NET.mySeq;ring(NET.myShots,s,8)}else if(npc&&NET.host){s[0]=++NET.shotSeq;ring(NET.shots,s,10)}}
+  if(w.thrown){const d=clamp(Math.hypot(dx,dz),4,22),fl=0.9;const m=weaponModel(wk);m.scale.setScalar(1.6);m.position.copy(o);scene.add(m);
+    projs.push({m,v:new V3(sx*d/fl,9,sz*d/fl),owner:f,w,wk,t:wk==='molotov'?3:1.8});sfx('hit',f.pos,0.5);if(f===player)noteShot(o,yaw,wk);return true}
+  const n=w.pel||1;
+  for(let i=0;i<n;i++){const a=yaw+(Math.random()-0.5)*(w.spread+(npc?(f.team==='police'?0.07:0.16):0))*2;
+    const m=new THREE.Mesh(w.exp?rocketGeo:bulletGeo,w.exp?rocketMat:w.stun?taserMat:bulletMat);m.position.copy(o);m.rotation.y=a;scene.add(m);const sp=w.speed||75;
+    bullets.push({m,vx:Math.sin(a)*sp,vz:Math.cos(a)*sp,sp,owner:f,dmg:w.dmg,npc,life:w.life||0.9,car:i===0?w.car:0,exp:w.exp||0,stun:w.stun,wk})}
+  const fl=new THREE.Sprite(flashMat);fl.position.copy(o);fl.scale.setScalar(w.exp?1.2:0.6);scene.add(fl);setTimeout(()=>scene.remove(fl),50);
+  sfx('shot',f.pos,w.snd||1);if(!w.stun)noise(f.pos,24,f);
+  if(f===player)noteShot(o,yaw,wk);else if(NET.on&&npc&&NET.host){ring(NET.shots,[++NET.shotSeq,r1(o.x),r1(o.z),r2(yaw)],10)}
   return true}
+function noteShot(o,a,wk){if(NET.on){ring(NET.myShots,[++NET.mySeq,r1(o.x),r1(o.z),r2(a),Math.max(0,WCODES.indexOf(wk))],8)}}
+// true when f stands behind t (t is looking away)
+function behind(t,f){const ex=f.pos.x-t.pos.x,ez=f.pos.z-t.pos.z,l=Math.hypot(ex,ez)||1;return (ex*Math.sin(t.yaw)+ez*Math.cos(t.yaw))/l<-0.25}
+function startReload(){const wk=P.cur,w=WPN[wk];if(!w||!w.mag||w.thrown||P.reload>0)return;if((P.clip[wk]||0)>=w.mag)return;if((P.ammo[w.ammo]||0)<=0){feed('Нет патронов: '+AMMO[w.ammo].name+'. Купи на чёрном рынке','info');return}P.reload=3;P.reloadW=wk;sfx('hit',null,0.4)}
+function finishReload(){const wk=P.reloadW,w=WPN[wk];P.reload=0;if(!w||!P.inv[wk])return;const need=w.mag-(P.clip[wk]||0),take=Math.min(need,P.ammo[w.ammo]||0);P.clip[wk]=(P.clip[wk]||0)+take;P.ammo[w.ammo]-=take;renderWeapons()}
 // a tracer that only shows another screen's shot; the shooter's own page decides what it hit
-function visualShot(x,z,a){const y=groundY(x,z)+1.25;const m=new THREE.Mesh(bulletGeo,bulletMat);m.position.set(x,y,z);m.rotation.y=a;scene.add(m);
-  bullets.push({m,vx:Math.sin(a)*75,vz:Math.cos(a)*75,owner:null,visual:true,life:0.9});
+function visualShot(x,z,a,wc){const y=groundY(x,z)+1.25;const w=WPN[WCODES[wc]]||{};
+  if(w.thrown){const m=weaponModel(WCODES[wc]);m.scale.setScalar(1.6);m.position.set(x,y,z);scene.add(m);projs.push({m,v:new V3(Math.sin(a)*12,9,Math.cos(a)*12),visual:true,w,t:1.6});return}
+  const m=new THREE.Mesh(w.exp?rocketGeo:bulletGeo,w.exp?rocketMat:bulletMat);m.position.set(x,y,z);m.rotation.y=a;scene.add(m);const sp=w.speed||75;
+  bullets.push({m,vx:Math.sin(a)*sp,vz:Math.cos(a)*sp,sp,owner:null,visual:true,life:w.life||0.9});
   const fl=new THREE.Sprite(flashMat);fl.position.set(x,y,z);fl.scale.setScalar(0.6);scene.add(fl);setTimeout(()=>scene.remove(fl),50);sfx('shot',m.position,0.9)}
 function updateBullets(dt){
   for(let i=bullets.length-1;i>=0;i--){const b=bullets[i];const p=b.m.position;const ox=p.x,oz=p.z,nx=ox+b.vx*dt,nz=oz+b.vz*dt;b.life-=dt;
+    const end=(hx,hz)=>{p.x=hx;p.z=hz;if(b.exp&&!b.visual)explode(p.clone(),b.exp,b.dmg,b.owner);else if(b.exp)explode(p.clone(),b.exp,0,null,true);scene.remove(b.m);bullets.splice(i,1)};
     let bestT=2,bestF=null;const sx=nx-ox,sz=nz-oz,L2=sx*sx+sz*sz;
-    if(!b.visual)for(const f of figs){if(!f.alive||f.team==='statue')continue;if(b.owner===f)continue;if(!canHit(b.owner,f))continue;if(p.y<f.pos.y||p.y>f.pos.y+2.1)continue;let t=((f.pos.x-ox)*sx+(f.pos.z-oz)*sz)/L2;t=clamp(t,0,1);const cx=ox+sx*t-f.pos.x,cz=oz+sz*t-f.pos.z;if(cx*cx+cz*cz<0.2&&t<bestT){bestT=t;bestF=f}}
+    if(!b.visual)for(const f of figs){if(!f.alive||f.team==='statue'||f.inCar)continue;if(b.owner===f)continue;if(!canHit(b.owner,f))continue;if(p.y<f.pos.y||p.y>f.pos.y+2.1)continue;let t=((f.pos.x-ox)*sx+(f.pos.z-oz)*sz)/L2;t=clamp(t,0,1);const cx=ox+sx*t-f.pos.x,cz=oz+sz*t-f.pos.z;if(cx*cx+cz*cz<0.2&&t<bestT){bestT=t;bestF=f}}
     let wallT=2;for(const c of cols){if(p.y>c.h)continue;const t=segBox(ox,oz,nx,nz,c,0);if(t>=0&&t<wallT)wallT=t}
-    if(bestF&&bestT<wallT){const mul=b.npc?(bestF.team==='player'?0.18:0.6):1;damage(bestF,b.dmg*mul,b.owner,{x:b.vx/75,z:b.vz/75});scene.remove(b.m);bullets.splice(i,1);continue}
-    if(wallT<=1){p.x=ox+sx*wallT;p.z=oz+sz*wallT;spawnSparks(p,0xd8d8d8,3);scene.remove(b.m);bullets.splice(i,1);continue}
-    p.x=nx;p.z=nz;if(b.life<=0){scene.remove(b.m);bullets.splice(i,1)}}}
+    let carT=2,carH=null;for(let k=1;k<=3;k++){const t=k/3;if(t>=wallT||t>=bestT)break;const c=carNear(ox+sx*t,oz+sz*t,0);if(c&&!(b.owner&&b.owner.car===c)){carT=t;carH=c;break}}
+    if(bestF&&bestT<wallT&&bestT<carT){if(b.exp){end(ox+sx*bestT,oz+sz*bestT);continue}
+      if(b.stun)stunFig(bestF,b.owner);else{const mul=b.npc?(bestF.team==='player'?0.18:0.6):1;damage(bestF,b.dmg*mul,b.owner,{x:b.vx/b.sp,z:b.vz/b.sp})}scene.remove(b.m);bullets.splice(i,1);continue}
+    if(carH){if(b.visual||b.exp){end(ox+sx*carT,oz+sz*carT);continue}if(b.car)carDamage(carH,b.car,b.owner);spawnSparks(new V3(ox+sx*carT,p.y,oz+sz*carT),0xd8d8d8,3);scene.remove(b.m);bullets.splice(i,1);continue}
+    if(wallT<=1){end(ox+sx*wallT,oz+sz*wallT);spawnSparks(p,0xd8d8d8,3);continue}
+    p.x=nx;p.z=nz;if(b.life<=0)end(p.x,p.z)}
+  for(let i=projs.length-1;i>=0;i--){const q=projs[i],p=q.m.position;q.v.y-=22*dt;p.addScaledVector(q.v,dt);q.m.rotation.x+=dt*8;q.t-=dt;
+    const gy=groundY(p.x,p.z)+0.15;let land=false;if(p.y<gy){p.y=gy;q.v.y*=-0.3;q.v.x*=0.5;q.v.z*=0.5;land=true}
+    for(const c of cols)if(p.y<c.h&&p.x>c.x0&&p.x<c.x1&&p.z>c.z0&&p.z<c.z1){q.v.x*=-0.4;q.v.z*=-0.4;p.x-=q.v.x*dt*2;p.z-=q.v.z*dt*2}
+    if(q.t<=0||(land&&q.w.fire)){scene.remove(q.m);projs.splice(i,1);const at=new V3(p.x,groundY(p.x,p.z),p.z);if(q.visual)explode(at,q.w.exp,0,null,true);else{explode(at,q.w.exp,q.w.dmg,q.owner);if(q.w.fire)fires.push({x:p.x,z:p.z,r:q.w.exp,t:6,tick:0,src:q.owner})}}}
+  for(let i=fires.length-1;i>=0;i--){const fi=fires[i];fi.t-=dt;fi.tick-=dt;if(Math.random()<dt*20)spawnSparks(new V3(fi.x+rnd(-fi.r,fi.r)*0.6,0.4,fi.z+rnd(-fi.r,fi.r)*0.6),pick([0xff6a00,0xffc400,0xff2a00]),1);
+    if(fi.tick<=0){fi.tick=0.5;for(const t of figs)if(t.alive&&!t.inCar&&t.team!=='statue'&&!t.remote&&!t.mirror&&d2(t.pos,fi)<fi.r*fi.r)damage(t,7,fi.src,null)}if(fi.t<=0)fires.splice(i,1)}}
+const projs=[],fires=[];
+const rocketGeo=new THREE.CylinderGeometry(0.09,0.09,0.7,8).rotateX(Math.PI/2),rocketMat=new THREE.MeshBasicMaterial({color:0x4a5a2a}),taserMat=new THREE.MeshBasicMaterial({color:0x6ad8ff});
+const boomGeo=new THREE.SphereGeometry(1,16,12);let shakeT=0;
+// an explosion hurts everyone around, cars included; visual-only copies come from other screens
+function explode(pos,r,dmg,src,visual){
+  const m=new THREE.Mesh(boomGeo,new THREE.MeshBasicMaterial({color:0xffa020,transparent:true,opacity:0.9,depthWrite:false}));m.position.copy(pos).setY(pos.y+0.8);scene.add(m);booms.push({m,t:0,r});
+  spawnSparks(pos.clone().setY(pos.y+1),0xff6a00,10);spawnSparks(pos.clone().setY(pos.y+1),0x333333,8);sfx('boom',pos,1.4);
+  if(player&&dist(pos,player.pos)<40)shakeT=Math.max(shakeT,0.5*(1-dist(pos,player.pos)/40));
+  if(visual)return;
+  if(src===player&&NET.on)ring(NET.myEx,[++NET.exSeq,r1(pos.x),r1(pos.z),r1(r)],6);
+  for(const t of figs){if(!t.alive||t.team==='statue')continue;const dd=dist(t.pos,pos);if(dd>r)continue;if(t.remote&&src!==player)continue;if(t.mirror&&src!==player)continue;
+    const k=t.inCar?0.6:1;damage(t,dmg*(1-dd/r*0.7)*k,src,{x:(t.pos.x-pos.x)/(dd||1),z:(t.pos.z-pos.z)/(dd||1)})}
+  for(const c of cars)if(!c.wreck&&!c.gone&&d2(c.g.position,pos)<(r*0.85)**2)carDamage(c,1,src);
+  noise(pos,45,null)}
+const booms=[];
+function updateBooms(dt){for(let i=booms.length-1;i>=0;i--){const b=booms[i];b.t+=dt;const k=b.t/0.45;b.m.scale.setScalar(b.r*(0.3+k*0.8));b.m.material.opacity=Math.max(0,0.9-k);if(k>=1){scene.remove(b.m);booms.splice(i,1)}}}
+// the taser freezes a target for a few seconds; a stunned bandit can be arrested
+function stunFig(t,src){if(!t.alive)return;
+  if(t.remote){if(src===player)netEmit('dmg',{to:t.peer,stun:1,from:NET.me});return}
+  if(t.mirror){if(src===player){netEmit('hit',{id:t.hid,stun:1});t.stunT=4}return}
+  if(t===player){P.stunT=4;feed('Тебя оглушили электрошокером!','crime');return}
+  t.stunT=4;t.pose='up';spawnSparks(new V3(t.pos.x,t.pos.y+1.3,t.pos.z),0x6ad8ff,6);
+  if(t.team==='crim'&&!t.surrendered)surrender(t);
+  if(src===player&&t.team!=='crim')lawCheck(t,false)}
 function spawnSparks(p,color,n){for(let i=0;i<n;i++){const m=new THREE.Mesh(sparkGeo,M(color));m.position.copy(p);scene.add(m);sparks.push({m,v:new V3(rnd(-3,3),rnd(2,5),rnd(-3,3)),t:0.6})}}
 function noise(pos,r,src){for(const f of figs){if(!f.alive||f.team!=='civ'||f===src)continue;if(d2(f.pos,pos)<r*r){if(!(f.fleeT>0)&&Math.random()<0.25)say(f,pick(['Помогите!','Стреляют!','Ааа!','Бежим!']));f.fleeT=6;f.fleeFrom=pos.clone()}}}
 function damage(t,amt,src,dir){
@@ -674,7 +909,7 @@ function damage(t,amt,src,dir){
   // another player: their own page applies the damage
   if(t.remote){if(src===player){netEmit('dmg',{to:t.peer,amt:a10,from:NET.me});lawCheckPlayer(t,false)}else if(NET.host&&src)netEmit('dmg',{to:t.peer,amt:a10});spawnSparks(hitAt,t.look.torso,3);return}
   // a copy of the host's townsperson: tell the host, judge the hit here
-  if(t.mirror){if(src===player){netEmit('hit',{id:t.hid,amt:a10,dx:dir?r2(dir.x):0,dz:dir?r2(dir.z):0});lawCheck(t,false);if(t.team==='crim')NET.evHelp++;t.hp-=amt;hpBar(t);spawnSparks(hitAt,t.look.torso,3)}return}
+  if(t.mirror){if(src===player){netEmit('hit',{id:t.hid,amt:a10,dx:dir?r2(dir.x):0,dz:dir?r2(dir.z):0});lawCheck(t,!!P.silent);if(t.team==='crim')NET.evHelp++;t.hp-=amt;hpBar(t);spawnSparks(hitAt,t.look.torso,3)}return}
   t.hp-=amt;t.lastHitBy=src;t.hurtT=T;spawnSparks(hitAt,t.look.torso,3);
   if(t!==player)hpBar(t);
   if(src===player)lawCheck(t,t.hp<=0);
@@ -709,32 +944,54 @@ function dropCoin(pos,val){const m=new THREE.Mesh(coinGeo,M(val>=50?C.gold:0xc8c
 function updatePickups(dt){for(let i=pickups.length-1;i>=0;i--){const p=pickups[i];p.t-=dt;
     if(p.kind==='coin'){if(p.v){p.v.y-=18*dt;p.g.position.addScaledVector(p.v,dt);const gy=groundY(p.g.position.x,p.g.position.z)+0.1;if(p.g.position.y<gy){p.g.position.y=gy;p.v.y*=-0.4;p.v.x*=0.6;p.v.z*=0.6;if(Math.abs(p.v.y)<0.5)p.v=null}}p.g.rotation.y+=dt*3;
       if(player&&player.alive&&!P.busy){const dd=dist(p.g.position,player.pos);if(dd<3.5&&!p.v){const k=Math.min(1,dt*8);p.g.position.x+=(player.pos.x-p.g.position.x)*k;p.g.position.z+=(player.pos.z-p.g.position.z)*k}if(dd<0.8){P.money+=p.val;sfx('coin');scene.remove(p.g);pickups.splice(i,1);continue}}}
-    else{p.g.rotation.y+=dt*2;p.g.position.y+=Math.sin(T*3)*0.004;if(player&&player.alive&&!P.busy&&dist(p.g.position,player.pos)<1.3){if(!P.inv[p.type]){P.inv[p.type]=1;feed('Подобрано: '+WPN[p.type].name+' (клавиша '+(SLOTS.indexOf(p.type)+1)+')','good');renderWeapons()}sfx('coin');scene.remove(p.g);pickups.splice(i,1);continue}}
+    else{p.g.rotation.y+=dt*2;p.g.position.y+=Math.sin(T*3)*0.004;if(player&&player.alive&&!P.busy&&dist(p.g.position,player.pos)<1.3){{const w=WPN[p.type];if(!P.inv[p.type])giveWeapon(p.type);if(w.ammo){P.ammo[w.ammo]=(P.ammo[w.ammo]||0)+(w.mag||1);renderWeapons()}}sfx('coin');scene.remove(p.g);pickups.splice(i,1);continue}}
     if(p.t<=0){scene.remove(p.g);pickups.splice(i,1)}}}
 
 // ---------- laws
 function threatNear(pos,r){for(const f of figs){if(!f.alive)continue;if(f.team==='crim'&&!f.surrendered&&d2(f.pos,pos)<r*r)return true;if(f.team==='riot'&&f.angryAt===player&&d2(f.pos,pos)<r*r)return true;if(f.team==='police'&&P.wanted>=2&&d2(f.pos,pos)<r*r)return true}return false}
+// people who can see the player right now
+function witnesses(r,except){let n=0;for(const f of figs){if(!f.alive||f===player||f===except||f.inCar)continue;if(!['civ','police','riot','player'].includes(f.team))continue;if(d2(f.pos,player.pos)<r*r&&los(f.pos,player.pos,0.05))n++}return n}
 function lawCheck(t,killed){
-  if(t.team==='civ'){if(killed)crime('Ст. 2 — убийство мирного жителя',2);else if(!t.crimeHit){t.crimeHit=1;crime('Ст. 1 — нападение на мирного жителя',1)}}
-  else if(t.team==='riot'){if(killed)crime('Ст. 2 — убийство митингующего',2);else if(!t.crimeHit){t.crimeHit=1;crime('Ст. 1 — нападение на митингующего',1)}}
-  else if(t.team==='police'){if(killed)crime('Ст. 3 — убийство полицейского',3);else if(!t.crimeHit){t.crimeHit=1;crime('Ст. 3 — нападение на полицейского',2)}}
-  // a bandit who has not surrendered is a legal target; shots already in flight when he raises his hands don't count
-  else if(t.team==='crim'&&t.surrendered&&!t.crimeHit&&T-t.surrT>(P.role==='police'?2:1.5)){t.crimeHit=1;crime('Ст. 6 — удар по сдавшемуся',1)}}
+  // a quiet knife kill from behind: no stars, unless the place is crowded
+  if(P.silent&&killed){const n=witnesses(22,t);if(n>=3)crime('Убийство на глазах у людей',3,{force:1});else feed('Тихое убийство — никто не заметил','good');return}
+  const v={violent:1};
+  if(t.team==='civ'){if(killed)crime('Ст. 2 — убийство мирного жителя',2,v);else if(!t.crimeHit){t.crimeHit=1;crime('Ст. 1 — нападение на мирного жителя',1,v)}}
+  else if(t.team==='riot'){if(killed)crime('Ст. 2 — убийство митингующего',2,v);else if(!t.crimeHit){t.crimeHit=1;crime('Ст. 1 — нападение на митингующего',1,v)}}
+  else if(t.team==='police'){if(killed)crime('Ст. 3 — убийство полицейского',3,v);else if(!t.crimeHit){t.crimeHit=1;crime('Ст. 3 — нападение на полицейского',2,v)}}
+  // a bandit who has not surrendered is a legal target; a policeman who shoots one who gave up gets two stars
+  else if(t.team==='crim'&&t.surrendered&&!t.crimeHit&&T-t.surrT>(P.role==='police'?2:1.5)){t.crimeHit=1;crime('Ст. 6 — удар по сдавшемуся',P.role==='police'?2:1,{force:P.role==='police'})}}
 // another player counts as a townsperson; a police player may fight wanted players
-function lawCheckPlayer(f,killed){const n=f.net||{};if(P.role==='police'&&(n.wa||0)>0)return;
-  if(n.r==='police'){if(killed)crime('Ст. 3 — убийство полицейского',3);else if(!f.crimeHit){f.crimeHit=1;crime('Ст. 3 — нападение на полицейского',2)}}
-  else{if(killed)crime('Ст. 2 — убийство горожанина',2);else if(!f.crimeHit){f.crimeHit=1;crime('Ст. 1 — нападение на горожанина',1)}}}
-function crime(name,stars){
+function lawCheckPlayer(f,killed){const n=f.net||{};if(P.role==='police'&&(n.wa||0)>0)return;const v={violent:1};
+  if(n.r==='police'){if(killed)crime('Ст. 3 — убийство полицейского',3,v);else if(!f.crimeHit){f.crimeHit=1;crime('Ст. 3 — нападение на полицейского',2,v)}}
+  else{if(killed)crime('Ст. 2 — убийство горожанина',2,v);else if(!f.crimeHit){f.crimeHit=1;crime('Ст. 1 — нападение на горожанина',1,v)}}}
+function crime(name,stars,o={}){
   if(!player||!player.alive||P.busy)return;
+  // in a mask nobody knows who did it: only every fifth attack adds a star
+  if(P.masked&&o.violent){P.maskCrimes++;const left=5-P.maskCrimes%5;if(left<5){feed('В маске тебя не узнали ('+left+' до звезды)','info');return}stars=1;name+=' (в маске)'}
+  if(o.force){addWanted(stars,name);return}
   const cr=P.role==='bandit'?46:34;let cop=null;for(const f of figs)if(f.alive&&f.team==='police'&&d2(f.pos,player.pos)<cr*cr){cop=f;break}
   if(cop){addWanted(stars,name);say(cop,P.wanted>=2?'Бросай оружие!':'Стоять! Полиция!');return}
-  let wit=null;for(const f of figs)if(f.alive&&(f.team==='civ'||f.team==='riot')&&f!==player&&d2(f.pos,player.pos)<24*24){wit=f;break}
+  const wr=P.stealth?12:24;let wit=null;for(const f of figs)if(f.alive&&(f.team==='civ'||f.team==='riot')&&f!==player&&d2(f.pos,player.pos)<wr*wr){wit=f;break}
   if(wit){say(wit,'Алло, полиция?!');feed('Свидетель звонит в полицию: '+name,'crime');P.reports.push({t:4,stars,name})}
   else feed('Никто не видел: '+name,'info')}
-function addWanted(stars,name){const before=P.wanted;P.wanted=Math.min(5,P.wanted+stars);P.seenT=0;feed('Нарушен закон: '+name+'  +'+'★'.repeat(stars),'crime');if(P.wanted!==before){$('stars').classList.remove('flash');void $('stars').offsetWidth;$('stars').classList.add('flash');if(before===0)sfx('siren',null,1)}}
+const lookKey=()=>P.outfit+'|'+(P.masked?1:0);
+function addWanted(stars,name){const before=P.wanted;P.wanted=Math.min(5,P.wanted+stars);P.seenT=0;feed('Нарушен закон: '+name+'  +'+'★'.repeat(stars),'crime');
+  // the police remember what you wore and what you drove
+  P.known={look:lookKey(),car:P.car?P.car.id:-1};
+  if(P.wanted!==before){$('stars').classList.remove('flash');void $('stars').offsetWidth;$('stars').classList.add('flash');if(before===0)sfx('siren',null,1)}}
+function copSees(r){for(const f of figs)if(f.alive&&f.team==='police'&&!f.stunT&&d2(f.pos,player.pos)<r*r&&los(f.pos,player.pos,0.05))return f;return null}
+// the GPS tracker, recognition and the drugs rule, checked twice a second
+function lawWatch(){if(!player.alive||P.busy)return;
+  if(P.wanted>0&&!P.gps){const at=P.car?P.car.g.position:player.pos;if(figs.some(f=>f.alive&&f.team==='police'&&d2(f.pos,at)<2.8*2.8))gpsOn(P.car?P.car.id:-1)}
+  if(P.wanted===0&&P.known){const c=copSees(22);if(c){const byLook=P.known.look===lookKey(),byCar=P.car&&P.car.id===P.known.car;
+    if(byLook||byCar){say(c,'Это он! Я его узнал!');addWanted(1,'Полиция узнала тебя по '+(byCar?'машине':'одежде'))}}}
+  if(P.drugs>0&&!P.bag&&P.wanted<3&&copSees(20)){addWanted(3-P.wanted,'Ст. 9 — наркотики без сумки')}}
+function gpsOn(carId){P.gps={car:carId};banner('Вас отслеживают по GPS',carId>=0?'Трекер на машине: полиция знает, где она':'Полиция знает, где ты, до конца розыска');sfx('siren',null,0.6)}
+// where the police think the tracked player is
+function trackedPos(){if(!P.gps)return null;if(P.gps.car>=0&&(!P.car||P.car.id!==P.gps.car)){const c=cars[P.gps.car];return c&&!c.gone?c.g.position:null}return player.pos}
 
 // ---------- navigation & movement
-function moveFig(f,vx,vz,dt){f.pos.x+=vx*dt;f.pos.z+=vz*dt;pushOut(f.pos,0.4);f.pos.x=clamp(f.pos.x,-79.5,79.5);f.pos.z=clamp(f.pos.z,-79.5,79.5);f.pos.y=groundY(f.pos.x,f.pos.z)}
+function moveFig(f,vx,vz,dt){f.pos.x+=vx*dt;f.pos.z+=vz*dt;pushOut(f.pos,0.4);pushCars(f.pos,0.4);f.pos.x=clamp(f.pos.x,-MAPR,MAPR);f.pos.z=clamp(f.pos.z,-MAPR,MAPR);f.pos.y=groundY(f.pos.x,f.pos.z)}
 function steer(f,dx,dz,speed,dt,face=true){const d=Math.hypot(dx,dz);if(d<0.15){f.speedNow=0;return 0}const sp=Math.min(speed,d/dt);moveFig(f,dx/d*sp,dz/d*sp,dt);if(face)f.yaw=Math.atan2(dx,dz);f.speedNow=sp;return sp}
 function navigate(f,target,speed,dt,face=true){
   f.navT-=dt;
@@ -743,7 +1000,7 @@ function navigate(f,target,speed,dt,face=true){
     if(f.lastNavPos&&d2(f.lastNavPos,f.pos)<0.04&&f.path.length){f.path.unshift(new V3(f.pos.x+rnd(-3,3),0,f.pos.z+rnd(-3,3)))}f.lastNavPos=f.pos.clone()}
   let wp=f.path[0];while(f.path.length>1&&d2(f.pos,wp)<1){f.path.shift();wp=f.path[0]}
   return steer(f,wp.x-f.pos.x,wp.z-f.pos.z,speed,dt,face)}
-function wander(f,speed,dt){if(f.node==null)f.node=nearestNode(f.pos);if(!f.wTarget||d2(f.pos,f.wTarget)<0.8){f.node=pick(adj[f.node]);f.wTarget=nodes[f.node].clone().add(new V3(rnd(-0.6,0.6),0,rnd(-0.6,0.6)))}navigate(f,f.wTarget,speed,dt)}
+function wander(f,speed,dt){if(f.node==null)f.node=nearestNode(f.pos);if(!f.wTarget||d2(f.pos,f.wTarget)<0.8){const opts=adj[f.node].filter(n=>!quietAt(nodes[n]));f.node=pick(opts.length?opts:adj[f.node]);f.wTarget=nodes[f.node].clone().add(new V3(rnd(-0.6,0.6),0,rnd(-0.6,0.6)))}navigate(f,f.wTarget,speed,dt)}
 function idleAround(f,c,r,dt){if(!f.wTarget||d2(f.pos,f.wTarget)<0.4){f.wait=(f.wait||0)-dt;f.speedNow=0;if(f.wait<=0){f.wTarget=c.clone().add(new V3(rnd(-r,r),0,rnd(-r,r)));f.wait=rnd(2,6)}return}navigate(f,f.wTarget,1.8,dt)}
 
 // ---------- AI
@@ -761,7 +1018,7 @@ function combat(f,t,dt,keep){
   f.yaw=Math.atan2(t.pos.x-f.pos.x,t.pos.z-f.pos.z);f.pose='aim';
   if(see&&dd<26&&f.aimDelay<=0)fire(f,t.pos.x,t.pos.z,true)}
 function updateCiv(f,dt){
-  if(f.fleeT>0){f.fleeT-=dt;f.pose='panic';const ax=f.pos.x-f.fleeFrom.x,az=f.pos.z-f.fleeFrom.z,l=Math.hypot(ax,az)||1;navigate(f,new V3(clamp(f.pos.x+ax/l*12,-78,78),0,clamp(f.pos.z+az/l*12,-78,78)),6.2,dt);if(f.fleeT<=0){f.wTarget=null;f.node=null}return}
+  if(f.fleeT>0){f.fleeT-=dt;f.pose='panic';const ax=f.pos.x-f.fleeFrom.x,az=f.pos.z-f.fleeFrom.z,l=Math.hypot(ax,az)||1;navigate(f,new V3(clamp(f.pos.x+ax/l*12,-MAPR,MAPR),0,clamp(f.pos.z+az/l*12,-MAPR,MAPR)),6.2,dt);if(f.fleeT<=0){f.wTarget=null;f.node=null}return}
   f.pose='walk';
   for(const t of figs)if(t.alive&&t.team==='crim'&&!t.surrendered&&d2(t.pos,f.pos)<100){f.fleeT=5;f.fleeFrom=t.pos.clone();return}
   if(f.post)idleAround(f,f.post,2.5,dt);else wander(f,f.walk||2.2,dt)}
@@ -776,6 +1033,8 @@ function updatePolice(f,dt){
   switch(f.mode){
     case 'fight':if(!f.target||!f.target.alive||f.target.surrendered){f.think=0;f.pose='walk';break}combat(f,f.target,dt,12);break;
     case 'chase':{const t=f.chaseT;if(!t||!t.alive||busyOf(t)||wantedOf(t)===0){f.think=0;break}const dd=dist(f.pos,t.pos);
+      // the tracker was left on a car: the police drive to the car, not to the player
+      if(t===player&&P.gps){const tp=trackedPos();if(tp&&tp!==player.pos){f.pose='walk';navigate(f,tp,6.6,dt);break}}
       if(wantedOf(t)===1){f.pose='walk';if(dd>1.3)navigate(f,t.pos,6.6,dt);else{f.speedNow=0;f.yaw=Math.atan2(t.pos.x-f.pos.x,t.pos.z-f.pos.z)}if(dd<1.8){if(t===player)P.arrestProg+=dt*1.6;else t.arrestProg=(t.arrestProg||0)+dt*1.6}}
       else combat(f,t,dt,11);break}
     case 'arrest':{const t=f.arrestTarget;if(!t||!t.alive||t.gone||(t.team==='riot'&&(t.leaving||t.angryAt))){f.think=0;f.pose='walk';break}f.pose='walk';const dd=dist(f.pos,t.pos);
@@ -801,9 +1060,9 @@ function despawn(f){if(f.gone)return;f.gone=true;f.alive=false;dropBar(f);scene.
 
 // ---------- events
 const RIOTS=[{t:'Бунт против налогов',s:'НЕТ НАЛОГАМ!'},{t:'Бунт за новый парк',s:'ДАЁШЬ ПАРК!'},{t:'Бунт строителей',s:'ЗАРПЛАТУ!'},{t:'Бунт против стройки',s:'СТОП СТРОЙКЕ!'},{t:'Бунт за дешёвую пиццу',s:'ПИЦЦА ЗА 1$!'},{t:'Бунт за автобус',s:'ВЕРНИТЕ АВТОБУС!'}];
-const EXITS=[[-79,-79],[79,-79],[79,79],[-79,79],[0,-79],[0,79],[-79,0],[79,0]].map(([x,z])=>new V3(x,0.02,z));
+const EXITS=[[-147,-147],[147,-147],[147,147],[-147,147],[0,-147],[0,147],[-147,0],[147,0]].map(([x,z])=>new V3(x,0.02,z));
 const EV={cur:null,next:22,order:['jewel','gang','riot','market','jail','pizza'],k:0};
-function loadout(n){const a=[];const bats=rint(1,2);for(let i=0;i<bats;i++)a.push('bat');a.push('crowbar','crowbar');a.push('mac10','ak47');while(a.length<n)a.push(Math.random()<0.55?'pistol':Math.random()<0.5?'mac10':'ak47');return a.sort(()=>Math.random()-0.5)}
+function loadout(n){const a=[];const bats=rint(1,2);for(let i=0;i<bats;i++)a.push('bat');a.push('crowbar','crowbar');a.push('mac10','ak47');while(a.length<n)a.push(Math.random()<0.45?pick(['pistol','beretta','combat']):pick(['mac10','smg','ak47','pump','carbine']));return a.sort(()=>Math.random()-0.5)}
 function startEvent(kind){
   if(EV.cur)return;const n=rint(7,10);const e={kind,n,members:[],t:0,killed:0,arrested:0,escaped:0,playerHelp:0,leg:0};
   let title,sub,label,look,pos;
@@ -843,164 +1102,456 @@ function endEvent(){const e=EV.cur;EV.cur=null;EV.next=rnd(40,60);$('eventBox').
 
 // ---------- player
 const keys={},mouse={x:0,y:0,down:false};const aim=new V3();const ray=new THREE.Raycaster();const aimPlane=new THREE.Plane(new V3(0,1,0),-1.25);
-addEventListener('keydown',e=>{if(!started)return;if(e.code==='Escape'||e.code==='KeyP'){setPause(!paused);e.preventDefault();return}if(paused)return;keys[e.code]=true;const n=parseInt(e.key);if(n>=1&&n<=6){const t=SLOTS[n-1];if(P.inv[t]){P.cur=t;if(player&&player.alive)player.setWeapon(t);renderWeapons()}}
-  if(e.code==='KeyL'){$('laws').hidden=!$('laws').hidden}if(e.code==='KeyN'){if(!isHost())netEmit('act',{type:'event'});else if(!EV.cur)startEvent(EV.order[EV.k++%EV.order.length])}if(e.code==='KeyE')interact();if(e.code==='Space')e.preventDefault()});
+let camYaw=Math.PI,camPitch=-0.15;
+const panelOpen=()=>!$('shopPanel').hidden||!$('navPanel').hidden||!$('surgPanel').hidden;
+addEventListener('keydown',e=>{if(!started)return;
+  if(!$('surgPanel').hidden){if(e.code==='Space'){surgeryHit();e.preventDefault()}return}
+  if(e.code==='Escape'&&panelOpen()){closePanels();e.preventDefault();return}
+  if(e.code==='KeyM'&&!paused){if($('navPanel').hidden){closePanels();openNav()}else closePanels();e.preventDefault();return}
+  if(panelOpen())return;
+  if(e.code==='Escape'||e.code==='KeyP'){setPause(!paused);e.preventDefault();return}if(paused)return;
+  if(keys[e.code]&&e.repeat)return;keys[e.code]=true;
+  if(/^Digit[0-9]$/.test(e.code)){const n=+e.code.slice(5);selectCat(n===0?9:n-1)}
+  if(e.code==='KeyL'){$('laws').hidden=!$('laws').hidden}if(e.code==='KeyN'){if(!isHost())netEmit('act',{type:'event'});else if(!EV.cur)startEvent(EV.order[EV.k++%EV.order.length])}
+  if(e.code==='KeyE')doAction('E');if(e.code==='KeyQ')doAction('Q');
+  if(e.code==='KeyR')startReload();
+  if(e.code==='KeyF'&&player&&player.alive&&!P.busy){if(P.car)exitCar();else{const c=nearestCar(3.8);if(c)enterCar(c)}}
+  if(e.code==='KeyV'){P.view=P.view==='iso'?'third':P.view==='third'?'first':'iso';feed('Вид: '+{iso:'сверху',third:'от третьего лица',first:'от первого лица'}[P.view],'info');if(P.view==='iso'&&document.pointerLockElement)document.exitPointerLock?.()}
+  if(e.code==='KeyK'){if(!P.mask)feed('Маски нет. Купи в магазине одежды или на чёрном рынке','info');else{P.masked=!P.masked;rebuildPlayer();feed(P.masked?'Маска надета: тебя не узнают':'Маска снята','info')}}
+  if(e.code==='ControlLeft'||e.code==='ControlRight'||e.code==='KeyC'){P.stealth=!P.stealth;feed(P.stealth?'Бесшумный шаг':'Обычный шаг','info');e.preventDefault()}
+  if(e.code==='Space'||e.code==='Tab')e.preventDefault()});
 addEventListener('keyup',e=>{keys[e.code]=false});
-cv.addEventListener('mousemove',e=>{mouse.x=e.clientX/innerWidth*2-1;mouse.y=-(e.clientY/innerHeight)*2+1});
-cv.addEventListener('mousedown',e=>{if(e.button===0)mouse.down=true});addEventListener('mouseup',()=>mouse.down=false);
+cv.addEventListener("mousemove",e=>{mouse.moveT=performance.now();mouse.x=e.clientX/innerWidth*2-1;mouse.y=-(e.clientY/innerHeight)*2+1;
+  if(P.view!=='iso'&&started&&!paused){camYaw-=(e.movementX||0)*0.0032;camPitch=clamp(camPitch-(e.movementY||0)*0.0025,-1.1,0.7)}});
+cv.addEventListener('mousedown',e=>{if(e.button===0)mouse.down=true;if(P.view!=='iso'&&started&&!document.pointerLockElement){try{const r=cv.requestPointerLock();if(r&&r.catch)r.catch(()=>{})}catch(err){}}});addEventListener('mouseup',()=>mouse.down=false);
 cv.addEventListener('contextmenu',e=>e.preventDefault());
-cv.addEventListener('wheel',e=>{zoom=clamp(zoom+(e.deltaY>0?0.1:-0.1),0.55,1.6);e.preventDefault()},{passive:false});
-addEventListener('blur',()=>{for(const k in keys)keys[k]=false;mouse.down=false;if(started)setPause(true)});
-function setPause(v){if(!started)return;paused=v;$('pause').hidden=!v;$('pauseBtn').hidden=v;for(const k in keys)keys[k]=false;mouse.down=false;
+cv.addEventListener('wheel',e=>{zoom=clamp(zoom+(e.deltaY>0?0.1:-0.1),0.55,2);e.preventDefault()},{passive:false});
+addEventListener('blur',()=>{for(const k in keys)keys[k]=false;mouse.down=false;if(started&&!panelOpen())setPause(true)});
+function setPause(v){if(!started)return;paused=v;$('pause').hidden=!v;$('pauseBtn').hidden=v;for(const k in keys)keys[k]=false;mouse.down=false;if(v&&document.pointerLockElement)document.exitPointerLock?.();
   if(v){$('banner').hidden=true;bannerT=0;$('pauseMenu').hidden=false;$('roles2').hidden=true;$('rolesHint').hidden=true;$('toggleLaws').textContent=$('laws').hidden?'Показать законы':'Скрыть законы';
-    $('pauseStats').textContent=`${ROLES[P.role].name} · монет ${P.money} · обезврежено ${P.stats.kills} · арестовано ${P.stats.arrests} · вылечено ${P.stats.heals} · происшествий ${P.stats.events}`+(NET.on&&NET.players.size?` · в городе ${NET.players.size+1} из 5 игроков, город не останавливается`:'');$('resume').focus()}}
-function renderRoles(el){el.innerHTML='';for(const [k,r] of Object.entries(ROLES)){const b=document.createElement('button');b.type='button';b.className='role'+(started&&P.role===k?' cur':'');b.dataset.r=k;
-  b.innerHTML=`<span class="fig" style="--c0:${r.c[0]};--c1:${r.c[1]};--c2:${r.c[2]}"><i></i><b></b><em></em></span><span class="rn">${r.name}</span><span class="rd">${r.desc}</span><span class="rg">${r.gear}</span>`;
-  b.addEventListener('click',()=>chooseRole(k));el.append(b)}}
-function setRole(r){P.role=r;const R=ROLES[r];P.inv={...R.inv};P.cur=R.cur;P.wanted=0;P.reports=[];P.arrestProg=0;P.busy=0;$('over').hidden=true;
-  if(player){player.alive=false;player.gone=true;scene.remove(player.g)}
+    $('pauseStats').textContent=`${ROLES[P.role].name} · монет ${P.money} · обезврежено ${P.stats.kills} · арестовано ${P.stats.arrests} · вылечено ${P.stats.heals} · заказов ${P.stats.jobs}`+(P.house>=0?' · дом: '+HOUSES[P.house].name:'')+(NET.on&&NET.players.size?` · в городе ${NET.players.size+1} из 5 игроков, город не останавливается`:'');$('resume').focus()}}
+const banLeft=r=>Math.max(0,Math.ceil(((P.ban[r]||0)-Date.now())/1000));
+function renderRoles(el){el.innerHTML='';for(const [k,r] of Object.entries(ROLES)){const b=document.createElement('button');b.type='button';const left=banLeft(k);b.className='role'+(started&&P.role===k?' cur':'')+(left?' locked':'');b.dataset.r=k;
+  b.innerHTML=`<span class="fig" style="--c0:${r.c[0]};--c1:${r.c[1]};--c2:${r.c[2]}"><i></i><b></b><em></em></span><span class="rn">${r.name}</span><span class="rd">${r.desc}</span><ul class="rl">${r.abil.map(a=>'<li>'+a+'</li>').join('')}</ul><span class="rg">${left?'Уволен: можно вернуться через '+Math.ceil(left/60)+' мин':r.gear}</span>`;
+  b.addEventListener('click',()=>{if(banLeft(k)){feed('Тебя уволили из полиции. Вернуться можно через '+Math.ceil(banLeft(k)/60)+' мин','crime');return}chooseRole(k)});el.append(b)}}
+function setRole(r){P.role=r;const R=ROLES[r];P.inv={...R.inv};P.ammo={...R.ammo};P.clip={};for(const k in P.inv)if(WPN[k].mag)P.clip[k]=WPN[k].mag;P.cur=R.cur;P.reload=0;
+  P.wanted=0;P.reports=[];P.arrestProg=0;P.busy=0;P.gps=null;P.known=null;P.job=null;P.drugs=0;closeJob();$('over').hidden=true;
+  if(P.car)exitCar(true);if(player){player.alive=false;player.gone=true;scene.remove(player.g)}
   spawnPlayer(SPOTS[R.spawn].clone());renderWeapons();$('role').textContent=R.name;lastHud='';
-  camPos.set(player.pos.x,player.pos.y+40,player.pos.z+30);feed('Ты теперь '+R.name.toLowerCase()+'. Удачной смены!','ev')}
+  camPos.set(player.pos.x,player.pos.y+40,player.pos.z+30);feed('Ты теперь '+R.name.toLowerCase()+'. Удачной смены!','ev');
+  if(r==='citizen')feed('Работа: склад доставки, касса супермаркета или таксопарк. Найди их в навигаторе (M)','info');
+  if(r==='medic')feed('Вызовы скорой будут приходить сами. Скорая стоит у больницы','info');
+  if(r==='bandit')feed('Чёрный рынок — на заброшенных складах (навигатор M)','info')}
 function readNick(){const v=[...$('nick').value].filter(ch=>{const c=ch.codePointAt(0);return c>=32&&!(c>=127&&c<=159)&&!(c>=0x200b&&c<=0x200f)&&!(c>=0x2028&&c<=0x202e)&&!(c>=0x2060&&c<=0x206f)&&c!==0xfeff}).join('').trim().slice(0,16);P.name=v;try{localStorage.setItem('kg-nick',v)}catch(e){}}
 function readCity(){const c=$('city').value.toLowerCase().replace(/[^a-z0-9_-]/g,'').slice(0,20);$('city').value=c;NET.city=c;try{localStorage.setItem('kg-city',c)}catch(e){}
   try{history.replaceState(null,'',location.pathname+location.search+(c?'#city='+c:''))}catch(e){}}
 // the page joins the network only once the player is in the game, so open start screens don't take seats
-function chooseRole(k){readNick();if(!started){readCity();started=true;$('start').hidden=true;$('pauseBtn').hidden=false;try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}setRole(k);feed('Добро пожаловать в Кирпичный город! Скоро начнутся происшествия','ev');netInit()}
+function chooseRole(k){readNick();if(!started){readCity();loadSave();started=true;$('start').hidden=true;$('pauseBtn').hidden=false;try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}setRole(k);feed('Добро пожаловать в Кирпичный город! Скоро начнутся происшествия','ev');netInit()}
   else{setRole(k);setPause(false)}}
-const SHOPS=[{k:'pizza',name:'пиццерии'},{k:'market',name:'супермаркета'},{k:'jewel',name:'ювелирного'}];const shopCd={};
-function interactTarget(){if(!player||!player.alive||P.busy)return null;let best=null,bd=2.4*2.4;
-  for(const f of figs){if(!f.alive||f.arrested||f===player)continue;const dd=d2(f.pos,player.pos);if(dd>bd)continue;if(f.team==='crim'&&f.surrendered){best={type:'arrest',f};bd=dd}else if(f.team==='riot'&&!f.leaving&&!f.angryAt){best={type:P.role==='police'?'detain':'talk',f};bd=dd}else if(P.role==='medic'&&['civ','police','riot'].includes(f.team)&&f.hp<f.maxHp-1){best={type:'heal',f};bd=dd}}
-  if(best)return best;for(const s of SHOPS){const p=SPOTS[s.k].clone().setZ(14.4);if(d2(p,player.pos)<2.5*2.5)return{type:'rob',s}}return null}
-function interact(){const it=interactTarget();if(!it)return;
-  if(it.f&&it.f.mirror){const f=it.f;netEmit('act',{type:it.type,id:f.hid});NET.evHelp++;f.actT=T;
+// ---------- weapon selection: number keys pick a group of the weapon wheel, pressing again cycles inside it
+function selectCat(ci){if(!player||P.car)return;const own=SLOTS.filter(k=>WPN[k].cat===ci&&P.inv[k]);if(!own.length){feed('Нет оружия в группе «'+CATS[ci]+'»','info');return}
+  let k;if(WPN[P.cur].cat===ci)k=own[(own.indexOf(P.cur)+1)%own.length];else k=P.lastInCat[ci]&&P.inv[P.lastInCat[ci]]?P.lastInCat[ci]:own[0];setCur(k)}
+function setCur(k){if(!P.inv[k])return;P.cur=k;P.lastInCat[WPN[k].cat]=k;P.reload=0;if(player&&player.alive)player.setWeapon(k);renderWeapons();const w=WPN[k];if(w.mag&&!(P.clip[k]>0))startReload()}
+function giveWeapon(k,quiet){const first=!P.inv[k];P.inv[k]=1;const w=WPN[k];if(w.mag&&first&&P.clip[k]==null)P.clip[k]=w.thrown?0:w.mag;if(w.thrown){P.ammo[w.ammo]=(P.ammo[w.ammo]||0)+1;P.clip[k]=P.clip[k]||0}
+  if(!quiet)feed('Получено: '+w.name+' (клавиша '+((w.cat+1)%10)+')','good');renderWeapons()}
+// ---------- looks: outfits from the clothes shop and the mask
+const OUTFITS=[null,{name:'Спортивный костюм',torso:C.red,c2:C.white,print:'jacket',legs:C.black},{name:'Худи',torso:C.dgrey,print:'hoodie',legs:C.dblue},{name:'Деловой костюм',torso:C.black,c2:C.red,print:'suit',legs:C.black},
+  {name:'Футболка со звездой',torso:C.yellow,c2:C.blue,print:'tshirt',legs:C.mblue},{name:'Рабочий комбинезон',torso:C.white,c2:C.blue,print:'overalls',legs:C.blue},{name:'Зелёная куртка',torso:C.green,c2:C.dtan,print:'jacket',legs:C.tan}];
+function playerLook(role,outfit,masked){const l=LOOKS['player_'+(ROLES[role]?role:'citizen')]();const o=OUTFITS[outfit|0];if(o)Object.assign(l,{torso:o.torso,c2:o.c2,print:o.print,legs:o.legs,arms:null,back:null});if(masked){l.face='mask';l.hat={t:'beanie',c:C.black}}return l}
+function rebuildPlayer(){if(!player)return;const pos=player.pos.clone(),hp=player.hp,alive=player.alive;player.alive=false;player.gone=true;scene.remove(player.g);spawnPlayer(pos);player.hp=hp;if(!alive)player.alive=false;if(P.car){player.inCar=true;player.car=P.car;player.g.visible=false}}
+// ---------- actions on E and Q; an action with `hold` needs the key held (or, without a key, standing still) for that many seconds
+const SHOPS=[{k:'pizza',name:'пиццерию'},{k:'market',name:'супермаркет'},{k:'jewel',name:'ювелирный'},{k:'clothes',name:'магазин одежды'}];
+const shopDoor=k=>SPOTS[k].clone().setZ(14.4);
+function nearRemote(r,test){let best=null,bd=r*r;for(const f of figs){if(!f.remote||!f.alive||f.inCar)continue;const dd=d2(f.pos,player.pos);if(dd<bd&&test(f)){bd=dd;best=f}}return best}
+function findAction(key){if(!player||!player.alive||P.busy||P.stunT>0)return null;
+  const j=jobAction(key);if(j)return j;
+  if(key==='Q'){
+    if(P.role==='police'&&!P.car){const t=nearRemote(2.6,f=>(f.net.wa||0)>0&&!f.net.gp);if(t)return{label:'Поставить GPS-трекер на '+nameOf({peer:t.peer,pres:t.net}),run:()=>{netEmit('dmg',{to:t.peer,gps:1,from:NET.me});feed('GPS-трекер установлен: игрок виден на карте до конца розыска','good');t.net.gp=1}}}
+    return null}
+  if(!P.car){let best=null,bd=2.4*2.4;
+    for(const f of figs){if(!f.alive||f.arrested||f===player||f.remote)continue;const dd=d2(f.pos,player.pos);if(dd>bd)continue;
+      if(f.team==='crim'&&(f.surrendered||f.stunT>0)){best={type:'arrest',f,label:'Арестовать'};bd=dd}
+      else if(f.team==='riot'&&!f.leaving&&!f.angryAt){best={type:P.role==='police'?'detain':'talk',f,label:P.role==='police'?'Задержать митингующего':'Уговорить разойтись'};bd=dd}
+      else if(P.role==='medic'&&['civ','police','riot'].includes(f.team)&&f.hp<f.maxHp-1){best={type:'heal',f,label:'Вылечить раненого'};bd=dd}}
+    if(best)return{label:best.label,run:()=>npcAct(best)};
+    if(P.role==='police'){const t=nearRemote(2.2,f=>(f.net.wa||0)>0&&(f.net.st||(f.net.wa||0)<=1||f.hp<30));if(t)return{label:'Арестовать игрока',run:()=>{netEmit('dmg',{to:t.peer,arrest:1,from:NET.me});P.money+=200;P.stats.arrests++;feed('Игрок арестован  +200','good')}}}
+    for(const s of SHOPS)if(d2(shopDoor(s.k),player.pos)<2.8*2.8)return{label:'Зайти в '+s.name,run:()=>openShop(s.k)};
+    if(d2(SPOTS.bm,player.pos)<3.2*3.2)return{label:'Чёрный рынок',run:()=>openShop('bm')};
+    const h=houseAction();if(h)return h}
+  return null}
+function doAction(key){const a=findAction(key);if(!a)return;if(a.hold){P.hold={key:'Key'+key,t:0,need:a.hold,label:a.label,check:a.check||(()=>true),done:a.run};return}a.run()}
+function startTimed(label,need,check,done){P.hold={key:null,t:0,need,label,check,done}}
+function updateHold(dt){const h=P.hold;if(!h){$('bar').hidden=true;return}
+  if((h.key&&!keys[h.key])||!h.check()||!player.alive||P.busy){P.hold=null;$('bar').hidden=true;feed('Прервано: '+h.label,'info');return}
+  h.t+=dt;$('bar').hidden=false;$('barT').textContent=h.label+' · '+Math.ceil(h.need-h.t)+' с';$('barF').style.width=(h.t/h.need*100)+'%';
+  if(h.t>=h.need){P.hold=null;$('bar').hidden=true;h.done()}}
+function npcAct(it){const f=it.f;
+  if(f.mirror){netEmit('act',{type:it.type,id:f.hid});NET.evHelp++;f.actT=T;
     if(it.type==='arrest'||it.type==='detain'){f.arrested=true;f.pose='cuffed';P.stats.arrests++;const r=f.team==='riot'?30:P.role==='police'?150:100;P.money+=r;feed((f.team==='riot'?'Митингующий задержан  +':'Преступник арестован  +')+r,'good')}
     else if(it.type==='talk'){f.leaving=true;say(f,pick(['Ладно, иду домой','Вы правы…','Ну и ладно!']));P.money+=30;feed('Митингующий согласился уйти  +30','good')}
     else if(it.type==='heal'){f.hp=f.maxHp;spawnSparks(f.pos.clone().setY(f.pos.y+1.2),C.bgreen,8);P.money+=25;P.stats.heals++;feed('Пациент вылечен  +25','good');sfx('coin')}
     return}
-  if(it.type==='arrest'||it.type==='detain')arrestNpc(it.f,player);
-  else if(it.type==='heal'){const f=it.f;f.hp=f.maxHp;spawnSparks(f.pos.clone().setY(f.pos.y+1.2),C.bgreen,8);say(f,pick(['Спасибо, доктор!','Мне уже лучше!','Вы мой спаситель!']));P.money+=25;P.stats.heals++;feed('Пациент вылечен  +25','good');sfx('coin')}
-  else if(it.type==='talk'){const f=it.f;f.leaving=true;say(f,pick(['Ладно, иду домой','Вы правы…','Ну и ладно!']));P.money+=30;feed('Митингующий согласился уйти  +30','good');if(f.event)f.event.playerHelp++}
-  else if(it.type==='rob'){if((shopCd[it.s.k]||0)>T){feed('Касса пуста. Загляни позже','info');return}shopCd[it.s.k]=T+60;const v=P.role==='bandit'?rint(200,320):rint(80,160);P.money+=v;feed('Касса '+it.s.name+' ограблена  +'+v,'crime');const sk=figs.find(f=>f.alive&&f.post&&d2(f.post,SPOTS[it.s.k])<36);if(sk)say(sk,'Помогите! Грабят!');crime('Ст. 5 — ограбление магазина',1)}}
+  if(it.type==='arrest'||it.type==='detain')arrestNpc(f,player);
+  else if(it.type==='heal'){f.hp=f.maxHp;spawnSparks(f.pos.clone().setY(f.pos.y+1.2),C.bgreen,8);say(f,pick(['Спасибо, доктор!','Мне уже лучше!','Вы мой спаситель!']));P.money+=25;P.stats.heals++;feed('Пациент вылечен  +25','good');sfx('coin')}
+  else if(it.type==='talk'){f.leaving=true;say(f,pick(['Ладно, иду домой','Вы правы…','Ну и ладно!']));P.money+=30;feed('Митингующий согласился уйти  +30','good');if(f.event)f.event.playerHelp++}}
 function updatePlayer(dt){
-  if(!player.alive||P.busy){return}
-  let mx=0,mz=0;if(keys.KeyW||keys.ArrowUp)mz-=1;if(keys.KeyS||keys.ArrowDown)mz+=1;if(keys.KeyA||keys.ArrowLeft)mx-=1;if(keys.KeyD||keys.ArrowRight)mx+=1;
-  const sp=(keys.ShiftLeft||keys.ShiftRight)?9:5.5;const l=Math.hypot(mx,mz);
-  if(l>0){moveFig(player,mx/l*sp,mz/l*sp,dt);player.speedNow=sp}else player.speedNow=0;
-  ray.setFromCamera(mouse,camera);if(ray.ray.intersectPlane(aimPlane,aim)){player.yaw=Math.atan2(aim.x-player.pos.x,aim.z-player.pos.z)}
-  const w=WPN[P.cur];player.pose=(!w.melee&&(mouse.down||player.cd>-0.6))?'aim':'walk';
-  if(mouse.down&&started){if(fire(player,aim.x,aim.z,false)&&!w.melee){if(P.role!=='police'&&!threatNear(player.pos,30)&&T>P.shotLawT){P.shotLawT=T+5;crime('Ст. 4 — стрельба без угрозы',1)}}}
+  if(P.reload>0){P.reload-=dt;if(P.reload<=0)finishReload()}
+  updateHold(dt);
+  if(!player.alive||P.busy)return;
+  if(T>(P.lawT||0)){P.lawT=T+0.5;lawWatch()}
+  if(P.stunT>0){P.stunT-=dt;player.pose='up';player.speedNow=0;return}
+  if(P.car)updateDrive(dt);
+  else{
+    let mx=0,mz=0;if(keys.KeyW||keys.ArrowUp)mz-=1;if(keys.KeyS||keys.ArrowDown)mz+=1;if(keys.KeyA||keys.ArrowLeft)mx-=1;if(keys.KeyD||keys.ArrowRight)mx+=1;
+    let vx=mx,vz=mz;if(P.view!=='iso'){const fx=Math.sin(camYaw),fz=Math.cos(camYaw);vx=fx*-mz-Math.cos(camYaw)*mx;vz=fz*-mz+Math.sin(camYaw)*mx}
+    const sp=P.stealth?2.6:(keys.ShiftLeft||keys.ShiftRight)?9:5.5;const l=Math.hypot(vx,vz);player.crouch=P.stealth;
+    if(l>0){moveFig(player,vx/l*sp,vz/l*sp,dt);player.speedNow=sp}else player.speedNow=0;
+    if(P.view==='iso'){ray.setFromCamera(mouse,camera);if(ray.ray.intersectPlane(aimPlane,aim))player.yaw=Math.atan2(aim.x-player.pos.x,aim.z-player.pos.z)}
+    else{player.yaw=camYaw;aim.set(player.pos.x+Math.sin(camYaw)*30,1.25,player.pos.z+Math.cos(camYaw)*30)}
+    const w=WPN[P.cur];player.pose=(!w.melee&&(mouse.down||player.cd>-0.6))?'aim':'walk';
+    if(mouse.down&&started&&!P.hold){if(fire(player,aim.x,aim.z,false)&&!w.melee&&!w.stun){if(P.role!=='police'&&!threatNear(player.pos,30)&&T>P.shotLawT){P.shotLawT=T+5;crime('Ст. 4 — стрельба без угрозы',1)}}}}
   if(d2(player.pos,SPOTS.hospital)<9&&player.hp<player.maxHp){player.hp=Math.min(player.maxHp,player.hp+25*dt)}
   else if(T-(player.hurtT||0)>6&&player.hp<player.maxHp)player.hp=Math.min(player.maxHp,player.hp+(P.role==='medic'?9:4)*dt);
   // arrest attempts
-  if(P.wanted===1){P.arrestProg=Math.max(0,P.arrestProg-dt*0.7);if(P.arrestProg>=1.8)arrestPlayer()}else P.arrestProg=0;
-  // wanted decay
-  if(P.wanted>0){P.lc=(P.lc||0)-dt;if(P.lc<=0){P.lc=0.5;P.copSees=figs.some(f=>f.alive&&f.team==='police'&&d2(f.pos,player.pos)<30*30&&los(f.pos,player.pos,0.05))}
-    if(P.copSees)P.seenT=0;else{P.seenT+=dt;if(P.seenT>14){P.seenT=0;P.wanted--;feed(P.wanted?'Розыск снижен':'Полиция потеряла твой след','good')}}}
+  if(P.wanted===1&&!P.car){P.arrestProg=Math.max(0,P.arrestProg-dt*0.7);if(P.arrestProg>=1.8)arrestPlayer()}else P.arrestProg=0;
+  // wanted decay: with a GPS tracker the police need much longer to lose you
+  if(P.wanted>0){P.lc=(P.lc||0)-dt;if(P.lc<=0){P.lc=0.5;P.copSees=!!copSees(30)}
+    if(P.copSees)P.seenT=0;else{P.seenT+=dt;if(P.seenT>(P.gps?25:14)){P.seenT=0;P.wanted--;feed(P.wanted?'Розыск снижен':'Полиция потеряла твой след','good');if(!P.wanted&&P.gps){P.gps=null;feed('GPS-трекер больше не работает','good')}}}}
   for(let i=P.reports.length-1;i>=0;i--){const r=P.reports[i];r.t-=dt;if(r.t<=0){P.reports.splice(i,1);addWanted(r.stars,r.name+' (по звонку)')}}}
-function playerDown(){P.busy=1;P.wanted=0;P.reports=[];P.arrestProg=0;const lost=Math.floor(P.money*0.1);P.money-=lost;
-  $('overT').textContent='Вас разобрали!';$('overP').textContent=`Врачи соберут вас в больнице. Потеряно ${lost} монет`;$('over').hidden=false;
-  setTimeout(()=>{$('over').hidden=true;spawnPlayer(SPOTS.hospital);P.busy=0;feed('Вас собрали в больнице. Здоровье восстановлено','good')},3200)}
-function arrestPlayer(){P.busy=1;const fine=Math.min(P.money,100*Math.max(1,P.wanted));P.money-=fine;P.wanted=0;P.arrestProg=0;P.reports=[];player.pose='cuffed';player.speedNow=0;
-  const lostW=['bat','crowbar','mac10','ak47'].filter(k=>P.inv[k]);lostW.forEach(k=>delete P.inv[k]);if(!P.inv[P.cur])P.cur='pistol';
-  $('overT').textContent='Вы арестованы';$('overP').textContent=`Штраф ${fine} монет${lostW.length?'. Конфисковано: '+lostW.map(k=>WPN[k].name).join(', '):''}`;$('over').hidden=false;
-  setTimeout(()=>{$('over').hidden=true;player.pos.copy(SPOTS.station).add(new V3(0,0,1));player.pose='walk';player.setWeapon(P.cur);player.hp=player.maxHp;P.busy=0;renderWeapons();feed('Вас отпустили из участка. Не нарушайте закон!','info')},3000)}
+function playerDown(){P.busy=1;P.wanted=0;P.reports=[];P.arrestProg=0;P.gps=null;P.hold=null;if(P.car)exitCar(true);const lost=Math.floor(P.money*0.1);P.money-=lost;const dr=P.drugs;P.drugs=0;
+  $('overT').textContent='Вас разобрали!';$('overP').textContent=`Врачи соберут вас ${P.house>=0?'дома':'в больнице'}. Потеряно ${lost} монет`+(dr?' и весь товар':'');$('over').hidden=false;
+  setTimeout(()=>{$('over').hidden=true;spawnPlayer(P.house>=0?HOUSES[P.house].door.clone().add(new V3(0,0,1.5)):SPOTS.hospital);P.busy=0;feed('Вас собрали. Здоровье восстановлено','good')},3200)}
+function arrestPlayer(){P.busy=1;P.hold=null;if(P.car)exitCar(true);const fine=Math.min(P.money,100*Math.max(1,P.wanted));P.money-=fine;P.wanted=0;P.arrestProg=0;P.reports=[];P.gps=null;player.pose='cuffed';player.speedNow=0;
+  const keep=ROLES[P.role].inv;const lostW=Object.keys(P.inv).filter(k=>!keep[k]);lostW.forEach(k=>delete P.inv[k]);if(!P.inv[P.cur])P.cur=ROLES[P.role].cur;const dr=P.drugs;P.drugs=0;
+  const fired=P.role==='police';if(fired){P.ban.police=Date.now()+5*60*1000;saveGame()}
+  $('overT').textContent=fired?'Вы арестованы и уволены':'Вы арестованы';$('overP').textContent=`Штраф ${fine} монет${lostW.length?'. Конфисковано: '+lostW.map(k=>WPN[k].name).join(', '):''}${dr?'. Изъяты наркотики':''}${fired?'. Вернуться в полицию можно через 5 минут':''}`;$('over').hidden=false;
+  setTimeout(()=>{$('over').hidden=true;if(fired){setRole('citizen');return}player.pos.copy(SPOTS.station).add(new V3(0,0,1));player.pose='walk';player.setWeapon(P.cur);player.hp=player.maxHp;P.busy=0;renderWeapons();feed('Вас отпустили из участка. Не нарушайте закон!','info')},3000)}
 
-// ---------- traffic
-function addTraffic(){const A=[[-47.5,-47.5],[47.5,-47.5],[47.5,47.5],[-47.5,47.5]],B=[[52.5,-52.5],[-52.5,-52.5],[-52.5,52.5],[52.5,52.5]];
-  const mk=(path,i,frac,kind,color)=>{const g=buildCar(kind,color);const a=path[i],b=path[(i+1)%4];const x=a[0]+(b[0]-a[0])*frac,z=a[1]+(b[1]-a[1])*frac;g.position.set(x,0.02,z);scene.add(g);cars.push({g,path,i:(i+1)%4,speed:0,yaw:Math.atan2(b[0]-a[0],b[1]-a[1])})};
-  mk(A,0,0.3,'car',C.red);mk(A,1,0.5,'van',C.green);mk(A,2,0.2,'car',C.yellow);mk(B,0,0.4,'car',C.mblue);mk(B,2,0.6,'police',C.white);mk(B,1,0.7,'car',C.orange)}
-function updateCars(dt){for(const c of cars){const p=c.g.position;const tg=c.path[c.i];let dx=tg[0]-p.x,dz=tg[1]-p.z;let d=Math.hypot(dx,dz);if(d<0.6){c.i=(c.i+1)%4;continue}
+// ---------- cars: traffic, parked and job cars are all drivable; hp 1 is a whole car
+const CARK=['car','van','police','ambulance','taxi'];
+function makeCar(kind,color,x,z,yaw,path,i,owner){const g=buildCar(kind,color);g.position.set(x,0.02,z);g.rotation.y=yaw;scene.add(g);
+  const c={id:cars.length,g,kind,color,path:path||null,i:i||0,speed:0,yaw,hp:1,wreck:false,gone:false,driver:null,remoteDriver:null,owner:owner||null};cars.push(c);return c}
+function parked(kind,color,x,z,rot,owner){return makeCar(kind,color,x,z,rot,null,0,owner||(kind==='police'?'police':kind==='ambulance'?'medic':null))}
+function addTraffic(){const A=[[-47.5,-47.5],[47.5,-47.5],[47.5,47.5],[-47.5,47.5]],B=[[52.5,-52.5],[-52.5,-52.5],[-52.5,52.5],[52.5,52.5]],
+    Co=[[-97.5,-97.5],[97.5,-97.5],[97.5,97.5],[-97.5,97.5]],D=[[102.5,-102.5],[-102.5,-102.5],[-102.5,102.5],[102.5,102.5]];
+  const mk=(path,i,frac,kind,color)=>{const a=path[i],b=path[(i+1)%4];makeCar(kind,color,a[0]+(b[0]-a[0])*frac,a[1]+(b[1]-a[1])*frac,Math.atan2(b[0]-a[0],b[1]-a[1]),path,(i+1)%4,kind==='police'?'police':null)};
+  mk(A,0,0.3,'car',C.red);mk(A,1,0.5,'van',C.green);mk(A,2,0.2,'car',C.yellow);mk(B,0,0.4,'car',C.mblue);mk(B,2,0.6,'police',C.white);mk(B,1,0.7,'car',C.orange);
+  mk(Co,0,0.5,'car',C.purple);mk(Co,1,0.3,'taxi',C.yellow);mk(Co,3,0.6,'van',C.white);mk(D,0,0.2,'car',C.lime);mk(D,2,0.5,'police',C.white);mk(D,3,0.8,'car',C.azure)}
+// the car whose body contains the point (pad widens it)
+function carNear(x,z,pad){for(const c of cars){if(c.gone)continue;const p=c.g.position,dx=x-p.x,dz=z-p.z;if(dx*dx+dz*dz>9)continue;const s=Math.sin(c.yaw),co=Math.cos(c.yaw);const lx=dx*co-dz*s,lz=dx*s+dz*co;if(Math.abs(lx)<1.1+pad&&Math.abs(lz)<2.25+pad)return c}return null}
+function pushCars(p,r){for(const c of cars){if(c.gone||c===P.car)continue;const q=c.g.position,dx=p.x-q.x,dz=p.z-q.z;if(dx*dx+dz*dz>12)continue;const s=Math.sin(c.yaw),co=Math.cos(c.yaw);let lx=dx*co-dz*s,lz=dx*s+dz*co;const ex=1.1+r-Math.abs(lx),ez=2.25+r-Math.abs(lz);if(ex<=0||ez<=0)continue;
+  if(ex<ez)lx+=Math.sign(lx||1)*ex;else lz+=Math.sign(lz||1)*ez;p.x=q.x+lx*co+lz*s;p.z=q.z-lx*s+lz*co}}
+function carDamage(c,v,src){if(!v||!c||c.wreck||c.gone)return;spawnSparks(new V3(c.g.position.x,1.2,c.g.position.z),0xd8d8d8,2);
+  if(NET.on&&!NET.host){if(src===player)netEmit('hit',{car:c.id,v});return}
+  c.hp-=v;if(c.hp<=0.001)carExplode(c,src)}
+function carExplode(c,src){if(c.wreck)return;c.wreck=true;c.speed=0;c.wreckT=30;c.g.traverse(o=>{if(o.isMesh&&!o.isSprite)o.material=M(0x2b2b2b,5)});
+  if(P.car===c)exitCar(true);explode(c.g.position.clone(),5.5,85,src)}
+function respawnTraffic(c){scene.remove(c.g);const col=pick([C.red,C.blue,C.yellow,C.green,C.orange,C.white,C.mblue,C.purple]);c.kind=Math.random()<0.2?'van':'car';c.color=col;c.g=buildCar(c.kind,col);
+  const a=c.path[0],b=c.path[1];c.g.position.set(a[0],0.02,a[1]);c.yaw=Math.atan2(b[0]-a[0],b[1]-a[1]);c.g.rotation.y=c.yaw;c.i=1;c.hp=1;c.wreck=false;c.speed=0;scene.add(c.g)}
+function updateCars(dt){for(const c of cars){if(c.gone)continue;
+    if(c.wreck){c.wreckT-=dt;if(c.wreckT<=0){if(c.path&&!c.driver)respawnTraffic(c);else{c.gone=true;scene.remove(c.g)}}continue}
+    if(!c.path||c.driver||c.remoteDriver)continue;
+    const p=c.g.position;const tg=c.path[c.i];let dx=tg[0]-p.x,dz=tg[1]-p.z;let d=Math.hypot(dx,dz);if(d<0.6){c.i=(c.i+1)%4;continue}
     const fx=Math.sin(c.yaw),fz=Math.cos(c.yaw);let blocked=false;
-    for(const f of figs){if(!f.alive)continue;const rx=f.pos.x-p.x,rz=f.pos.z-p.z;const ah=rx*fx+rz*fz,lat=Math.abs(rx*fz-rz*fx);if(ah>0&&ah<6&&lat<1.8){blocked=true;break}}
-    if(!blocked)for(const o of cars){if(o===c)continue;const rx=o.g.position.x-p.x,rz=o.g.position.z-p.z;const ah=rx*fx+rz*fz,lat=Math.abs(rx*fz-rz*fx);if(ah>0&&ah<7.5&&lat<1.6){blocked=true;break}}
+    for(const f of figs){if(!f.alive||f.inCar)continue;const rx=f.pos.x-p.x,rz=f.pos.z-p.z;const ah=rx*fx+rz*fz,lat=Math.abs(rx*fz-rz*fx);if(ah>0&&ah<6&&lat<1.8){blocked=true;break}}
+    if(!blocked)for(const o of cars){if(o===c||o.gone)continue;const rx=o.g.position.x-p.x,rz=o.g.position.z-p.z;const ah=rx*fx+rz*fz,lat=Math.abs(rx*fz-rz*fx);if(ah>0&&ah<7.5&&lat<1.6){blocked=true;break}}
     c.speed+=((blocked?0:9)-c.speed)*Math.min(1,dt*(blocked?6:1.5));
     p.x+=dx/d*c.speed*dt;p.z+=dz/d*c.speed*dt;c.yaw=lerpAng(c.yaw,Math.atan2(dx,dz),Math.min(1,dt*4));c.g.rotation.y=c.yaw;
-    for(const f of figs){if(!f.alive)continue;const rx=f.pos.x-p.x,rz=f.pos.z-p.z;const ah=rx*fx+rz*fz,lat=rx*fz-rz*fx;if(Math.abs(ah)<2.5&&Math.abs(lat)<1.5){const push=(1.5-Math.abs(lat))*Math.sign(lat||1);f.pos.x+=fz*push;f.pos.z-=fx*push}}}}
+    for(const f of figs){if(!f.alive||f.inCar)continue;const rx=f.pos.x-p.x,rz=f.pos.z-p.z;const ah=rx*fx+rz*fz,lat=rx*fz-rz*fx;if(Math.abs(ah)<2.5&&Math.abs(lat)<1.5){const push=(1.5-Math.abs(lat))*Math.sign(lat||1);f.pos.x+=fz*push;f.pos.z-=fx*push}}}}
+// ---------- driving
+function carFree(c){return c&&!c.gone&&!c.wreck&&!c.driver&&!c.remoteDriver}
+function nearestCar(r){let best=null,bd=r*r;for(const c of cars){if(!carFree(c))continue;const dd=d2(c.g.position,player.pos);if(dd<bd){bd=dd;best=c}}return best}
+function enterCar(c){if(!carFree(c))return;
+  const legit=c.owner&&(c.owner===P.role||(P.job&&c.owner===P.job.type)||c.mine);
+  if(!legit){const moving=c.path&&c.speed>1;crime('Ст. 7 — угон '+(c.kind==='police'?'полицейской машины':'машины'),c.kind==='police'?2:1);if(moving)feed('Водитель выбежал из машины','info')}
+  P.car=c;c.driver=player;c.path=null;c.mine=true;player.inCar=true;player.car=c;player.g.visible=false;player.speedNow=0;renderWeapons()}
+function exitCar(force){const c=P.car;if(!c)return;P.car=null;player.inCar=false;player.car=null;player.g.visible=true;c.driver=null;c.speed=force?0:c.speed*0.3;
+  const s=Math.sin(c.yaw),co=Math.cos(c.yaw);player.pos.set(c.g.position.x-co*1.9,0,c.g.position.z+s*1.9);pushOut(player.pos,0.4);player.pos.y=groundY(player.pos.x,player.pos.z);renderWeapons()}
+function updateDrive(dt){const c=P.car;if(!c||c.wreck){if(c)exitCar(true);return}
+  const p=c.g.position;let th=0,st=0;if(keys.KeyW||keys.ArrowUp)th+=1;if(keys.KeyS||keys.ArrowDown)th-=1;if(keys.KeyA||keys.ArrowLeft)st+=1;if(keys.KeyD||keys.ArrowRight)st-=1;
+  const top=(keys.ShiftLeft||keys.ShiftRight)?30:22;
+  if(th>0)c.speed=Math.min(top,c.speed+(c.speed<0?30:12)*dt);else if(th<0)c.speed=Math.max(-8,c.speed-(c.speed>0?30:10)*dt);else c.speed*=Math.max(0,1-dt*1.2);
+  if(keys.Space)c.speed*=Math.max(0,1-dt*5);
+  c.yaw+=st*dt*1.9*clamp(Math.abs(c.speed)/6,0,1)*Math.sign(c.speed||1);
+  const ox=p.x,oz=p.z;p.x+=Math.sin(c.yaw)*c.speed*dt;p.z+=Math.cos(c.yaw)*c.speed*dt;
+  const q=new V3(p.x,0,p.z),f2=new V3(p.x+Math.sin(c.yaw)*1.6,0,p.z+Math.cos(c.yaw)*1.6);pushOut(q,1.2);pushOut(f2,1.1);
+  const ddx=(q.x-p.x)+(f2.x-(p.x+Math.sin(c.yaw)*1.6)),ddz=(q.z-p.z)+(f2.z-(p.z+Math.cos(c.yaw)*1.6));if(Math.abs(ddx)+Math.abs(ddz)>0.001){p.x+=ddx;p.z+=ddz;if(Math.abs(c.speed)>8)sfx('hit',p,0.6);c.speed*=0.4}
+  for(const o of cars){if(o===c||o.gone)continue;const dx=p.x-o.g.position.x,dz=p.z-o.g.position.z,dd=Math.hypot(dx,dz);if(dd<3.6&&dd>0.01){p.x+=dx/dd*(3.6-dd)*0.6;p.z+=dz/dd*(3.6-dd)*0.6;if(Math.abs(c.speed)>12){carDamage(o,0.2,player);carDamage(c,0.2,player)}c.speed*=0.6}}
+  p.x=clamp(p.x,-MAPR,MAPR);p.z=clamp(p.z,-MAPR,MAPR);c.g.rotation.y=c.yaw;
+  const sp=Math.abs(c.speed),fx=Math.sin(c.yaw),fz=Math.cos(c.yaw);
+  if(sp>4)for(const f of figs){if(!f.alive||f===player||f.inCar||f.team==='statue')continue;const rx=f.pos.x-p.x,rz=f.pos.z-p.z;const ah=rx*fx+rz*fz,lat=rx*fz-rz*fx;
+    if(Math.abs(ah)<2.6&&Math.abs(lat)<1.4&&!(f.runT>T)){f.runT=T+0.7;damage(f,sp*3.2,player,{x:fx,z:fz});if(f.alive&&!f.remote&&!f.mirror){f.pos.x+=fz*Math.sign(lat||1)*1.5;f.pos.z-=fx*Math.sign(lat||1)*1.5}}}
+  player.pos.set(p.x,groundY(p.x,p.z),p.z);player.yaw=c.yaw;
+  if(Math.hypot(p.x-ox,p.z-oz)>0)noise(p,sp>20?10:0,player)}
 
-// ---------- minimap & HUD
-const mm=$('minimap'),mg=mm.getContext('2d');let mmBase=null;const MS_=190,mp=v=>(v+80)/160*MS_;
-function drawMapBase(){mmBase=document.createElement('canvas');mmBase.width=mmBase.height=MS_;const g=mmBase.getContext('2d');g.fillStyle='#5a5d60';g.fillRect(0,0,MS_,MS_);
-  for(const b of blocks){g.fillStyle='#a0a5a9';g.fillRect(mp(b.x0),mp(b.z0),mp(b.x1)-mp(b.x0),mp(b.z1)-mp(b.z0));g.fillStyle=(b.bx===1&&b.bz===2)?'#e4cd9e':'#4b9f4a';g.fillRect(mp(b.x0+3),mp(b.z0+3),mp(b.x1-3)-mp(b.x0+3),mp(b.z1-3)-mp(b.z0+3))}
+// ---------- minimap & HUD: the whole map is drawn once at 2 px per unit; the minimap is a radar cut out around the player
+const mm=$('minimap'),mg=mm.getContext('2d');let mmBase=null;const MS_=190,MK=2,MW=300*MK,mp=v=>(v+150)*MK;
+function drawMapBase(){mmBase=document.createElement('canvas');mmBase.width=mmBase.height=MW;const g=mmBase.getContext('2d');g.fillStyle='#5a5d60';g.fillRect(0,0,MW,MW);
+  for(const b of blocks){g.fillStyle='#a0a5a9';g.fillRect(mp(b.x0),mp(b.z0),mp(b.x1)-mp(b.x0),mp(b.z1)-mp(b.z0));g.fillStyle=(b.bx===2&&b.bz===3)?'#e4cd9e':quietAt({x:(b.x0+b.x1)/2,z:(b.z0+b.z1)/2})?'#2f6b35':'#4b9f4a';g.fillRect(mp(b.x0+3),mp(b.z0+3),mp(b.x1-3)-mp(b.x0+3),mp(b.z1-3)-mp(b.z0+3))}
   for(const f of footprints){g.fillStyle=hex(f.c);g.fillRect(mp(f.x0),mp(f.z0),Math.max(2,mp(f.x1)-mp(f.x0)),Math.max(2,mp(f.z1)-mp(f.z0)))}
-  g.font='900 9px Rubik, sans-serif';g.textAlign='center';g.fillStyle='#fff';const lbl=(t,x,z)=>{g.fillStyle='rgba(0,0,0,.6)';g.fillText(t,mp(x)+1,mp(z)+1);g.fillStyle='#fff';g.fillText(t,mp(x),mp(z))};
-  lbl('ПОЛИЦИЯ',-25,-30);lbl('БОЛЬНИЦА',25,-30);lbl('МАГАЗИНЫ',25,36);lbl('ПЛОЩАДЬ',-25,40)}
-function drawMap(){if(!mmBase)return;mg.drawImage(mmBase,0,0);
-  for(const f of figs){if(!f.alive||f===player||f.team==='statue')continue;mg.fillStyle=f.team==='player'?'#f2cd37':f.team==='police'?'#3a7bff':f.team==='crim'?(f.surrendered?'#ffb0a0':'#ff2a1a'):f.team==='riot'?'#fe8a18':'rgba(255,255,255,.75)';const r=f.team==='civ'?1.6:f.team==='player'?3.4:2.6;mg.beginPath();mg.arc(mp(f.pos.x),mp(f.pos.z),r,0,TAU);mg.fill();if(f.team==='player'){mg.strokeStyle='#000';mg.lineWidth=1;mg.stroke()}}
-  for(const c of cars){mg.fillStyle='#ddd';mg.fillRect(mp(c.g.position.x)-1.5,mp(c.g.position.z)-1.5,3,3)}
-  const evc=evCenter();if(evc){const c=evc;mg.strokeStyle='#f2cd37';mg.lineWidth=2;mg.beginPath();mg.arc(mp(c.x),mp(c.z),7+Math.sin(T*5)*2,0,TAU);mg.stroke()}
-  if(player&&player.alive){mg.save();mg.translate(mp(player.pos.x),mp(player.pos.z));mg.rotate(-player.yaw+Math.PI);mg.fillStyle='#f2cd37';mg.strokeStyle='#000';mg.lineWidth=1;mg.beginPath();mg.moveTo(0,-6);mg.lineTo(4.5,5);mg.lineTo(-4.5,5);mg.closePath();mg.fill();mg.stroke();mg.restore()}
-  mg.fillStyle='rgba(255,255,255,.8)';mg.beginPath();mg.arc(mp(SPOTS.hospital.x),mp(SPOTS.hospital.z),3,0,TAU);mg.fill();mg.fillStyle='#4b9f4a';mg.fillRect(mp(SPOTS.hospital.x)-0.8,mp(SPOTS.hospital.z)-2.4,1.6,4.8);mg.fillRect(mp(SPOTS.hospital.x)-2.4,mp(SPOTS.hospital.z)-0.8,4.8,1.6)}
-function renderWeapons(){const el=$('weapons');el.innerHTML='';SLOTS.forEach((k,i)=>{if(!P.inv[k])return;const d=document.createElement('div');d.className='slot'+(P.cur===k?' on':'');d.innerHTML=`<span>${i+1}</span>`;d.append(WPN[k].name);el.append(d)})}
-let lastHud='';
+  g.font='900 15px Rubik, sans-serif';g.textAlign='center';const lbl=(t,x,z)=>{g.fillStyle='rgba(0,0,0,.65)';g.fillText(t,mp(x)+1.5,mp(z)+1.5);g.fillStyle='#fff';g.fillText(t,mp(x),mp(z))};
+  for(const p of PLACES)lbl(p.short||p.name,p.at.x,p.at.z+(p.dy||-6));
+  g.font='800 13px Nunito, sans-serif';for(const q of QUIET){g.fillStyle='rgba(255,255,255,.7)';g.fillText('тихое место',(mp(q.x0)+mp(q.x1))/2,mp(q.z1)-8)}}
+// navigator destinations
+const PLACES=[{name:'Полицейский участок',short:'ПОЛИЦИЯ',at:SPOTS.station},{name:'Больница',short:'БОЛЬНИЦА',at:SPOTS.hospital},{name:'Пиццерия',at:shopDoor('pizza'),short:'ПИЦЦА',dy:8},{name:'Супермаркет',at:shopDoor('market'),short:'МАРКЕТ',dy:-8},
+  {name:'Ювелирный',at:shopDoor('jewel'),short:'ЮВЕЛИР',dy:8},{name:'Магазин одежды',at:shopDoor('clothes'),short:'ОДЕЖДА'},{name:'Площадь основателей',short:'ПЛОЩАДЬ',at:SPOTS.square},{name:'Стройка',short:'СТРОЙКА',at:SPOTS.site},
+  {name:'Чёрный рынок (склады)',short:'РЫНОК',at:SPOTS.bm},{name:'Склад доставки (курьер)',short:'СКЛАД',at:SPOTS.depot},{name:'Таксопарк',short:'ТАКСИ',at:SPOTS.taxi},
+  ...HOUSES.map((h,i)=>({name:'Дом: '+h.name,short:i===1?'ДОМА':'',at:h.door})),{name:'Старый парк',short:'ПАРК',at:new V3(-125,0.3,-118)},{name:'Гаражи',short:'ГАРАЖИ',at:new V3(-125,0.3,118)},{name:'Пустырь',short:'ПУСТЫРЬ',at:new V3(125,0.3,118)}];
+function drawMap(){if(!mmBase||!player)return;const cx=player.pos.x,cz=player.pos.z,R=MS_/2;
+  mg.fillStyle='#2b3443';mg.fillRect(0,0,MS_,MS_);mg.drawImage(mmBase,mp(cx)-R,mp(cz)-R,MS_,MS_,0,0,MS_,MS_);
+  const rx=x=>(x-cx)*MK+R,rz=z=>(z-cz)*MK+R,inside=(x,z)=>Math.abs(x-cx)<R/MK+2&&Math.abs(z-cz)<R/MK+2;
+  if(NAV.path&&NAV.path.length){mg.strokeStyle='#f2cd37';mg.lineWidth=3.5;mg.lineJoin='round';mg.beginPath();mg.moveTo(R,R);for(const p of NAV.path)mg.lineTo(rx(p.x),rz(p.z));mg.stroke();
+    const t=NAV.target;const ex=clamp(rx(t.x),6,MS_-6),ez=clamp(rz(t.z),6,MS_-6);mg.fillStyle='#f2cd37';mg.strokeStyle='#000';mg.lineWidth=1.5;mg.beginPath();mg.arc(ex,ez,5,0,TAU);mg.fill();mg.stroke()}
+  for(const f of figs){if(!f.alive||f===player||f.team==='statue'||f.inCar||!inside(f.pos.x,f.pos.z))continue;mg.fillStyle=f.team==='player'?'#f2cd37':f.team==='police'?'#3a7bff':f.team==='crim'?(f.surrendered?'#ffb0a0':'#ff2a1a'):f.team==='riot'?'#fe8a18':'rgba(255,255,255,.75)';const r=f.team==='civ'?1.8:f.team==='player'?3.6:2.8;mg.beginPath();mg.arc(rx(f.pos.x),rz(f.pos.z),r,0,TAU);mg.fill();if(f.team==='player'){mg.strokeStyle='#000';mg.lineWidth=1;mg.stroke()}}
+  for(const c of cars){if(c.gone||!inside(c.g.position.x,c.g.position.z))continue;mg.fillStyle=c.wreck?'#222':c.kind==='police'?'#3a7bff':c.kind==='taxi'?'#f2cd37':'#ddd';mg.save();mg.translate(rx(c.g.position.x),rz(c.g.position.z));mg.rotate(-c.yaw);mg.fillRect(-2,-4,4,8);mg.restore()}
+  const evc=evCenter();if(evc){const ex=clamp(rx(evc.x),8,MS_-8),ez=clamp(rz(evc.z),8,MS_-8);mg.strokeStyle='#ff3a2a';mg.lineWidth=2.5;mg.beginPath();mg.arc(ex,ez,7+Math.sin(T*5)*2,0,TAU);mg.stroke()}
+  if(P.gps){mg.fillStyle='rgba(224,64,42,'+(0.35+Math.sin(T*6)*0.2)+')';mg.fillRect(0,0,MS_,5);mg.fillRect(0,MS_-5,MS_,5)}
+  mg.save();mg.translate(R,R);mg.rotate(-player.yaw+Math.PI);mg.fillStyle='#f2cd37';mg.strokeStyle='#000';mg.lineWidth=1;mg.beginPath();mg.moveTo(0,-7);mg.lineTo(5,6);mg.lineTo(-5,6);mg.closePath();mg.fill();mg.stroke();mg.restore()}
+function renderWeapons(){const el=$('weapons');el.innerHTML='';const w=WPN[P.cur]||WPN.fist;
+  const cur=document.createElement('div');cur.className='brick wcur';const b=document.createElement('b');b.textContent=P.car?'За рулём':w.name;const s=document.createElement('span');const em=document.createElement('em');
+  if(P.car){s.textContent='F — выйти';em.textContent='Shift — газ сильнее · Пробел — тормоз'}
+  else if(P.reload>0){s.textContent='Перезарядка…';em.textContent=AMMO[w.ammo].name}
+  else if(w.thrown){s.textContent='× '+(P.ammo[w.ammo]||0);em.textContent='бросок по клику'}
+  else if(w.mag){s.textContent=(P.clip[P.cur]||0)+' / '+(P.ammo[w.ammo]||0);em.textContent='R — перезарядка · 3 с'}
+  else{s.textContent=w.stun?'перезарядка 5 с':'ближний бой';em.textContent=P.cur==='knife'?'Ctrl + со спины — тихое убийство':''}
+  cur.append(b,s,em);el.append(cur);
+  for(let ci=0;ci<CATS.length;ci++){const own=SLOTS.filter(k=>WPN[k].cat===ci&&P.inv[k]);if(!own.length)continue;const d=document.createElement('div');d.className='slot'+(WPN[P.cur].cat===ci?' on':'');
+    const k=WPN[P.cur].cat===ci?P.cur:(P.lastInCat[ci]&&P.inv[P.lastInCat[ci]]?P.lastInCat[ci]:own[0]);d.innerHTML=`<span>${(ci+1)%10} · ${CATS[ci]}</span>`;d.append(WPN[k].name);if(own.length>1){const x=document.createElement('b');x.textContent='ещё '+(own.length-1);d.append(x)}el.append(d)}}
+let lastHud='',lastTags='',lastWpn='';
 function updateHud(){if(!player)return;$('hpFill').style.width=Math.max(0,player.hp/player.maxHp*100)+'%';
   const s=P.money+'|'+P.wanted;if(s!==lastHud){lastHud=s;$('money').textContent=P.money;$('stars').innerHTML='<b>'+'★'.repeat(P.wanted)+'</b>'+'★'.repeat(5-P.wanted)}
-  const it=interactTarget();const pr=$('prompt');
+  const ws=P.cur+'|'+(P.clip[P.cur]||0)+'|'+(P.ammo[(WPN[P.cur]||{}).ammo]||0)+'|'+(P.reload>0)+'|'+!!P.car;if(ws!==lastWpn){lastWpn=ws;renderWeapons()}
+  const tg=[];if(P.gps)tg.push(['Вас отслеживают по GPS','red']);if(P.stealth)tg.push(['Бесшумный шаг','grn']);if(P.masked)tg.push(['В маске','yel']);if(P.drugs)tg.push([`Наркотики: ${P.drugs}`+(P.bag?' (в сумке)':' — без сумки!'),P.bag?'yel':'red']);
+  if(P.stunT>0)tg.push(['Оглушён','red']);if(P.view!=='iso')tg.push([P.view==='first'?'Вид от первого лица':'Вид от третьего лица','']);if(NAV.target)tg.push(['Маршрут: '+NAV.name+' · '+Math.round(dist(NAV.target,player.pos))+' м','yel']);
+  const tk=JSON.stringify(tg);if(tk!==lastTags){lastTags=tk;const el=$('tags');el.textContent='';for(const [t,c] of tg){const d=document.createElement('div');d.className='tag '+c;d.textContent=t;el.append(d)}}
+  const pr=$('prompt');const e=findAction('E'),q=findAction('Q');
   if(P.wanted===1&&P.arrestProg>0.05){pr.hidden=false;pr.textContent='Полиция задерживает… '+Math.round(P.arrestProg/1.8*100)+'% — убегай!'}
-  else if(it){pr.hidden=false;pr.innerHTML='<kbd>E</kbd> '+({arrest:'Арестовать сдавшегося',talk:'Уговорить разойтись',detain:'Задержать митингующего',heal:'Вылечить раненого',rob:'Ограбить кассу (нарушение закона!)'})[it.type]}
-  else if(player.alive&&d2(player.pos,SPOTS.hospital)<9&&player.hp<player.maxHp){pr.hidden=false;pr.textContent='Лечение…'}
+  else if(e||q){pr.hidden=false;pr.innerHTML='';for(const [k,a] of [['E',e],['Q',q]])if(a){const kb=document.createElement('kbd');kb.textContent=k+(a.hold?' удерживай':'');pr.append(kb,' '+a.label+'  ')}}
+  else if(!P.car){const c=nearestCar(3.8);if(c&&player.alive){pr.hidden=false;pr.innerHTML='<kbd>F</kbd> Сесть в машину'+(c.owner&&(c.owner===P.role||(P.job&&c.owner===P.job.type))?'':' (угон!)')}
+    else if(P.cur==='knife'&&P.stealth&&figs.some(f=>f.alive&&!f.remote&&f!==player&&['civ','police','crim','riot'].includes(f.team)&&d2(f.pos,player.pos)<2.2&&behind(f,player))){pr.hidden=false;pr.textContent='Клик — тихое убийство со спины'}
+    else if(player.alive&&d2(player.pos,SPOTS.hospital)<9&&player.hp<player.maxHp){pr.hidden=false;pr.textContent='Лечение…'}else pr.hidden=true}
   else pr.hidden=true;
+  updateJobBox();
   if(NET.on&&T>NET.plistT){NET.plistT=T+0.5;renderPlist()}}
+
 const evCenter=()=>isHost()?(EV.cur&&EV.cur.center):(NET.lastEv?NET.evCenter:null);
+
+// ---------- shops, black market and the house stash share one panel
+const shopCd={};
+function closePanels(){for(const id of ['shopPanel','navPanel','surgPanel'])$(id).hidden=true;P.inShop=null}
+function heal(v){player.hp=Math.min(player.maxHp,player.hp+v);spawnSparks(player.pos.clone().setY(player.pos.y+1.2),C.bgreen,5)}
+function pay(price){if(P.money<price){feed('Не хватает монет: нужно '+price,'info');return false}P.money-=price;sfx('coin');saveGame();return true}
+function openShop(k){P.inShop=k;$('shopPanel').hidden=false;renderShop()}
+function renderShop(){const k=P.inShop;const box=$('shopItems');box.textContent='';let title='',note='';
+  const sec=t=>{const d=document.createElement('div');d.className='label sec';d.textContent=t;box.append(d)};
+  const item=(name,desc,price,fn,dis)=>{const d=document.createElement('div');d.className='it';const b=document.createElement('b');b.textContent=name;const s=document.createElement('small');s.textContent=desc;
+    const bt=document.createElement('button');bt.type='button';bt.textContent=price==null?'Выбрать':price===0?'Бесплатно':price+' ◉';bt.disabled=!!dis;bt.addEventListener('click',()=>{fn();if(P.inShop)renderShop()});d.append(b,s,bt);box.append(d)};
+  const food=(n,hp,pr)=>item(n,'+'+hp+' здоровья',pr,()=>{if(pay(pr)){heal(hp);feed(n+': вкусно!','good')}});
+  const bag=pr=>item('Сумка','Наркотики в сумке полиция не замечает',pr,()=>{if(pay(pr)){P.bag=true;feed('Сумка куплена','good')}},P.bag);
+  const mask=pr=>item('Маска','K — надеть или снять. В маске тебя не узнают',pr,()=>{if(pay(pr)){P.mask=true;feed('Маска куплена. K — надеть','good')}},P.mask);
+  const rob=()=>{sec('Касса');item('Ограбить кассу','5 секунд у кассы. Без маски — сразу ★★★',null,()=>{closePanels();robShop(k)},P.role==='police')};
+  if(k==='pizza'){title='Пиццерия';note='Горячая пицца и напитки.';food('Пицца пепперони',50,25);food('Кусок пиццы',25,12);food('Вода',15,10);food('Газировка',20,12);rob()}
+  else if(k==='market'){title='Супермаркет';note=P.role==='citizen'?'Работа кассиром: подойди к кассе у входа и нажми E.':'Еда, вода и всё для дома.';food('Бутерброд',30,15);food('Обед в контейнере',45,25);food('Вода',15,10);food('Сок',20,14);bag(150);rob()}
+  else if(k==='jewel'){title='Ювелирный';note='Витрины с бриллиантами. Касса здесь самая богатая.';item('Кольцо с камнем','Красиво, но бесполезно',800,()=>{if(pay(800))feed('Кольцо куплено. Блестит!','good')});rob()}
+  else if(k==='clothes'){title='Одежда';note='Полиция запоминает одежду: переоденься, и тебя не узнают по ней.';
+    OUTFITS.forEach((o,i)=>{if(i===0)item('Своя одежда','Форма или обычная одежда профессии',0,()=>{P.outfit=0;rebuildPlayer();saveGame()},P.outfit===0);else item(o.name,'Новый образ',90,()=>{if(pay(90)){P.outfit=i;rebuildPlayer();feed('Новый образ: '+o.name,'good')}},P.outfit===i)});
+    mask(120);bag(150);rob()}
+  else if(k==='bm'){title='Чёрный рынок';
+    if(P.role==='police'){note='— Коп? Здесь ничего не продаётся. Проваливай.';item('Уйти','Продавец не хочет с тобой говорить',null,closePanels)}
+    else{note='Оружие, патроны и заказы. Товар носи только в сумке, иначе полиция сразу даст ★★★.';
+      sec('Заказы');if(P.job)item('Заказ уже взят',P.job.name||'Сначала закончи текущую работу',null,()=>{},true);
+      else item('Доставка товара','Отнеси пакет по адресу, пешком или на машине: 200–350 монет',0,()=>{takeDrugOrder();closePanels()});
+      bag(200);mask(150);
+      for(let ci=0;ci<9;ci++){const ws=SLOTS.filter(w=>WPN[w].cat===ci&&WPN[w].price);if(!ws.length)continue;sec(CATS[ci]);
+        for(const w of ws){const W=WPN[w];if(W.thrown)item(W.name,'1 шт., у тебя '+(P.ammo[W.ammo]||0),W.price,()=>{if(pay(W.price))giveWeapon(w)});
+          else item(W.name,(W.mag?'Магазин '+W.mag+(W.car>=1?' · машина с 1 выстрела':W.car>=0.33?' · машина с 3 выстрелов':''):'Ближний бой')+(P.inv[w]?' · уже есть':''),W.price,()=>{if(pay(W.price)){giveWeapon(w);if(W.ammo)P.ammo[W.ammo]=(P.ammo[W.ammo]||0)+W.mag}},!!P.inv[w])}}
+      sec('Патроны');for(const [a,A] of Object.entries(AMMO)){if(['g','mo','st'].includes(a))continue;item(A.name,'+'+A.pack+' · у тебя '+(P.ammo[a]||0),A.price,()=>{if(pay(A.price)){P.ammo[a]=(P.ammo[a]||0)+A.pack;renderWeapons()}})}}}
+  else if(k==='stash'){const h=HOUSES[P.house];title='Дом: '+h.name;note='Тайник: здесь вещи в безопасности, пока дом не взломают ломом.';
+    sec('Отдых');item('Поспать','Полное здоровье',0,()=>{heal(200);feed('Ты выспался','good')});
+    sec('Наркотики · в тайнике '+P.stash.d+', с собой '+P.drugs);item('Положить в тайник','Все, что с собой',null,()=>{P.stash.d+=P.drugs;P.drugs=0;saveGame()},!P.drugs);item('Забрать из тайника','Носи только в сумке!',null,()=>{P.drugs+=P.stash.d;P.stash.d=0;saveGame()},!P.stash.d);
+    sec('Оружие');for(const w of SLOTS){if(['fist','taser'].includes(w)||WPN[w].thrown)continue;if(P.inv[w]&&!ROLES[P.role].inv[w])item('Положить: '+WPN[w].name,'Убрать в тайник',null,()=>{delete P.inv[w];P.stash.w[w]=1;if(P.cur===w)setCur(ROLES[P.role].cur);saveGame();renderWeapons()});
+      if(P.stash.w[w])item('Забрать: '+WPN[w].name,'Из тайника',null,()=>{delete P.stash.w[w];giveWeapon(w,true);saveGame()},!!P.inv[w])}
+    sec('Дом');item('Продать дом','Половина цены: '+Math.floor(h.price/2),null,()=>{P.money+=Math.floor(h.price/2);for(const w in P.stash.w)giveWeapon(w,true);P.drugs+=P.stash.d;P.stash={d:0,w:{}};P.house=-1;saveGame();closePanels();feed('Дом продан','info')})}
+  $('shopT').textContent=title;$('shopN').textContent=note}
+function robShop(k){if((shopCd[k]||0)>T){feed('Касса пуста. Загляни позже','info');return}const door=shopDoor(k);
+  if(!P.masked)addWanted(3,'Ст. 5 — ограбление без маски: тебя узнали');
+  const sk=figs.find(f=>f.alive&&f.post&&d2(f.post,SPOTS[k])<36);if(sk)say(sk,'Помогите! Грабят!');
+  startTimed('Ограбление кассы',5,()=>d2(door,player.pos)<3.5*3.5,()=>{shopCd[k]=T+60;const base=k==='jewel'?[300,500]:[120,260];const v=Math.round(rint(...base)*(P.role==='bandit'?1.5:1));P.money+=v;sfx('coin');
+    feed('Касса ограблена  +'+v,'crime');if(P.masked)crime('Ст. 5 — ограбление магазина',1)})}
+function takeDrugOrder(){const far=HOUSE_DOORS.filter(d=>dist(d,player.pos)>60);const dest=pick(far.length?far:HOUSE_DOORS);
+  P.job={type:'drugs',name:'Доставка товара',dest,pay:rint(200,350)};P.drugs++;setNav(dest,'Доставка товара',true);
+  feed(P.bag?'Товар в сумке. Доставь по адресу на карте':'Товар без сумки! Коп увидит — сразу ★★★. Сумка продаётся здесь и в супермаркете',P.bag?'info':'crime')}
+// ---------- houses: bought with money, a stash inside; another player's house can be broken into with a crowbar
+function houseOwner(i){for(const e of NET.players.values())if(e.pres&&e.pres.ho===i)return e;return null}
+function houseAction(){for(let i=0;i<HOUSES.length;i++){const h=HOUSES[i];if(d2(h.door,player.pos)>2.8*2.8)continue;
+    if(P.house===i)return{label:'Войти в дом',run:()=>openShop('stash')};
+    const o=houseOwner(i);
+    if(o){if(P.cur!=='crowbar')return{label:'Дом игрока '+nameOf(o)+' · для взлома нужен лом',run:()=>feed('Возьми лом (клавиша 1), чтобы взломать дверь','info')};
+      return{label:'Взломать дом ломом',hold:5,check:()=>d2(h.door,player.pos)<3.2*3.2&&P.cur==='crowbar',run:()=>{crime('Ст. 8 — взлом дома',1,{violent:1});netEmit('dmg',{to:o.peer,rob:i,from:NET.me});feed('Дверь взломана, ищешь тайник…','crime')}}}
+    if(P.house>=0)return{label:'Продаётся за '+h.price+' · у тебя уже есть дом',run:()=>{}};
+    return{label:'Купить дом за '+h.price+' монет',run:()=>{if(pay(h.price)){P.house=i;saveGame();banner('Твой новый дом!',h.name+' · E у двери — тайник и отдых')}}}}
+  return null}
+function updateHouses(){for(let i=0;i<HOUSES.length;i++){const h=HOUSES[i];if(h.sale)h.sale.visible=P.house!==i&&!houseOwner(i)}}
+function onHouseRobbed(i,from){if(P.house!==i)return;const d=Math.ceil(P.stash.d/2);P.stash.d-=d;const ws=Object.keys(P.stash.w);const w=ws.length?pick(ws):null;if(w)delete P.stash.w[w];saveGame();
+  banner('Твой дом ограбили!','Пропало: '+(d?d+' пакетов':'')+(d&&w?' и ':'')+(w?WPN[w].name:'')+(!d&&!w?'ничего, тайник был пуст':''));netEmit('dmg',{to:from,loot:{d,w}})}
+// ---------- saving: money, house, stash, clothes and a police ban survive a reload (per city)
+const saveKey=()=>'kg-save-'+(NET.city||'gorod');
+function saveGame(){try{localStorage.setItem(saveKey(),JSON.stringify({money:P.money,house:P.house,stash:P.stash,outfit:P.outfit,mask:P.mask,bag:P.bag,ban:P.ban}))}catch(e){}}
+function loadSave(){try{const s=JSON.parse(localStorage.getItem(saveKey())||'null');if(!s)return;if(Number.isFinite(s.money))P.money=s.money;if(Number.isInteger(s.house)&&HOUSES[s.house])P.house=s.house;
+  if(s.stash&&typeof s.stash==='object')P.stash={d:+s.stash.d||0,w:Object.fromEntries(Object.keys(s.stash.w||{}).filter(k=>WPN[k]).map(k=>[k,1]))};P.outfit=OUTFITS[s.outfit]?s.outfit:0;P.mask=!!s.mask;P.bag=!!s.bag;P.ban=s.ban&&typeof s.ban==='object'?s.ban:{}}catch(e){}}
+
+// ---------- jobs: medic calls, courier, cashier, taxi and drug deliveries. Job people are local to this page.
+const locals=[];
+function localFig(look,pos){const f=new Fig(look,'local');f.pos.copy(pos);f.pos.y=groundY(pos.x,pos.z);scene.add(f.g);locals.push(f);return f}
+function dropLocal(f){if(!f)return;scene.remove(f.g);const i=locals.indexOf(f);if(i>=0)locals.splice(i,1)}
+function walkLocal(f,t,sp,dt){const dx=t.x-f.pos.x,dz=t.z-f.pos.z,d=Math.hypot(dx,dz);if(d<0.3){f.speedNow=0;return true}const s=Math.min(sp,d/dt);f.pos.x+=dx/d*s*dt;f.pos.z+=dz/d*s*dt;f.pos.y=groundY(f.pos.x,f.pos.z);f.yaw=Math.atan2(dx,dz);f.speedNow=s;return false}
+function randomSpot(minD,from){for(let k=0;k<40;k++){const n=nodes[rint(0,nodes.length-1)];if(!quietAt(n)&&dist(n,from)>minD)return n.clone()}return nodes[0].clone()}
+function closeJob(){const j=P.job;if(!j)return;dropLocal(j.patient);dropLocal(j.client);if(j.cust)j.cust.forEach(dropLocal);if(j.truck)scene.remove(j.truck);if(j.boxMesh)player&&player.armR.remove(j.boxMesh);if(NAV.auto)clearNav();P.job=null}
+function jobDone(title,v){P.money+=v;P.stats.jobs++;sfx('coin');feed(title+'  +'+v,'good');saveGame()}
+const CALLS=[{t:'Полицейский ранен в перестрелке',look:'police',op:true},{t:'Человек упал и сломал руку',look:'civ',op:false},{t:'Человеку плохо, нужна операция',look:'civ',op:true},
+  {t:'Строитель упал с лесов',look:'builder',op:true},{t:'Ребёнок упал с велосипеда',look:'civ',op:false},{t:'Пожилому человеку стало плохо',look:'civ',op:false},{t:'ДТП: пострадал водитель',look:'civ',op:true}];
+function newCall(){const c=pick(CALLS);const at=randomSpot(40,SPOTS.hospital);const f=localFig(LOOKS[c.look](),at);f.pose='lie';f.pos.y+=0.25;
+  P.job={type:'medic',name:'Вызов скорой',call:c,patient:f,stage:'aid',at};setNav(at,'Вызов: '+c.t,true);banner('Вызов скорой',c.t);sfx('siren',null,0.7)}
+const ambNear=(p,r)=>cars.find(c=>c.kind==='ambulance'&&!c.wreck&&!c.gone&&d2(c.g.position,p)<r*r);
+function jobAction(key){const j=P.job,pp=player.pos;
+  if(j&&j.type==='medic'){
+    if(j.stage==='aid'&&key==='Q'&&!P.car&&d2(j.patient.pos,pp)<2.6*2.6)return{label:'Первая помощь',hold:5,check:()=>d2(j.patient.pos,player.pos)<3*3,run:()=>{j.stage='load';say(j.patient,'Спасибо…');spawnSparks(j.patient.pos.clone().setY(j.patient.pos.y+0.6),C.bgreen,8);feed('Первая помощь оказана. Подгони скорую и нажми E у пациента','good')}};
+    if(j.stage==='load'&&key==='E'&&d2(j.patient.pos,pp)<4*4){const a=ambNear(j.patient.pos,10);if(!a)return{label:'Нужна скорая рядом с пациентом',run:()=>feed('Скорая стоит у больницы: подгони её к пациенту','info')};
+      return{label:'Положить в скорую',run:()=>{dropLocal(j.patient);j.patient=null;j.stage='drive';setNav(SPOTS.hospital,'Больница',true);feed('Пациент в машине. Вези в больницу','good')}}}
+    if(j.stage==='op'&&key==='E'&&d2(SPOTS.hospital,pp)<16*16)return{label:'Начать операцию',run:openSurgery};
+    return null}
+  if(j&&j.type==='drugs'&&key==='E'&&!P.car&&d2(j.dest,pp)<3.2*3.2)return{label:'Передать товар',run:()=>{if(P.drugs<=0){feed('Товара с собой нет: забери его из тайника','info');return}P.drugs--;jobDone('Товар доставлен',j.pay);closeJob()}};
+  if(P.role!=='citizen'||key!=='E')return null;
+  if(!j&&d2(SPOTS.depot,pp)<7*7)return{label:'Взять заказ на доставку',run:()=>{const far=HOUSE_DOORS.filter(d=>dist(d,pp)>50);const dest=pick(far.length?far:HOUSE_DOORS);
+    P.job={type:'courier',name:'Курьер',dest,pay:Math.round(50+dist(dest,pp)*0.5)};setNav(dest,'Адрес доставки',true);feed('Заказ взят. Садись в оранжевый фургон у склада и вези по адресу','good')}};
+  if(j&&j.type==='courier'&&!P.car&&d2(j.dest,pp)<3.5*3.5)return{label:'Отдать посылку',run:()=>{jobDone('Посылка доставлена',j.pay);closeJob();setNav(SPOTS.depot,'Склад доставки',true);feed('Возвращайся на склад за новым заказом','info')}};
+  if(!j&&!P.car&&d2(shopDoor('market'),pp)<3*3)return{label:'Встать за кассу',run:()=>{P.job={type:'cashier',name:'Кассир',cust:[],nextCust:T+3,truckT:T+35,carry:false,unloaded:0};feed('Ты за кассой. Пробивай покупки (E) и разгружай машину с продуктами','good')}};
+  if(j&&j.type==='cashier'&&!P.car){const c=j.cust.find(c=>c.ready&&d2(c.pos,pp)<4*4);if(c)return{label:'Пробить покупку на '+c.sum,run:()=>{const v=Math.round(c.sum*0.3);jobDone('Покупка на '+c.sum+', твои 30%',v);c.ready=false;c.leave=true;say(c,'Спасибо!')}};
+    if(j.truck&&!j.carry&&d2(j.truck.position,pp)<4*4)return{label:'Взять ящик из машины',run:()=>{j.carry=true;j.boxMesh=new THREE.Mesh(new THREE.BoxGeometry(0.7,0.5,0.5),MS(C.brown));j.boxMesh.position.set(-0.4,-0.3,0.3);player.armR.add(j.boxMesh)}};
+    if(j.carry&&d2(shopDoor('market'),pp)<3*3)return{label:'Отнести ящик на склад магазина',run:()=>{j.carry=false;player.armR.remove(j.boxMesh);j.boxMesh=null;j.unloaded++;jobDone('Ящик разгружен ('+j.unloaded+' из 5)',12);
+      if(j.unloaded>=5){jobDone('Машина разгружена, премия',40);scene.remove(j.truck);j.truck=null;j.unloaded=0;j.truckT=T+70}}}}
+  if(!j&&d2(SPOTS.taxi,pp)<8*8)return{label:'Начать смену таксиста',run:()=>{P.job={type:'taxi',name:'Таксист',stage:'wait',nextT:T+3};feed('Смена началась. Садись в такси у таксопарка','good')}};
+  if(j&&j.type==='taxi'){
+    if(j.stage==='wait'&&d2(SPOTS.taxi,pp)<8*8&&!P.car)return{label:'Закончить смену',run:()=>{closeJob();feed('Смена окончена','info')}};
+    const inTaxi=P.car&&P.car.kind==='taxi';
+    if(j.stage==='pickup'&&inTaxi&&d2(j.client.pos,pp)<8*8)return{label:'Посадить клиента',run:()=>{dropLocal(j.client);j.client=null;j.dest=pick(PLACES.filter(p=>dist(p.at,pp)>50)).at.clone();j.from=pp.clone();j.stage='drive';setNav(j.dest,'Клиент едет сюда',true);feed('Клиент: «Отвезите меня, пожалуйста!»','info')}};
+    if(j.stage==='drive'&&inTaxi&&d2(j.dest,pp)<10*10)return{label:'Высадить клиента',run:()=>{jobDone('Поездка оплачена',Math.round(40+dist(j.from,j.dest)*0.6));j.stage='wait';j.nextT=T+4;clearNav()}}}
+  return null}
+function updateJobs(dt){for(const f of locals)animFig(f,dt);
+  if(P.role==='medic'&&!P.job&&player&&player.alive){if(!P.nextCall)P.nextCall=T+8;if(T>P.nextCall){P.nextCall=0;newCall()}}
+  const j=P.job;if(!j||!player)return;const pp=player.pos;
+  if(j.type==='medic'){if(j.stage==='drive'&&d2(SPOTS.hospital,pp)<16*16){if(j.call.op){j.stage='op';feed('Пациенту нужна операция: нажми E у больницы','ev');clearNav()}else{jobDone('Пациент доставлен в больницу',150);P.stats.heals++;closeJob();P.nextCall=T+15}}}
+  if(j.type==='cashier'){if(d2(shopDoor('market'),pp)>16*16){closeJob();feed('Ты ушёл с кассы. Смена окончена','info');return}
+    if(T>j.nextCust&&j.cust.length<3){j.nextCust=T+rnd(7,13);const c=localFig(LOOKS.civ(),new V3(25+rnd(-12,12),0.3,6.5));c.sum=rint(60,300);c.spot=new V3(25+j.cust.length*1.2-1.2,0.3,11.6);j.cust.push(c)}
+    for(const c of j.cust.slice()){if(c.leave){if(walkLocal(c,new V3(25+rnd(-1,1)*12,0.3,6),2.2,dt)){dropLocal(c);j.cust.splice(j.cust.indexOf(c),1)}}else if(walkLocal(c,c.spot,2.2,dt)&&!c.ready&&!c.paid){c.ready=true;c.paid=true;c.yaw=0;say(c,'Мне вот это, пожалуйста')}}
+    if(!j.truck&&T>j.truckT){j.truck=buildCar('van',C.green);j.truck.position.set(33,0.02,7.5);j.truck.rotation.y=Math.PI/2;scene.add(j.truck);feed('Приехала машина с продуктами: разгрузи 5 ящиков (E)','ev')}}
+  if(j.type==='taxi'&&j.stage==='wait'&&T>j.nextT&&P.car&&P.car.kind==='taxi'){const at=randomSpot(40,pp);j.client=localFig(LOOKS.civ(),at);j.stage='pickup';setNav(at,'Клиент такси',true);feed('Новый заказ: забери клиента','ev')}
+  if(j.client&&j.stage==='pickup'&&Math.random()<dt*0.3)say(j.client,'Такси!');
+  if(j.type==='courier'&&!NAV.target&&j.dest)setNav(j.dest,'Адрес доставки',true)}
+function updateJobBox(){const j=P.job;const el=$('jobBox');if(!j){el.hidden=true;return}el.hidden=false;let t=j.name||'',i='';
+  if(j.type==='medic')i={aid:'Едь к пациенту и удерживай Q 5 секунд',load:'Подгони скорую и нажми E у пациента',drive:'Вези пациента в больницу',op:'Нажми E у больницы — операция'}[j.stage]+' · '+j.call.t;
+  else if(j.type==='courier')i='Вези посылку по адресу (маршрут на карте), затем E у двери';
+  else if(j.type==='cashier')i='Покупатели у кассы: E. '+(j.truck?'Машина приехала: ящики '+j.unloaded+' из 5':'Машина с продуктами скоро приедет');
+  else if(j.type==='taxi')i={wait:P.car&&P.car.kind==='taxi'?'Ждём заказ…':'Сядь в такси у таксопарка (F)',pickup:'Забери клиента: подъедь и нажми E',drive:'Вези клиента, на месте нажми E'}[j.stage];
+  else if(j.type==='drugs')i=(P.bag?'Товар в сумке.':'Товар без сумки — опасно!')+' Отнеси по адресу и нажми E · '+j.pay+' монет';
+  $('jobT').textContent=t;$('jobI').textContent=i}
+// ---------- surgery mini-game: stop the runner inside the green zone four times
+const SURG={st:0,x:0,v:1,zone:[0.4,0.6],miss:0,steps:['Разрез','Найти повреждение','Зашить','Перевязка']};
+function openSurgery(){closePanels();$('surgPanel').hidden=false;SURG.st=0;SURG.miss=0;surgNext();if(document.pointerLockElement)document.exitPointerLock?.()}
+function surgNext(){SURG.x=0;SURG.v=0.55+SURG.st*0.18;const w=0.2-SURG.st*0.025,a=rnd(0.15,0.85-w);SURG.zone=[a,a+w];$('surgS').textContent='Этап '+(SURG.st+1)+' из 4';$('surgN').textContent=SURG.steps[SURG.st]+(SURG.miss?' · промахов: '+SURG.miss+' из 3':'')}
+function surgeryHit(){if(SURG.x>=SURG.zone[0]&&SURG.x<=SURG.zone[1]){sfx('coin');SURG.st++;SURG.miss=0;if(SURG.st>=4){$('surgPanel').hidden=true;jobDone('Операция прошла успешно',260);P.stats.heals++;closeJob();P.nextCall=T+15;banner('Операция успешна','Пациент будет жить!');return}surgNext()}
+  else{sfx('hit');SURG.miss++;if(SURG.miss>=3){SURG.miss=0;feed('Пациент теряет силы: этап заново','crime')}surgNext()}}
+$('surgCv').addEventListener('mousedown',surgeryHit);
+function drawSurgery(dt){const c=$('surgCv'),g=c.getContext('2d'),W=c.width,H=c.height;SURG.x+=SURG.v*dt;if(SURG.x>1){SURG.x=1;SURG.v=-Math.abs(SURG.v)}if(SURG.x<0){SURG.x=0;SURG.v=Math.abs(SURG.v)}
+  g.fillStyle='#10202a';g.fillRect(0,0,W,H);g.strokeStyle='#4b9f4a';g.lineWidth=2;g.beginPath();for(let x=0;x<W;x+=4){const ph=(x/W*6+T*2)%1;g.lineTo(x,50-(ph<0.08?30*Math.sin(ph/0.08*Math.PI):0))}g.stroke();
+  g.fillStyle='#f2cd37';g.font='900 22px Rubik, sans-serif';g.fillText(SURG.steps[SURG.st]||'',16,100);
+  const bx=20,by=130,bw=W-40,bh=40;g.fillStyle='#2b3443';g.fillRect(bx,by,bw,bh);g.fillStyle='#4b9f4a';g.fillRect(bx+bw*SURG.zone[0],by,bw*(SURG.zone[1]-SURG.zone[0]),bh);
+  g.fillStyle='#ffffff';g.fillRect(bx+bw*SURG.x-3,by-8,6,bh+16);for(let i=0;i<4;i++){g.fillStyle=i<SURG.st?'#4b9f4a':'#3a4352';g.fillRect(20+i*34,190,28,12)}}
+// ---------- navigator: pick a place, follow the yellow route on the road and the minimap
+const NAV={target:null,name:'',path:null,t:0,mesh:null,auto:false};
+function setNav(v,name,auto){NAV.target=v.clone();NAV.name=name;NAV.auto=!!auto;NAV.t=0}
+function clearNav(){NAV.target=null;NAV.path=null;NAV.auto=false;if(NAV.mesh){scene.remove(NAV.mesh);NAV.mesh=null}}
+const navMat=new THREE.MeshBasicMaterial({color:0xf2cd37,transparent:true,opacity:0.75,depthWrite:false});
+function updateNav(dt){if(!NAV.target||!player)return;NAV.t-=dt;if(NAV.t>0)return;NAV.t=0.7;
+  if(dist(NAV.target,player.pos)<6&&!NAV.auto){feed('Вы прибыли: '+NAV.name,'good');clearNav();return}
+  NAV.path=graphPath(player.pos,NAV.target);const pts=[player.pos.clone(),...NAV.path];const pos=[],w=0.35;
+  for(let i=0;i<pts.length-1;i++){const a=pts[i],b=pts[i+1];const dx=b.x-a.x,dz=b.z-a.z,l=Math.hypot(dx,dz)||1;const nx=-dz/l*w,nz=dx/l*w;const ya=groundY(a.x,a.z)+0.1,yb=groundY(b.x,b.z)+0.1;
+    pos.push(a.x+nx,ya,a.z+nz, b.x+nx,yb,b.z+nz, b.x-nx,yb,b.z-nz, a.x+nx,ya,a.z+nz, b.x-nx,yb,b.z-nz, a.x-nx,ya,a.z-nz)}
+  if(NAV.mesh)scene.remove(NAV.mesh);const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));NAV.mesh=new THREE.Mesh(geo,navMat);NAV.mesh.renderOrder=5;scene.add(NAV.mesh)}
+function openNav(){$('navPanel').hidden=false;if(document.pointerLockElement)document.exitPointerLock?.();const list=$('navList');list.textContent='';
+  const add=(t,fn)=>{const b=document.createElement('button');b.type='button';b.textContent=t;b.addEventListener('click',fn);list.append(b)};
+  if(NAV.target)add('✕ Сбросить маршрут',()=>{clearNav();closePanels()});
+  if(P.job&&P.job.dest)add('★ Задание: '+(P.job.name||''),()=>{setNav(P.job.dest,P.job.name,true);closePanels()});
+  for(const p of PLACES)add(p.name+' · '+Math.round(dist(p.at,player.pos))+' м',()=>{setNav(p.at,p.name);closePanels();feed('Маршрут: '+p.name,'info')});
+  const c=$('navCv'),g=c.getContext('2d');g.drawImage(mmBase,0,0,600,600);const k=600/MW;
+  if(NAV.target){g.fillStyle='#f2cd37';g.beginPath();g.arc(mp(NAV.target.x)*k,mp(NAV.target.z)*k,7,0,TAU);g.fill()}
+  g.fillStyle='#f2cd37';g.strokeStyle='#000';g.lineWidth=2;g.beginPath();g.arc(mp(player.pos.x)*k,mp(player.pos.z)*k,6,0,TAU);g.fill();g.stroke()}
+$('navCv').addEventListener('click',e=>{const r=$('navCv').getBoundingClientRect();const x=(e.clientX-r.left)/r.width*300-150,z=(e.clientY-r.top)/r.height*300-150;setNav(new V3(x,0.3,z),'Точка на карте');closePanels();feed('Маршрут проложен','info')});
+$('navX').addEventListener('click',closePanels);$('shopX').addEventListener('click',closePanels);
 
 // ---------- world assembly
 function buildWorld(){
   makeBaseTextures();buildGraph();buildGround();
   // police / hospital / shops / square
-  lot(blockAt(1,1),C.dgrey);place(buildPolice(),-25,-21,0,C.mblue);parked('police',C.white,-14,-10.5,Math.PI/2);parked('police',C.white,-35,-10.5,Math.PI/2);
-  lot(blockAt(2,1),C.lgrey);place(buildHospital(),25,-21,0,C.white);parked('ambulance',C.white,38,-10.5,-Math.PI/2);
+  lot(blockAt(2,2),C.dgrey);place(buildPolice(),-25,-21,0,C.mblue);parked('police',C.white,-14,-10.5,Math.PI/2);parked('police',C.white,-35,-10.5,Math.PI/2);
+  lot(blockAt(3,2),C.lgrey);place(buildHospital(),25,-21,0,C.white);parked('ambulance',C.white,38,-10.5,-Math.PI/2);parked('ambulance',C.white,12,-10.5,-Math.PI/2);
   {const hz=new THREE.Mesh(new THREE.CircleGeometry(2.6,32),new THREE.MeshBasicMaterial({color:C.bgreen,transparent:true,opacity:0.55}));hz.rotation.x=-Math.PI/2;hz.position.set(SPOTS.hospital.x,0.38,SPOTS.hospital.z);scene.add(hz)}
-  lot(blockAt(2,2),C.dgrey);place(buildShop('pizza'),13,21,Math.PI,C.red);place(buildShop('market'),25,21,Math.PI,C.green);place(buildShop('jewel'),37,21,Math.PI,C.purple);
+  lot(blockAt(3,3),C.dgrey);place(buildShop('pizza'),13,21,Math.PI,C.red);place(buildShop('market'),25,21,Math.PI,C.green);place(buildShop('jewel'),37,21,Math.PI,C.purple);
   parked('van',C.green,14,36,Math.PI/2);parked('car',C.blue,30,36,Math.PI/2);tree(40,39);tree(9,39);
-  buildSquare(blockAt(1,2));
+  buildSquare(blockAt(2,3));
   // residential ring
   const wallCols=[C.tan,C.mblue,C.yellow,C.white,C.sand,C.red,C.dtan,C.lime];const roofCols=[C.dred,C.dgrey,C.dblue,C.brown,C.black,C.green];
-  const house=(x,z,r)=>{lot(blocks.find(b=>x>b.x0&&x<b.x1&&z>b.z0&&z<b.z1),C.bgreen);place(buildHouse(pick(wallCols),pick(roofCols),{doorLeft:Math.random()<0.5,door:pick([C.dblue,C.red,C.brown,C.green]),mail:pick([C.red,C.blue,C.yellow])}),x,z,r,C.dtan)};
+  const house=(x,z,r)=>{lot(blocks.find(b=>x>b.x0&&x<b.x1&&z>b.z0&&z<b.z1),C.bgreen);HOUSE_DOORS.push(new V3(x+Math.sin(r)*5.5,0.3,z+Math.cos(r)*5.5));place(buildHouse(pick(wallCols),pick(roofCols),{doorLeft:Math.random()<0.5,door:pick([C.dblue,C.red,C.brown,C.green]),mail:pick([C.red,C.blue,C.yellow])}),x,z,r,C.dtan)};
   house(-67.5,-67,0);house(-35,-67,0);house(-15,-67,0);place(buildApartment(C.tan,C.white),15,-67,0,C.tan);house(35,-67,0);house(67.5,-67,0);
   house(-67.5,67,Math.PI);house(15,67,Math.PI);house(35,67,Math.PI);house(67.5,67,Math.PI);
-  lot(blockAt(1,3),C.dtan);place(buildSite(),-25,67.5,Math.PI,C.yellow);
+  lot(blockAt(2,4),C.dtan);place(buildSite(),-25,67.5,Math.PI,C.yellow);
   house(-67,-34,Math.PI/2);house(-67,-14,Math.PI/2);house(-67,25,Math.PI/2);
   house(67,-25,-Math.PI/2);place(buildApartment(C.mblue,C.white),67,25,-Math.PI/2,C.mblue);
   parked('car',C.red,-60,-14,0);parked('car',C.yellow,62,-35,0);parked('car',C.white,-25,-62,Math.PI/2);
   for(const [x,z] of [[-75,-75],[-58,-75],[-75,-58],[75,-75],[58,-75],[-75,75],[58,75],[75,58],[-58,40],[-58,10],[58,-10],[75,40],[-58,-40],[-44,-60],[-6,-60],[6,-75],[44,-60],[6,60],[44,75],[75,10]])tree(x,z);
   // lamps along inner blocks
   for(const [x,z] of [[-8,-8],[8,-8],[8,8],[-8,8],[-42,-8],[42,-8],[42,42],[-42,42]])lamp(x,z);
+  buildOuter(house);addStuds();
   drawMapBase();
   // people
-  for(let i=0;i<6;i++){const f=spawnFig('police',SPOTS.station.clone().add(new V3(rnd(-8,8),0,rnd(-1,2))),'police');f.hp=f.maxHp=80;f.setWeapon('pistol');f.mode='patrol'}
+  for(let i=0;i<8;i++){const f=spawnFig('police',SPOTS.station.clone().add(new V3(rnd(-8,8),0,rnd(-1,2))),'police');f.hp=f.maxHp=80;f.setWeapon('pistol');f.mode='patrol'}
   const pro=(kind,post,n=1)=>{for(let i=0;i<n;i++){const f=spawnFig(kind,post.clone().add(new V3(rnd(-2,2),0,rnd(-1,1))),'civ');f.post=post.clone();f.hp=f.maxHp=50}};
   pro('doctor',SPOTS.hospital.clone().add(new V3(-3,0,0)),2);pro('nurse',SPOTS.hospital.clone().add(new V3(3,0,0)));
   pro('chef',SPOTS.pizza);pro('shop',SPOTS.market);pro('jeweler',SPOTS.jewel);
   pro('builder',new V3(-25,0.3,60),3);pro('gardener',new V3(-33,0.3,30));
-  for(let i=0;i<18;i++){const n=rint(0,nodes.length-1);const f=spawnFig('civ',nodes[n],'civ');f.node=n;f.hp=f.maxHp=50;f.walk=rnd(1.8,2.6)}
+  for(let i=0;i<24;i++){let n=rint(0,nodes.length-1);while(quietAt(nodes[n]))n=rint(0,nodes.length-1);const f=spawnFig('civ',nodes[n],'civ');f.node=n;f.hp=f.maxHp=50;f.walk=rnd(1.8,2.6)}
   addTraffic();
   spawnPlayer(new V3(-25,0.3,16));renderWeapons();
 }
 function updateRespawns(dt){for(let i=respawns.length-1;i>=0;i--){const r=respawns[i];r.t-=dt;if(r.t>0)continue;respawns.splice(i,1);
-  let pos;if(r.team==='police')pos=SPOTS.station.clone();else if(r.post)pos=r.post.clone();else pos=nodes[rint(0,nodes.length-1)].clone();
+  let pos;if(r.team==='police')pos=SPOTS.station.clone();else if(r.post)pos=r.post.clone();else{let n=rint(0,nodes.length-1);while(quietAt(nodes[n]))n=rint(0,nodes.length-1);pos=nodes[n].clone()}
   if(player&&d2(pos,player.pos)<15*15&&r.team!=='police'){r.t=5;respawns.push(r);continue}
   const f=spawnFig(r.kind,pos,r.team);if(r.team==='police'){f.hp=f.maxHp=80;f.setWeapon('pistol');f.mode='patrol'}else{f.hp=f.maxHp=50;f.post=r.post||null}}}
 
 // ---------- main loop
 const camPos=new V3(0,60,60),camLook=new V3();let last=performance.now();
-let beam=null;
+let beam=null,saveT=0;
 function frame(now){requestAnimationFrame(frame);let dt=Math.min(0.05,(now-last)/1000);last=now;
   // in a shared city the world keeps going while one player sits in the pause menu
   if(paused&&!(NET.on&&NET.players.size)){renderer.render(scene,camera);return}
   T+=dt;const sim=isHost();
-  if(player&&!paused)updatePlayer(dt);
+  if(player&&!paused&&$('surgPanel').hidden)updatePlayer(dt);
   for(const f of figs){if(!f.alive||f===player||f.team==='statue')continue;
     if(f.mirror||f.remote)netInterp(f,dt);
     else{f.cd-=dt;
-      if(f.arrested){f.speedNow=0}
+      if(f.stunT>0){f.stunT-=dt;f.speedNow=0;if(!f.surrendered)f.pose='up';else f.pose='up'}
+      else if(f.arrested){f.speedNow=0}
       else if(f.team==='civ')updateCiv(f,dt);else if(f.team==='police')updatePolice(f,dt);else if(f.team==='crim')updateCrim(f,dt);else if(f.team==='riot')updateRiot(f,dt)}
     animFig(f,dt);
     if(f.bar){if(f.hp>=f.maxHp)dropBar(f);else{f.bar.bg.position.set(f.pos.x,f.pos.y+2.45,f.pos.z);f.bar.fill.position.set(f.pos.x-0.5,f.pos.y+2.45,f.pos.z);f.bar.fill.scale.x=Math.max(0.01,f.hp/f.maxHp)}}}
   if(player&&player.alive){player.cd-=dt;animFig(player,dt)}
   // separation
-  for(let i=0;i<figs.length;i++){const a=figs[i];if(!a.alive||a.team==='statue'||a.mirror||a.remote)continue;for(let j=i+1;j<figs.length;j++){const b=figs[j];if(!b.alive||b.team==='statue'||b.mirror||b.remote)continue;const dx=b.pos.x-a.pos.x,dz=b.pos.z-a.pos.z,dd=dx*dx+dz*dz;if(dd<0.64&&dd>1e-6){const d=Math.sqrt(dd),p=(0.8-d)/2;a.pos.x-=dx/d*p;a.pos.z-=dz/d*p;b.pos.x+=dx/d*p;b.pos.z+=dz/d*p}}}
+  for(let i=0;i<figs.length;i++){const a=figs[i];if(!a.alive||a.team==='statue'||a.mirror||a.remote||a.inCar)continue;for(let j=i+1;j<figs.length;j++){const b=figs[j];if(!b.alive||b.team==='statue'||b.mirror||b.remote||b.inCar)continue;const dx=b.pos.x-a.pos.x,dz=b.pos.z-a.pos.z,dd=dx*dx+dz*dz;if(dd<0.64&&dd>1e-6){const d=Math.sqrt(dd),p=(0.8-d)/2;a.pos.x-=dx/d*p;a.pos.z-=dz/d*p;b.pos.x+=dx/d*p;b.pos.z+=dz/d*p}}}
   if(T%2<dt){for(let i=figs.length-1;i>=0;i--)if(!figs[i].alive&&figs[i]!==player)figs.splice(i,1)}
-  updateBullets(dt);updatePieces(dt);updatePickups(dt);
+  updateBullets(dt);updateBooms(dt);updatePieces(dt);updatePickups(dt);
   if(sim){updateCars(dt);updateEvent(dt);updateRespawns(dt)}else netCars(dt);
+  if(started){updateJobs(dt);updateNav(dt);if(T>saveT){saveT=T+10;saveGame()}if(Math.floor(T)!==Math.floor(T-dt))updateHouses()}
+  if(!$('surgPanel').hidden)drawSurgery(dt);
   if(NET.on)netTick(dt);
   for(let i=bubbles.length-1;i>=0;i--){const b=bubbles[i];b.t-=dt;if(b.t<=0){b.f.g.remove(b.s);b.f.bubble=null;bubbles.splice(i,1)}}
   for(const b of blinkers)b.mat.emissiveIntensity=Math.sin(T*8+b.phase)>0?1.4:0.1;
@@ -1008,10 +1559,15 @@ function frame(now){requestAnimationFrame(frame);let dt=Math.min(0.05,(now-last)
   const evc=evCenter();
   if(evc){if(!beam){beam=new THREE.Mesh(new THREE.CylinderGeometry(1.4,1.4,40,16,1,true),new THREE.MeshBasicMaterial({color:0xff3a2a,transparent:true,opacity:0.18,depthWrite:false,side:THREE.DoubleSide}));scene.add(beam)}beam.visible=true;beam.position.set(evc.x,20,evc.z)}else if(beam)beam.visible=false;
   if(bannerT>0){bannerT-=dt;if(bannerT<=0.5)$('banner').style.opacity='0';if(bannerT<=0)$('banner').hidden=true}
-  // camera
-  if(started&&player){const tp=player.pos;camLook.lerp(new V3(tp.x,tp.y+1,tp.z),Math.min(1,dt*6));camPos.lerp(new V3(tp.x,tp.y+24*zoom,tp.z+18*zoom),Math.min(1,dt*5))}
+  // camera: from above, behind the shoulder, or through the eyes
+  if(started&&player){const tp=P.car?P.car.g.position:player.pos;player.head.visible=!(P.view==='first');
+    if(P.view==='iso'){const z=zoom*(P.car?1.5:1);camLook.lerp(new V3(tp.x,tp.y+1,tp.z),Math.min(1,dt*6));camPos.lerp(new V3(tp.x,tp.y+24*z,tp.z+18*z),Math.min(1,dt*5))}
+    else{if(P.car&&performance.now()-(mouse.moveT||0)>1500)camYaw=lerpAng(camYaw,P.car.yaw+(P.car.speed<-1?Math.PI:0),Math.min(1,dt*2.5));
+      const fx=Math.sin(camYaw),fz=Math.cos(camYaw),cp=Math.cos(camPitch),spt=Math.sin(camPitch);
+      if(P.view==='first'){const ey=P.car?tp.y+1.75:player.pos.y+1.72*(player.crouch?0.8:1);camPos.set(tp.x+fx*(P.car?0.6:0.3),ey,tp.z+fz*(P.car?0.6:0.3));camLook.set(camPos.x+fx*cp*10,ey+spt*10,camPos.z+fz*cp*10)}
+      else{const d=(P.car?9:5)*zoom;camPos.lerp(new V3(tp.x-fx*d*cp,tp.y+(P.car?3.4:2.4)-spt*d,tp.z-fz*d*cp),Math.min(1,dt*10));camLook.set(tp.x+fx*4,tp.y+1.6+spt*4,tp.z+fz*4)}}}
   else{const a=T*0.08;camLook.set(-5,0,5);camPos.set(Math.sin(a)*95,62,Math.cos(a)*95)}
-  camera.position.copy(camPos);camera.lookAt(camLook);
+  camera.position.copy(camPos);if(shakeT>0){shakeT-=dt;camera.position.x+=rnd(-1,1)*shakeT;camera.position.y+=rnd(-1,1)*shakeT}camera.lookAt(camLook);
   sun.position.set(camLook.x+30,camLook.y+60,camLook.z+22);sun.target.position.copy(camLook);
   renderer.render(scene,camera);
   if(Math.floor(T*15)!==Math.floor((T-dt)*15)){drawMap();updateHud()}}
@@ -1019,7 +1575,7 @@ function frame(now){requestAnimationFrame(frame);let dt=Math.min(0.05,(now-last)
 // ---------- multiplayer: up to 5 players share one city through the viewer's live room.
 // One player's page is the host: it runs townspeople, events and traffic and streams them in its presence.
 // Every other page shows copies ("mirrors"), and sends its hits and actions to the host.
-const POSES=['walk','aim','up','sign','cuffed','panic'],WCODES=[null,'fist','bat','crowbar','pistol','mac10','ak47','sign'];
+const POSES=['walk','aim','up','sign','cuffed','panic','lie'],WCODES=[null,...Object.keys(WPN)];
 const MAXP=5,TOPICS=['spawn','need','hit','dmg','kill','pdied','act'],ENC=new TextEncoder();
 async function netInit(){
   let room=null,user=null,r=null;NET.status='Подключение к сетевой игре…';renderPlist();
@@ -1113,21 +1669,39 @@ function setTag(e){const f=e.fig;if(!f)return;if(f.tag)f.g.remove(f.tag);
   const c=document.createElement('canvas');const g=c.getContext('2d');g.font='800 28px Nunito, sans-serif';const w=Math.ceil(g.measureText(txt).width)+28;c.width=w;c.height=44;
   g.fillStyle='rgba(20,24,34,.88)';g.fillRect(0,0,w,44);g.fillStyle='#f2cd37';g.fillRect(0,40,w,4);g.fillStyle='#fff';g.font='800 28px Nunito, sans-serif';g.textBaseline='middle';g.fillText(txt,14,21);
   const s=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),depthTest:false}));s.renderOrder=18;s.scale.set(w/44*0.42,0.42,1);s.position.y=2.3;f.g.add(s);f.tag=s}
-function updateRemote(e){const pr=e.pres;const role=ROLES[pr.r]?pr.r:'medic';
-  if(e.fig&&e.fig.role!==role)removeRemote(e);
+function updateRemote(e){const pr=e.pres;const role=ROLES[pr.r]?pr.r:'citizen';const lk=role+'|'+(pr.ou|0)+'|'+(pr.ms?1:0);
+  if(e.fig&&e.fig.lk!==lk)removeRemote(e);
+  remoteCar(e,pr);
   if(pr.dd){if(e.fig&&e.fig.alive){const f=e.fig;f.alive=false;dropBar(f);breakFig(f,null);sfx('break',f.pos);e.fig=null}return}
-  if(!e.fig){const f=new Fig(LOOKS['player_'+role](),'player');f.remote=true;f.peer=e.peer;f.role=role;f.hp=f.maxHp=100;f.pos.set(pr.x,groundY(pr.x,pr.z),pr.z);scene.add(f.g);figs.push(f);e.fig=f;setTag(e);
+  if(!e.fig){const f=new Fig(playerLook(role,OUTFITS[pr.ou|0]?pr.ou|0:0,!!pr.ms),'player');f.remote=true;f.peer=e.peer;f.role=role;f.lk=lk;f.hp=f.maxHp=100;f.pos.set(pr.x,groundY(pr.x,pr.z),pr.z);scene.add(f.g);figs.push(f);e.fig=f;setTag(e);
     NET.peerSeen.set(e.peer,Math.max(NET.peerSeen.get(e.peer)||0,...(Array.isArray(pr.sh)?pr.sh:[]).map(s=>+s[0]||0)))}
   const f=e.fig;f.net=pr;f.tx=pr.x;f.tz=pr.z;f.yaw=+pr.y||0;f.pose=POSES[pr.po]||'walk';const w=WCODES[pr.w]||null;if(f.weapon!==w)f.setWeapon(w);f.hp=clamp(+pr.hp||0,0,100);
+  f.crouch=!!pr.cr;f.stunT=pr.st?1:0;f.inCar=Array.isArray(pr.cv);f.g.visible=!f.inCar;
   const last=NET.peerSeen.get(e.peer)||0;let mx=last;
-  for(const s of (Array.isArray(pr.sh)?pr.sh:[]))if(Array.isArray(s)&&s[0]>last&&Number.isFinite(s[1])&&Number.isFinite(s[2])){visualShot(s[1],s[2],+s[3]||0);mx=Math.max(mx,s[0])}
-  NET.peerSeen.set(e.peer,mx)}
+  for(const s of (Array.isArray(pr.sh)?pr.sh:[]))if(Array.isArray(s)&&s[0]>last&&Number.isFinite(s[1])&&Number.isFinite(s[2])){visualShot(s[1],s[2],+s[3]||0,+s[4]||0);mx=Math.max(mx,s[0])}
+  NET.peerSeen.set(e.peer,mx);
+  // explosions from that player's rockets and grenades, shown here as pictures only
+  const lx=e.exSeen||0;let mxe=lx;for(const x of (Array.isArray(pr.ex)?pr.ex:[]))if(Array.isArray(x)&&x[0]>lx&&Number.isFinite(x[1])&&Number.isFinite(x[2])){if(e.exInit)explode(new V3(x[1],groundY(x[1],x[2]),x[2]),clamp(+x[3]||4,1,8),0,null,true);mxe=Math.max(mxe,x[0])}e.exSeen=mxe;e.exInit=true}
+// another player's car: they drive it, everyone else just shows it
+function remoteCar(e,pr){const cv=Array.isArray(pr.cv)?pr.cv:null;
+  if(e.car&&(!cv||cars[cv[0]]!==e.car)){const c=e.car;c.remoteDriver=null;if(NET.host){c.path=null;c.speed=0}e.car=null}
+  if(cv&&cars[cv[0]]&&Number.isFinite(cv[1])&&Number.isFinite(cv[2])){const c=cars[cv[0]];if(c===P.car)return;c.remoteDriver=e.peer;c.path=null;c.tx=cv[1];c.tz=cv[2];c.ty=+cv[3]||0;e.car=c;if(NET.host){c.g.position.x=cv[1];c.g.position.z=cv[2];c.yaw=c.ty;c.g.rotation.y=c.yaw}}}
 function removeRemote(e){if(e.fig){e.fig.alive=false;e.fig.gone=true;scene.remove(e.fig.g);e.fig=null}}
 function netInterp(f,dt){if(f.tx==null)return;const ox=f.pos.x,oz=f.pos.z,dx=f.tx-ox,dz=f.tz-oz;
   if(dx*dx+dz*dz>100){f.pos.x=f.tx;f.pos.z=f.tz}else{const k=Math.min(1,dt*12);f.pos.x+=dx*k;f.pos.z+=dz*k}
   f.pos.y=groundY(f.pos.x,f.pos.z);const sp=Math.hypot(f.pos.x-ox,f.pos.z-oz)/Math.max(dt,1e-3);f.speedNow=f.speedNow*0.75+Math.min(sp,10)*0.25}
-function netCars(dt){for(const c of cars){if(c.tx==null)continue;const p=c.g.position;const dx=c.tx-p.x,dz=c.tz-p.z;
+function netCars(dt){for(const c of cars){if(c.tx==null||c===P.car||c.gone)continue;const p=c.g.position;const dx=c.tx-p.x,dz=c.tz-p.z;
   if(dx*dx+dz*dz>225){p.x=c.tx;p.z=c.tz}else{const k=Math.min(1,dt*8);p.x+=dx*k;p.z+=dz*k}c.yaw=lerpAng(c.yaw,c.ty||0,Math.min(1,dt*8));c.g.rotation.y=c.yaw}}
+// the host's car list: same slots on every page; a slot can change model when the host respawns traffic
+function carMesh(car,kind,color){const p=car.g.position.clone();scene.remove(car.g);car.kind=kind;car.color=color;car.g=buildCar(kind,color);car.g.position.copy(p);car.g.rotation.y=car.yaw;scene.add(car.g)}
+function syncCar(i,c,fresh){const car=cars[i];if(!car)return;const kind=CARK[c[4]]||car.kind,color=Number.isFinite(c[5])?c[5]:car.color,fl=c[3]|0;
+  if(fl&4){if(!car.gone){car.gone=true;scene.remove(car.g);if(P.car===car)exitCar(true)}return}
+  if(car.gone){car.gone=false;scene.add(car.g)}
+  if(car.kind!==kind||car.color!==color||(car.wreck&&!(fl&1))){carMesh(car,kind,color);car.wreck=false;car.hp=1}
+  if((fl&1)&&!car.wreck){car.wreck=true;car.g.traverse(o=>{if(o.isMesh&&!o.isSprite)o.material=M(0x2b2b2b,5)});
+    if(!fresh){const at=car.g.position.clone();explode(at,5.5,0,null,true);const d=player?dist(at,player.pos):99;if(d<5.5&&player.alive)damage(player,85*(1-d/5.5*0.7)*(P.car===car?0.6:1),null,null)}
+    if(P.car===car)exitCar(true)}
+  if(car===P.car||car.remoteDriver)return;car.tx=c[0];car.tz=c[1];car.ty=+c[2]||0}
 // host election: the visible page that is already hosting keeps the city; otherwise the earliest arrival takes it
 function electHost(){if(!NET.me)return;const now=performance.now();const grace=now-NET.joinT<2500;
   const c=[{peer:NET.me,vis:!document.hidden,H:NET.host&&!grace,hs:NET.hs,since:NET.since}];
@@ -1151,21 +1725,23 @@ function promote(){let maxId=FID;
     if(f.team==='crim'||f.team==='riot'||f.arrested||f.leaving)despawn(f);else if(f.team==='police'){f.mode='patrol';if(!f.weapon)f.setWeapon('pistol')}}
   FID=maxId+1;NET.mirrors.clear();EV.cur=null;EV.next=25;$('eventBox').hidden=true;NET.lastEv=null;
   const count=t=>figs.filter(f=>f.alive&&f.team===t).length;
-  for(let i=count('police');i<6;i++)respawns.push({t:2+i,kind:'police',team:'police'});
-  for(let i=count('civ');i<20;i++)respawns.push({t:3+i*0.5,kind:'civ',team:'civ'});
-  for(const c of cars){c.tx=null;let best=1e9,bi=c.i;for(let k=0;k<4;k++){const d=segDist(c.g.position.x,c.g.position.z,c.path[k],c.path[(k+1)%4]);if(d<best){best=d;bi=(k+1)%4}}c.i=bi;c.speed=0}
+  for(let i=count('police');i<8;i++)respawns.push({t:2+i,kind:'police',team:'police'});
+  for(let i=count('civ');i<26;i++)respawns.push({t:3+i*0.5,kind:'civ',team:'civ'});
+  for(const c of cars){c.tx=null;if(!c.path)continue;let best=1e9,bi=c.i;for(let k=0;k<4;k++){const d=segDist(c.g.position.x,c.g.position.z,c.path[k],c.path[(k+1)%4]);if(d<best){best=d;bi=(k+1)%4}}c.i=bi;c.speed=0}
   for(const f of figs)if(f.alive&&f.team!=='player'&&f.team!=='statue')NET.defsQ.push(f);
   feed('Теперь твоя страница ведёт город для всех игроков','ev')}
 function snapWorld(){const n=[],civ=[];
   for(const f of figs){if(!f.alive||f.gone||f.team==='player'||f.team==='statue'||f.mirror)continue;
-    const a=(Math.max(0,POSES.indexOf(f.pose))<<3)|Math.max(0,WCODES.indexOf(f.weapon));const fl=(f.surrendered?1:0)|((f.leaving||f.arrested)?2:0)|(f.angryAt?4:0)|(f.swingT>0?8:0);
-    (f.team==='civ'?civ:n).push([f.id,r1(f.pos.x),r1(f.pos.z),r2(f.yaw),a,(Math.round(clamp(f.hp/f.maxHp,0,1)*100)<<4)|fl])}
+    const a=(Math.max(0,POSES.indexOf(f.pose))<<6)|Math.max(0,WCODES.indexOf(f.weapon));const fl=(f.surrendered?1:0)|((f.leaving||f.arrested)?2:0)|(f.angryAt?4:0)|(f.swingT>0?8:0)|(f.stunT>0?16:0);
+    (f.team==='civ'?civ:n).push([f.id,r1(f.pos.x),r1(f.pos.z),r2(f.yaw),a,(Math.round(clamp(f.hp/f.maxHp,0,1)*100)<<5)|fl])}
   const e=EV.cur;const ev=e?{id:EV.k,k:e.label,t:e.title,i:e.info||'',x:r1(e.center.x),z:r1(e.center.z),sl:e.slogan||'',e:e.escaped}:null;
   const ap={};for(const f of figs)if(f.remote&&f.arrestProg>0.05)ap[f.peer]=r2(f.arrestProg);
-  return {n:n.concat(civ),d:NET.deaths.map(d=>d.slice(0,4)),s:NET.shots,b:NET.bub,c:cars.map(c=>[r1(c.g.position.x),r1(c.g.position.z),r2(c.yaw)]),ev,ap}}
+  return {n:n.concat(civ),d:NET.deaths.map(d=>d.slice(0,4)),s:NET.shots,b:NET.bub,c:cars.map(c=>[r1(c.g.position.x),r1(c.g.position.z),r2(c.yaw),(c.wreck?1:0)|(c.driver||c.remoteDriver?2:0)|(c.gone?4:0),CARK.indexOf(c.kind),c.color]),ev,ap}}
 function sendPresence(){if(!NET.on||!player)return;const grace=performance.now()-NET.joinT<2500;
   const pr={since:NET.since,vis:!document.hidden,H:NET.host&&!grace?1:0,hs:NET.hs,r:P.role,x:r1(player.pos.x),z:r1(player.pos.z),y:r2(player.yaw||0),
-    po:Math.max(0,POSES.indexOf(player.pose)),w:Math.max(0,WCODES.indexOf(player.weapon)),hp:Math.round(Math.max(0,player.hp)),wa:P.wanted,bu:P.busy?1:0,dd:player.alive?0:1,sh:NET.myShots,nm:P.name||''};
+    po:Math.max(0,POSES.indexOf(player.pose)),w:Math.max(0,WCODES.indexOf(player.weapon)),hp:Math.round(Math.max(0,player.hp)),wa:P.wanted,bu:P.busy?1:0,dd:player.alive?0:1,sh:NET.myShots,nm:P.name||'',
+    ex:NET.myEx,ho:P.house,gp:P.gps?1:0,st:P.stunT>0?1:0,ou:P.outfit,ms:P.masked?1:0,cr:P.stealth?1:0};
+  if(P.car)pr.cv=[P.car.id,r1(P.car.g.position.x),r1(P.car.g.position.z),r2(P.car.yaw)];
   let W=(NET.host&&!grace)?snapWorld():null;pr.W=W;
   // presence is capped at 4 KiB: drop speech, then shots, then the townspeople at the end of the list
   if(W){let len=ENC.encode(JSON.stringify(pr)).length;if(len>3900){W.b=[];len=ENC.encode(JSON.stringify(pr)).length}if(len>3900){W.s=W.s.slice(-3);len=ENC.encode(JSON.stringify(pr)).length}while(len>3900&&W.n.length){W.n.splice(-4);len=ENC.encode(JSON.stringify(pr)).length}}
@@ -1195,15 +1771,15 @@ function applyWorld(w){if(!w||typeof w!=='object')return;const fresh=NET.fresh;N
   const present=new Set();
   for(const e of N){if(!Array.isArray(e))continue;const [id,x,z,y,a,b]=e;if(!Number.isFinite(x)||!Number.isFinite(z))continue;present.add(id);let f=NET.mirrors.get(id);
     if(!f){const def=NET.defs.get(id);if(!def){NET.need.add(id);continue}f=makeMirror(def,x,z)}
-    f.tx=x;f.tz=z;f.yaw=+y||0;f.pose=POSES[a>>3]||'walk';const wn=WCODES[a&7]||null;if(f.weapon!==wn)f.setWeapon(wn,String((w.ev&&w.ev.sl)||'!').slice(0,24));
-    const fl=b&15;f.hp=((b>>4)/100)*f.maxHp;if(f.hp<f.maxHp-0.5)hpBar(f);
+    f.tx=x;f.tz=z;f.yaw=+y||0;f.pose=POSES[a>>6]||'walk';const wn=WCODES[a&63]||null;if(f.weapon!==wn)f.setWeapon(wn,String((w.ev&&w.ev.sl)||'!').slice(0,24));
+    const fl=b&31;f.hp=((b>>5)/100)*f.maxHp;if(f.hp<f.maxHp-0.5)hpBar(f);f.stunT=(fl&16)?1:0;
     const sur=!!(fl&1);if(sur&&!f.surrendered){f.surrendered=true;f.surrT=T}else if(!sur)f.surrendered=false;
     const lv=!!(fl&2),recent=f.actT>T-1.5;if(lv){f.leaving=true}else if(!recent){f.leaving=false;f.arrested=false}
     f.angryAt=(fl&4)?f:null;if((fl&8)&&!(f.swingT>0))f.swingT=0.28}
   for(const [id,f] of NET.mirrors)if(!present.has(id)){NET.mirrors.delete(id);if(f.alive){spawnSparks(f.pos.clone().setY(f.pos.y+1),C.lgrey,6);despawn(f)}}
   for(const s of S)if(Array.isArray(s)&&s[0]>NET.seen.s){NET.seen.s=s[0];if(Number.isFinite(s[1])&&Number.isFinite(s[2]))visualShot(s[1],s[2],+s[3]||0)}
   for(const b of B)if(Array.isArray(b)&&b[0]>NET.seen.b){NET.seen.b=b[0];const f=NET.mirrors.get(b[1]);if(f)say(f,String(b[2]).slice(0,40))}
-  if(Array.isArray(w.c))w.c.forEach((c,i)=>{const car=cars[i];if(car&&Array.isArray(c)&&Number.isFinite(c[0])&&Number.isFinite(c[1])){car.tx=c[0];car.tz=c[1];car.ty=+c[2]||0}});
+  if(Array.isArray(w.c))w.c.slice(0,80).forEach((c,i)=>{if(Array.isArray(c)&&Number.isFinite(c[0])&&Number.isFinite(c[1]))syncCar(i,c,fresh)});
   netEvent(w.ev&&typeof w.ev==='object'?w.ev:null);
   P.arrestProg=(w.ap&&NET.me&&+w.ap[NET.me])||0}
 function netEvent(ev){const key=ev?String(ev.id)+'|'+String(ev.t):null;
@@ -1219,14 +1795,24 @@ function onNetMsg(m){if(m.sameTab||m.kind!=='viewer')return;const d=(m.data&&typ
   switch(m.topic){
     case 'spawn':if(NET.host)return;for(const def of (Array.isArray(d.l)?d.l:[]))if(def&&Number.isInteger(def.i))NET.defs.set(def.i,def);break;
     case 'need':if(!NET.host)return;{const ids=new Set((Array.isArray(d.ids)?d.ids:[]).slice(0,80));for(const f of figs)if(ids.has(f.id)&&f.alive&&!f.remote&&!f.mirror&&f.team!=='player'&&f.team!=='statue'&&!NET.defsQ.includes(f))NET.defsQ.push(f)}break;
-    case 'hit':if(!NET.host)return;{const t=figs.find(x=>x.id===d.id&&x.alive&&!x.remote&&!x.mirror&&x.team!=='player'&&x.team!=='statue');const e=NET.players.get(m.peer);
-      if(t&&e&&e.fig&&e.fig.alive)damage(t,clamp(+d.amt||0,0,40),e.fig,{x:clamp(+d.dx||0,-1,1),z:clamp(+d.dz||0,-1,1)})}break;
-    case 'dmg':if(d.to!==NET.me||!player||!player.alive||P.busy||P.god)return;{const a=clamp(+d.amt||0,0,40);player.hp-=a;player.hurtT=T;spawnSparks(new V3(player.pos.x,player.pos.y+1.1,player.pos.z),player.look.torso,3);
+    case 'hit':if(!NET.host)return;{const e=NET.players.get(m.peer);if(!e||!e.fig)return;
+      if(Number.isInteger(d.car)){const c=cars[d.car];if(c&&dist(c.g.position,e.fig.pos)<60)carDamage(c,clamp(+d.v||0,0,1),e.fig);return}
+      const t=figs.find(x=>x.id===d.id&&x.alive&&!x.remote&&!x.mirror&&x.team!=='player'&&x.team!=='statue');
+      if(t&&d.stun){stunFig(t,e.fig);return}
+      if(t&&e.fig.alive)damage(t,clamp(+d.amt||0,0,200),e.fig,{x:clamp(+d.dx||0,-1,1),z:clamp(+d.dz||0,-1,1)})}break;
+    case 'dmg':if(d.to!==NET.me||!player)return;
+      if(d.loot&&typeof d.loot==='object'){const n=clamp(+d.loot.d||0,0,99);P.drugs+=n;if(WPN[d.loot.w])giveWeapon(d.loot.w,true);feed('Добыча из дома: '+(n?n+' пакетов ':'')+(WPN[d.loot.w]?WPN[d.loot.w].name:'')+(!n&&!WPN[d.loot.w]?'тайник пуст':''),'crime');return}
+      if(Number.isInteger(d.rob)){if(typeof d.from==='string')onHouseRobbed(d.rob,d.from);return}
+      if(!player.alive||P.busy||P.god)return;
+      if(d.gps){if(P.wanted>0&&!P.gps)gpsOn(P.car?P.car.id:-1);return}
+      if(d.stun){P.stunT=4;feed('Тебя оглушили электрошокером!','crime');return}
+      if(d.arrest){if(P.wanted>0)arrestPlayer();return}
+      {const a=clamp(+d.amt||0,0,200);player.hp-=a;player.hurtT=T;spawnSparks(new V3(player.pos.x,player.pos.y+1.1,player.pos.z),player.look.torso,3);
       if(player.hp<=0){if(typeof d.from==='string')netEmit('pdied',{by:d.from});kill(player,null,null)}}break;
     case 'pdied':if(d.by!==NET.me)return;{const e=NET.players.get(m.peer);lawCheckPlayer({net:e?e.pres:{},crimeHit:1},true)}break;
     case 'kill':if(d.to!==NET.me)return;
       if(d.team==='crim'){P.stats.kills++;NET.evHelp++;if(P.role==='bandit')feed('Ты поссорился с бандой','info');else{const r=P.role==='police'?75:50;P.money+=r;feed('Бандит обезврежен  +'+r,'good')}}
-      else if(['civ','police','riot'].includes(d.team))lawCheck({team:d.team,crimeHit:1},true);break;
+      else if(['civ','police','riot'].includes(d.team)&&!(T<(P.silentUntil||0)))lawCheck({team:d.team,crimeHit:1},true);break;
     case 'act':if(!NET.host)return;hostAct(m.peer,d);break}}
 function hostAct(peer,d){const e=NET.players.get(peer);const src=e&&e.fig;
   if(d.type==='event'){if(!EV.cur)startEvent(EV.order[EV.k++%EV.order.length]);return}
