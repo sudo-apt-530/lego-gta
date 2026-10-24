@@ -37,6 +37,12 @@ body{background:#8ec9f0;color:var(--paper);font-family:var(--f-body);font-size:1
 .stars b{color:var(--brick-yellow);text-shadow:0 0 6px rgba(242,205,55,.7)}
 .stars.flash{animation:flash .5s 3}
 @keyframes flash{50%{transform:scale(1.25)}}
+.plist{display:grid;gap:3px;border-top:1px solid var(--plate-edge);padding-top:7px;font-size:12px;font-weight:700}
+.plist div{display:flex;justify-content:space-between;gap:8px}
+.plist span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.plist b{color:var(--brick-yellow);white-space:nowrap}
+.plist .me{color:var(--brick-yellow)}
+body.mp .feed{top:calc(env(safe-area-inset-top,0px) + 200px + var(--prows,1) * 19px)}
 .label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:800}
 #minimap{position:absolute;top:calc(env(safe-area-inset-top,0px) + 20px);right:max(16px,env(safe-area-inset-right,0px));width:190px;height:190px;border-radius:6px;border:3px solid var(--plate-edge);background:#4b9f4a;box-shadow:0 4px 0 rgba(0,0,0,.35)}
 .event{position:absolute;top:calc(env(safe-area-inset-top,0px) + 20px);left:50%;transform:translateX(-50%);min-width:300px;max-width:min(460px,calc(100vw - 500px));text-align:center;border-color:var(--brick-red)}
@@ -73,6 +79,9 @@ body{background:#8ec9f0;color:var(--paper);font-family:var(--f-body);font-size:1
 .go:hover{filter:brightness(1.08)}.go:focus-visible{outline:3px solid #fff;outline-offset:3px}
 .note{color:var(--muted);font-size:12px;text-align:center}
 .pick{text-align:center;color:var(--paper)}
+.nickrow{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
+.nickrow input{pointer-events:auto;font:700 16px var(--f-body);padding:8px 12px;border-radius:5px;border:2px solid var(--plate-edge);background:var(--plate);color:var(--paper);width:min(240px,100%)}
+.nickrow input:focus-visible{outline:none;border-color:var(--brick-yellow)}
 .roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
 .role{pointer-events:auto;cursor:pointer;text-align:left;display:grid;gap:6px;align-content:start;padding:12px 14px 14px;border-radius:6px;border:2px solid var(--plate-edge);background:var(--plate);color:var(--paper);font-family:var(--f-body);box-shadow:0 4px 0 rgba(0,0,0,.35);transition:transform .12s,border-color .12s}
 .role:hover,.role:focus-visible{border-color:var(--brick-yellow);outline:none;transform:translateY(-2px)}
@@ -105,6 +114,7 @@ body{background:#8ec9f0;color:var(--paper);font-family:var(--f-body);font-size:1
     <div class="row"><span class="label">Здоровье</span><span class="label" id="role">Горожанин</span></div>
     <div class="hp"><i id="hpFill"></i></div>
     <div class="row"><div class="money"><span class="stud"></span><span id="money">0</span></div><div class="stars" id="stars"></div></div>
+    <div class="plist" id="plist" hidden></div>
   </div>
   <canvas id="minimap" width="190" height="190"></canvas>
   <div class="brick event" id="eventBox" hidden><div class="label" id="evKind">Событие</div><div class="t" id="evTitle"></div><div class="i" id="evInfo"></div></div>
@@ -130,6 +140,7 @@ body{background:#8ec9f0;color:var(--paper);font-family:var(--f-body);font-size:1
 <div class="start" id="start">
   <div class="card">
     <div class="logo"><h1>Кирпичный город</h1><p>Фан-игра в стиле наборов LEGO City: полиция, больница, магазины и много происшествий</p></div>
+    <div class="nickrow"><label class="label" for="nick">Имя в сетевой игре</label><input id="nick" type="text" maxlength="16" autocomplete="nickname" placeholder="Например, Кирпичик"></div>
     <div class="label pick">Выбери профессию, чтобы начать</div>
     <div class="roles" id="roles"></div>
     <div class="brick controls" id="controls">
@@ -143,7 +154,7 @@ body{background:#8ec9f0;color:var(--paper);font-family:var(--f-body);font-size:1
       <div><kbd>N</kbd>вызвать происшествие сейчас</div>
       <div><kbd>L</kbd>законы города</div>
     </div>
-    <div class="note">Нужны клавиатура и мышь. Лечение — у входа в больницу (зелёный круг). Подбирай оружие и детальки-монетки с поверженных бандитов.</div>
+    <div class="note">Сетевая игра до 5 человек в одном городе: на claude.ai, в файле с GitHub или на любом сайте. Свой город для друзей: добавь к адресу <b>#city=код</b>, например #city=druzya. Нужны клавиатура и мышь. Лечение — у входа в больницу.</div>
   </div>
 </div>
 <div class="start" id="pause" hidden>
@@ -577,10 +588,23 @@ const ROLES={
   bandit:{name:'Бандит',desc:'Грабь кассы (вдвое больше денег) и получай долю, если банда уходит от полиции. Свои тебя не трогают, а полиция замечает нарушения издалека.',gear:'Старт: бита и пистолет · на стройке',c:['#f4f4f4','#1d1d1f','#1d1d1f'],inv:{fist:1,bat:1,pistol:1},cur:'bat',spawn:'site'},
   medic:{name:'Медик',desc:'Лечи раненых жителей и полицейских клавишей E: +25 за пациента. Бандиты не трогают медика, пока он не подойдёт вплотную или не нападёт.',gear:'Старт: пистолет · у больницы',c:['#f4f4f4','#5a93db','#f4f4f4'],inv:{fist:1,pistol:1},cur:'fist',spawn:'hospital'},
 };
-const playerAggro=()=>P.role==='police'?26:P.role==='medic'?8:0;
+const roleAggro=r=>r==='police'?26:r==='medic'?8:0;
+
+// ---------- network state (filled in by the multiplayer section at the end)
+const NET={on:false,room:null,user:null,me:null,host:true,hostPeer:null,since:Date.now(),hs:0,joinT:0,players:new Map(),mirrors:new Map(),defs:new Map(),
+  need:new Set(),needT:0,defsQ:[],shots:[],shotSeq:0,myShots:[],mySeq:0,deaths:[],deathSeq:0,bub:[],bubSeq:0,seen:{s:0,d:0,b:0},fresh:false,
+  peerSeen:new Map(),tick:0,electT:0,plistT:0,evHelp:0,lastEv:null,evCenter:null,evNear:0,evEsc:0,cand:null,candT:0,names:{},roomName:''};
+const isHost=()=>!NET.on||NET.host;
+const r1=v=>Math.round(v*10)/10,r2=v=>Math.round(v*100)/100;
+const ring=(arr,item,n)=>{arr.push(item);while(arr.length>n)arr.shift()};
+function netEmit(topic,data){if(NET.on&&NET.room)NET.room.emit(topic,data).catch(()=>{})}
+const busyOf=t=>t===player?!!P.busy:!!(t&&t.net&&t.net.bu);
+const wantedOf=t=>t===player?P.wanted:(t&&t.net&&t.net.wa)||0;
+const aggroOf=t=>roleAggro(t===player?P.role:(t.net&&t.net.r));
+function wantedNear(f){let wp=null,bd=75*75;for(const p of figs){if(p.team!=='player'||!p.alive||busyOf(p)||wantedOf(p)===0)continue;const dd=d2(p.pos,f.pos);if(dd<bd){bd=dd;wp=p}}return wp}
 const SPOTS={hospital:new V3(25,0.3,-10.5),station:new V3(-25,0.3,-10),pizza:new V3(13,0.3,12.5),market:new V3(25,0.3,12.5),jewel:new V3(37,0.3,12.5),square:new V3(-25,0.3,18),site:new V3(-30,0.3,56.5)};
 
-function spawnFig(kind,pos,team){const f=new Fig(LOOKS[kind](),team);f.kind=kind;f.pos.copy(pos);f.pos.y=groundY(pos.x,pos.z);pushOut(f.pos,0.4);scene.add(f.g);figs.push(f);f.yaw=Math.random()*TAU;f.g.rotation.y=f.yaw;return f}
+function spawnFig(kind,pos,team){const f=new Fig(LOOKS[kind](),team);f.kind=kind;f.pos.copy(pos);f.pos.y=groundY(pos.x,pos.z);pushOut(f.pos,0.4);scene.add(f.g);figs.push(f);f.yaw=Math.random()*TAU;f.g.rotation.y=f.yaw;if(NET.on&&NET.host&&team!=='player')NET.defsQ.push(f);return f}
 function spawnPlayer(pos){player=spawnFig('player_'+P.role,pos,'player');player.setWeapon(P.cur);player.hp=player.maxHp=100;
   const ring=new THREE.Mesh(new THREE.RingGeometry(0.55,0.75,24),new THREE.MeshBasicMaterial({color:C.yellow,depthTest:false,transparent:true,opacity:0.9}));ring.rotation.x=-Math.PI/2;ring.position.y=0.05;ring.renderOrder=10;player.g.add(ring);
   const arrow=new THREE.Mesh(new THREE.ConeGeometry(0.22,0.45,4),new THREE.MeshBasicMaterial({color:C.yellow,depthTest:false}));arrow.rotation.x=Math.PI;arrow.position.y=2.75;arrow.renderOrder=10;player.g.add(arrow)}
@@ -602,7 +626,8 @@ let bannerT=0;function banner(t,sub){$('banner').innerHTML='';$('banner').append
 const bubbleTex={};
 function say(f,text,dur=2.6){if(!f.alive)return;if(f.bubble){f.g.remove(f.bubble.s);bubbles.splice(bubbles.indexOf(f.bubble),1)}
   let tex=bubbleTex[text];if(!tex){const c=document.createElement('canvas');const g=c.getContext('2d');g.font='800 30px Nunito, sans-serif';const w=Math.ceil(g.measureText(text).width)+36;c.width=w;c.height=64;g.fillStyle='#fff';g.strokeStyle='#1d1d1f';g.lineWidth=4;g.beginPath();g.roundRect?g.roundRect(2,2,w-4,52,14):g.rect(2,2,w-4,52);g.fill();g.stroke();g.beginPath();g.moveTo(w/2-8,53);g.lineTo(w/2,63);g.lineTo(w/2+8,53);g.fill();g.fillStyle='#1d1d1f';g.font='800 30px Nunito, sans-serif';g.textBaseline='middle';g.fillText(text,18,29);tex=bubbleTex[text]=new THREE.CanvasTexture(c);tex.userData={w}}
-  const s=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,depthTest:false}));s.renderOrder=20;const w=tex.userData.w;s.scale.set(w/64*0.62,0.62,1);s.position.y=2.75;f.g.add(s);f.bubble={s,t:dur,f};bubbles.push(f.bubble)}
+  const s=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,depthTest:false}));s.renderOrder=20;const w=tex.userData.w;s.scale.set(w/64*0.62,0.62,1);s.position.y=2.75;f.g.add(s);f.bubble={s,t:dur,f};bubbles.push(f.bubble);
+  if(NET.on&&NET.host&&f.team!=='player'&&!f.mirror)ring(NET.bub,[++NET.bubSeq,f.id,String(text).slice(0,40)],6)}
 function hpBar(f){if(f.bar)return;const bg=new THREE.Sprite(new THREE.SpriteMaterial({color:0x111111,depthTest:false}));bg.scale.set(1.04,0.14,1);bg.renderOrder=15;
   const col=f.team==='crim'?0xe0402a:f.team==='police'?0x3a7bff:f.team==='riot'?0xfe8a18:0x4b9f4a;const fill=new THREE.Sprite(new THREE.SpriteMaterial({color:col,depthTest:false}));fill.center.set(0,0.5);fill.scale.set(1,0.1,1);fill.renderOrder=16;scene.add(bg,fill);f.bar={bg,fill}}
 function dropBar(f){if(f.bar){scene.remove(f.bar.bg,f.bar.fill);f.bar=null}}
@@ -611,12 +636,12 @@ function dropBar(f){if(f.bar){scene.remove(f.bar.bg,f.bar.fill);f.bar=null}}
 const bulletGeo=new THREE.BoxGeometry(0.07,0.07,0.6),bulletMat=new THREE.MeshBasicMaterial({color:0xffe066});
 const sparkGeo=new THREE.BoxGeometry(0.14,0.1,0.14);
 const flashMat=new THREE.SpriteMaterial({color:0xffd24a,transparent:true,opacity:0.9,depthWrite:false});
-function canHit(o,t){if(o===t||!t.alive)return false;if(o.team==='player')return !(P.role==='police'&&t.team==='police');if(o.team==='police')return t.team==='crim'||(t.team==='player'&&P.wanted>=2);if(o.team==='crim')return !(t.team==='crim'&&t.gang===o.gang);return true}
+function canHit(o,t){if(o===t||!t.alive)return false;if(o.team==='player')return !(P.role==='police'&&t.team==='police');if(o.team==='police')return t.team==='crim'||(t.team==='player'&&wantedOf(t)>=2);if(o.team==='crim')return !(t.team==='crim'&&t.gang===o.gang);return true}
 function fire(f,tx,tz,npc){
   const w=WPN[f.weapon||'fist'];if(f.cd>0)return false;
   const dx=tx-f.pos.x,dz=tz-f.pos.z;const yaw=Math.atan2(dx,dz);f.yaw=yaw;
   if(w.melee){f.cd=w.cd*(npc?1.6:1);f.swingT=0.28;
-    setTimeout(()=>{if(!f.alive)return;let hit=false;for(const t of figs){if(!t.alive||t===f||t.team==='statue')continue;if(!canHit(f,t))continue;const ex=t.pos.x-f.pos.x,ez=t.pos.z-f.pos.z,dd=Math.hypot(ex,ez);if(dd>w.range||dd<0.01)continue;const dot=(ex*Math.sin(f.yaw)+ez*Math.cos(f.yaw))/dd;if(dot<0.35)continue;damage(t,w.dmg*(npc?(t===player?0.35:0.7):1),f,{x:ex/dd,z:ez/dd});hit=true}if(hit)sfx('hit',f.pos)},140);
+    setTimeout(()=>{if(!f.alive)return;let hit=false;for(const t of figs){if(!t.alive||t===f||t.team==='statue')continue;if(!canHit(f,t))continue;const ex=t.pos.x-f.pos.x,ez=t.pos.z-f.pos.z,dd=Math.hypot(ex,ez);if(dd>w.range||dd<0.01)continue;const dot=(ex*Math.sin(f.yaw)+ez*Math.cos(f.yaw))/dd;if(dot<0.35)continue;damage(t,w.dmg*(npc?(t.team==='player'?0.35:0.7):1),f,{x:ex/dd,z:ez/dd});hit=true}if(hit)sfx('hit',f.pos)},140);
     return true}
   f.cd=npc?Math.max(w.cd*2.6,w.npcCd)*rnd(0.8,1.5):w.cd;f.pose='aim';
   const spread=w.spread+(npc?(f.team==='police'?0.07:0.16):0);const a=yaw+(Math.random()-0.5)*spread*2;
@@ -626,23 +651,33 @@ function fire(f,tx,tz,npc){
   bullets.push({m,vx:Math.sin(a)*75,vz:Math.cos(a)*75,owner:f,dmg:w.dmg*(npc?1:1),npc,life:0.9});
   const fl=new THREE.Sprite(flashMat);fl.position.copy(o);fl.scale.setScalar(0.6);scene.add(fl);setTimeout(()=>scene.remove(fl),50);
   sfx('shot',f.pos,w.snd);noise(f.pos,24,f);
+  if(NET.on){const s=[0,r1(o.x),r1(o.z),r2(a)];if(f===player){s[0]=++NET.mySeq;ring(NET.myShots,s,8)}else if(npc&&NET.host){s[0]=++NET.shotSeq;ring(NET.shots,s,10)}}
   return true}
+// a tracer that only shows another screen's shot; the shooter's own page decides what it hit
+function visualShot(x,z,a){const y=groundY(x,z)+1.25;const m=new THREE.Mesh(bulletGeo,bulletMat);m.position.set(x,y,z);m.rotation.y=a;scene.add(m);
+  bullets.push({m,vx:Math.sin(a)*75,vz:Math.cos(a)*75,owner:null,visual:true,life:0.9});
+  const fl=new THREE.Sprite(flashMat);fl.position.set(x,y,z);fl.scale.setScalar(0.6);scene.add(fl);setTimeout(()=>scene.remove(fl),50);sfx('shot',m.position,0.9)}
 function updateBullets(dt){
   for(let i=bullets.length-1;i>=0;i--){const b=bullets[i];const p=b.m.position;const ox=p.x,oz=p.z,nx=ox+b.vx*dt,nz=oz+b.vz*dt;b.life-=dt;
     let bestT=2,bestF=null;const sx=nx-ox,sz=nz-oz,L2=sx*sx+sz*sz;
-    for(const f of figs){if(!f.alive||f.team==='statue')continue;if(b.owner===f)continue;if(!canHit(b.owner,f))continue;if(p.y<f.pos.y||p.y>f.pos.y+2.1)continue;let t=((f.pos.x-ox)*sx+(f.pos.z-oz)*sz)/L2;t=clamp(t,0,1);const cx=ox+sx*t-f.pos.x,cz=oz+sz*t-f.pos.z;if(cx*cx+cz*cz<0.2&&t<bestT){bestT=t;bestF=f}}
+    if(!b.visual)for(const f of figs){if(!f.alive||f.team==='statue')continue;if(b.owner===f)continue;if(!canHit(b.owner,f))continue;if(p.y<f.pos.y||p.y>f.pos.y+2.1)continue;let t=((f.pos.x-ox)*sx+(f.pos.z-oz)*sz)/L2;t=clamp(t,0,1);const cx=ox+sx*t-f.pos.x,cz=oz+sz*t-f.pos.z;if(cx*cx+cz*cz<0.2&&t<bestT){bestT=t;bestF=f}}
     let wallT=2;for(const c of cols){if(p.y>c.h)continue;const t=segBox(ox,oz,nx,nz,c,0);if(t>=0&&t<wallT)wallT=t}
-    if(bestF&&bestT<wallT){const mul=b.npc?(bestF===player?0.18:0.6):1;damage(bestF,b.dmg*mul,b.owner,{x:b.vx/75,z:b.vz/75});scene.remove(b.m);bullets.splice(i,1);continue}
+    if(bestF&&bestT<wallT){const mul=b.npc?(bestF.team==='player'?0.18:0.6):1;damage(bestF,b.dmg*mul,b.owner,{x:b.vx/75,z:b.vz/75});scene.remove(b.m);bullets.splice(i,1);continue}
     if(wallT<=1){p.x=ox+sx*wallT;p.z=oz+sz*wallT;spawnSparks(p,0xd8d8d8,3);scene.remove(b.m);bullets.splice(i,1);continue}
     p.x=nx;p.z=nz;if(b.life<=0){scene.remove(b.m);bullets.splice(i,1)}}}
 function spawnSparks(p,color,n){for(let i=0;i<n;i++){const m=new THREE.Mesh(sparkGeo,M(color));m.position.copy(p);scene.add(m);sparks.push({m,v:new V3(rnd(-3,3),rnd(2,5),rnd(-3,3)),t:0.6})}}
 function noise(pos,r,src){for(const f of figs){if(!f.alive||f.team!=='civ'||f===src)continue;if(d2(f.pos,pos)<r*r){if(!(f.fleeT>0)&&Math.random()<0.25)say(f,pick(['Помогите!','Стреляют!','Ааа!','Бежим!']));f.fleeT=6;f.fleeFrom=pos.clone()}}}
 function damage(t,amt,src,dir){
   if(!t.alive||t.team==='statue')return;if(t===player&&(P.busy||P.god))return;
-  t.hp-=amt;t.lastHitBy=src;t.hurtT=T;spawnSparks(new V3(t.pos.x,t.pos.y+1.1,t.pos.z),t.look.torso,3);
+  const a10=Math.round(amt*10)/10,hitAt=new V3(t.pos.x,t.pos.y+1.1,t.pos.z);
+  // another player: their own page applies the damage
+  if(t.remote){if(src===player){netEmit('dmg',{to:t.peer,amt:a10,from:NET.me});lawCheckPlayer(t,false)}else if(NET.host&&src)netEmit('dmg',{to:t.peer,amt:a10});spawnSparks(hitAt,t.look.torso,3);return}
+  // a copy of the host's townsperson: tell the host, judge the hit here
+  if(t.mirror){if(src===player){netEmit('hit',{id:t.hid,amt:a10,dx:dir?r2(dir.x):0,dz:dir?r2(dir.z):0});lawCheck(t,false);if(t.team==='crim')NET.evHelp++;t.hp-=amt;hpBar(t);spawnSparks(hitAt,t.look.torso,3)}return}
+  t.hp-=amt;t.lastHitBy=src;t.hurtT=T;spawnSparks(hitAt,t.look.torso,3);
   if(t!==player)hpBar(t);
   if(src===player)lawCheck(t,t.hp<=0);
-  if(t.team==='crim'&&src===player)t.provoked=true;
+  if(t.team==='crim'&&src&&src.team==='player')t.provoked=true;
   if(t.team==='riot'&&src&&src.alive){t.angryAt=src;t.angryT=10;t.setWeapon('sign',EV.cur?EV.cur.slogan:'!');}
   if(t.team==='civ'&&src){t.fleeT=6;t.fleeFrom=src.pos.clone()}
   if(t.hp<=0){kill(t,src,dir);return}
@@ -654,6 +689,7 @@ function kill(t,src,dir){
   if(t.weapon&&!['fist','sign'].includes(t.weapon)&&t.team!=='player')dropWeapon(t.weapon,t.pos);
   const coins=t.team==='crim'?rint(4,7):t.team==='player'?0:rint(1,3);for(let i=0;i<coins;i++)dropCoin(t.pos,t.team==='crim'&&i<2?50:10);
   breakFig(t,dir);sfx('break',t.pos);
+  if(NET.on&&NET.host&&t!==player){ring(NET.deaths,[++NET.deathSeq,t.id,dir?r2(dir.x):0,dir?r2(dir.z):0],8);if(src&&src.remote)netEmit('kill',{to:src.peer,team:t.team})}
   if(t.team==='crim'&&src===player){P.stats.kills++;if(P.role==='bandit')feed('Ты поссорился с бандой','info');else{const r=P.role==='police'?75:50;P.money+=r;if(t.event)t.event.playerHelp++;feed('Бандит обезврежен  +'+r,'good')}}
   if(t.event)t.event.killed++;
   if(t===player){playerDown();return}
@@ -683,6 +719,10 @@ function lawCheck(t,killed){
   else if(t.team==='police'){if(killed)crime('Ст. 3 — убийство полицейского',3);else if(!t.crimeHit){t.crimeHit=1;crime('Ст. 3 — нападение на полицейского',2)}}
   // a bandit who has not surrendered is a legal target; shots already in flight when he raises his hands don't count
   else if(t.team==='crim'&&t.surrendered&&!t.crimeHit&&T-t.surrT>(P.role==='police'?2:1.5)){t.crimeHit=1;crime('Ст. 6 — удар по сдавшемуся',1)}}
+// another player counts as a townsperson; a police player may fight wanted players
+function lawCheckPlayer(f,killed){const n=f.net||{};if(P.role==='police'&&(n.wa||0)>0)return;
+  if(n.r==='police'){if(killed)crime('Ст. 3 — убийство полицейского',3);else if(!f.crimeHit){f.crimeHit=1;crime('Ст. 3 — нападение на полицейского',2)}}
+  else{if(killed)crime('Ст. 2 — убийство горожанина',2);else if(!f.crimeHit){f.crimeHit=1;crime('Ст. 1 — нападение на горожанина',1)}}}
 function crime(name,stars){
   if(!player||!player.alive||P.busy)return;
   const cr=P.role==='bandit'?46:34;let cop=null;for(const f of figs)if(f.alive&&f.team==='police'&&d2(f.pos,player.pos)<cr*cr){cop=f;break}
@@ -708,7 +748,7 @@ function idleAround(f,c,r,dt){if(!f.wTarget||d2(f.pos,f.wTarget)<0.4){f.wait=(f.
 // ---------- AI
 function nearestHostile(f,r){let best=null,bd=r*r;for(const t of figs){if(!t.alive||t===f)continue;let ok=false;
     if(f.team==='police')ok=t.team==='crim'&&!t.surrendered;
-    else if(f.team==='crim'){ok=(t.team==='police')||(t.team==='player'&&!P.busy&&(f.provoked||d2(t.pos,f.pos)<playerAggro()**2))||(t.team==='crim'&&t.gang!==f.gang&&!t.surrendered)}
+    else if(f.team==='crim'){ok=(t.team==='police')||(t.team==='player'&&!busyOf(t)&&(f.provoked||d2(t.pos,f.pos)<aggroOf(t)**2))||(t.team==='crim'&&t.gang!==f.gang&&!t.surrendered)}
     if(!ok)continue;const dd=d2(t.pos,f.pos);if(dd<bd){bd=dd;best=t}}return best}
 function combat(f,t,dt,keep){
   const dd=dist(f.pos,t.pos);const w=WPN[f.weapon||'fist'];f.aimDelay=(f.aimDelay||0)-dt;
@@ -725,18 +765,18 @@ function updateCiv(f,dt){
   for(const t of figs)if(t.alive&&t.team==='crim'&&!t.surrendered&&d2(t.pos,f.pos)<100){f.fleeT=5;f.fleeFrom=t.pos.clone();return}
   if(f.post)idleAround(f,f.post,2.5,dt);else wander(f,f.walk||2.2,dt)}
 function updatePolice(f,dt){
-  f.think-=dt;
+  f.think-=dt;let wp=null;
   if(f.think<=0){f.think=0.35;const prev=f.target;f.target=nearestHostile(f,26);
     if(f.target){f.mode='fight';if(prev!==f.target){f.aimDelay=0.5;if(Math.random()<0.4)say(f,pick(['Полиция! Бросай оружие!','Руки вверх!','Вызываю подкрепление!']))}}
-    else if(P.wanted>0&&player.alive&&!P.busy&&d2(player.pos,f.pos)<75*75){if(f.mode!=='chase'){f.aimDelay=0.8;say(f,P.wanted>=2?'Огонь на поражение!':'Стоять! Вы задержаны!')}f.mode='chase'}
+    else if((wp=wantedNear(f))){if(f.mode!=='chase'||f.chaseT!==wp){f.aimDelay=0.8;say(f,wantedOf(wp)>=2?'Огонь на поражение!':'Стоять! Вы задержаны!')}f.mode='chase';f.chaseT=wp}
     else{let sur=null,bd=50*50;for(const t of figs)if(t.alive&&((t.team==='crim'&&t.surrendered)||(t.team==='riot'&&!t.leaving&&!t.angryAt&&f.assign&&t.event&&t.event.t>20))&&(!t.claim||t.claim===f||!t.claim.alive)){const dd=d2(t.pos,f.pos);if(dd<bd){bd=dd;sur=t}}
       if(sur){if(f.arrestTarget&&f.arrestTarget!==sur&&f.arrestTarget.claim===f)f.arrestTarget.claim=null;f.mode='arrest';f.arrestTarget=sur;sur.claim=f}
       else f.mode=f.assign&&EV.cur?'respond':'patrol'}}
   switch(f.mode){
     case 'fight':if(!f.target||!f.target.alive||f.target.surrendered){f.think=0;f.pose='walk';break}combat(f,f.target,dt,12);break;
-    case 'chase':{if(!player.alive||P.busy||P.wanted===0){f.think=0;break}const dd=dist(f.pos,player.pos);
-      if(P.wanted===1){f.pose='walk';if(dd>1.3)navigate(f,player.pos,6.6,dt);else{f.speedNow=0;f.yaw=Math.atan2(player.pos.x-f.pos.x,player.pos.z-f.pos.z)}if(dd<1.8)P.arrestProg+=dt*1.6}
-      else combat(f,player,dt,11);break}
+    case 'chase':{const t=f.chaseT;if(!t||!t.alive||busyOf(t)||wantedOf(t)===0){f.think=0;break}const dd=dist(f.pos,t.pos);
+      if(wantedOf(t)===1){f.pose='walk';if(dd>1.3)navigate(f,t.pos,6.6,dt);else{f.speedNow=0;f.yaw=Math.atan2(t.pos.x-f.pos.x,t.pos.z-f.pos.z)}if(dd<1.8){if(t===player)P.arrestProg+=dt*1.6;else t.arrestProg=(t.arrestProg||0)+dt*1.6}}
+      else combat(f,t,dt,11);break}
     case 'arrest':{const t=f.arrestTarget;if(!t||!t.alive||t.gone||(t.team==='riot'&&(t.leaving||t.angryAt))){f.think=0;f.pose='walk';break}f.pose='walk';const dd=dist(f.pos,t.pos);
       if(dd>1.4){navigate(f,t.pos,5.5,dt);f.arrestT=0}else{f.speedNow=0;f.arrestT=(f.arrestT||0)+dt;if(f.arrestT>(t.team==='riot'?4:1.2)){arrestNpc(t,f);f.arrestT=0;f.think=0}}break}
     case 'respond':{f.pose='walk';if(!EV.cur){f.mode='patrol';break}const c=EV.cur.center;if(dist(f.pos,c)>6)navigate(f,c,6,dt);else idleAround(f,c,5,dt);break}
@@ -744,17 +784,17 @@ function updatePolice(f,dt){
 function updateCrim(f,dt){
   if(f.surrendered){f.pose='up';f.speedNow=0;return}
   f.think-=dt;if(f.think<=0){f.think=0.4;const prev=f.target;f.target=nearestHostile(f,f.gang?34:26);if(f.target&&prev!==f.target){f.aimDelay=f.target===player?1.1:0.6;if(Math.random()<0.35)say(f,pick(f.event.taunts))}}
-  if(f.target&&f.target.alive&&!(f.target===player&&P.busy)){combat(f,f.target,dt,f.gang?14:10);return}
+  if(f.target&&f.target.alive&&!busyOf(f.target)){combat(f,f.target,dt,f.gang?14:10);return}
   f.pose='walk';
   if(f.fleeing){navigate(f,f.exit,5.6,dt);if(d2(f.pos,f.exit)<4){f.event.escaped++;despawn(f);if(P.role==='bandit'&&f.event.banditNear&&player.alive){P.money+=60;feed('Банда ушла от полиции: твоя доля +60','good')}else feed('Бандит скрылся с места преступления','crime')}return}
   idleAround(f,f.home,3,dt)}
 function updateRiot(f,dt){
   if(f.leaving){f.pose='walk';navigate(f,f.exit,3,dt);if(d2(f.pos,f.exit)<4){despawn(f)}return}
-  if(f.angryAt){f.angryT-=dt;if(f.angryT<=0||!f.angryAt.alive||(f.angryAt===player&&P.busy)){f.angryAt=null;f.setWeapon('sign',f.event.slogan)}else{combat(f,f.angryAt,dt,1);return}}
+  if(f.angryAt){f.angryT-=dt;if(f.angryT<=0||!f.angryAt.alive||busyOf(f.angryAt)){f.angryAt=null;f.setWeapon('sign',f.event.slogan)}else{combat(f,f.angryAt,dt,1);return}}
   f.pose='sign';const e=f.event;const tgt=(e.leg%2?e.b:e.a).clone().add(f.off);navigate(f,tgt,1.7,dt);
   if(Math.random()<dt*0.12)say(f,e.slogan,2)}
 function arrestNpc(t,by){t.pose='cuffed';t.setWeapon(null);t.arrested=true;if(t.event)t.event.arrested++;if(by===player){P.stats.arrests++;const r=t.team==='riot'?30:P.role==='police'?150:100;P.money+=r;feed((t.team==='riot'?'Митингующий задержан  +':'Преступник арестован  +')+r,'good');if(t.event)t.event.playerHelp++}
-  else if(t.team==='crim')feed('Полиция арестовала преступника','info');
+  else if(t.team==='crim'&&by&&by.team==='police')feed('Полиция арестовала преступника','info');
   say(t,t.team==='riot'?'Это несправедливо!':'Ладно, ладно…',1.4);setTimeout(()=>{spawnSparks(t.pos.clone().setY(t.pos.y+1),C.lgrey,8);despawn(t)},1200)}
 function despawn(f){if(f.gone)return;f.gone=true;f.alive=false;dropBar(f);scene.remove(f.g)}
 
@@ -792,7 +832,7 @@ function updateEvent(dt){
   if(e.kind==='riot'){if(Math.floor(e.t/25)!==e.leg)e.leg=Math.floor(e.t/25);if(e.t>150&&!e.fled){e.fled=1;act.forEach(m=>{m.leaving=true});feed('Митингующие расходятся по домам','info')}}
   const total=e.members.length,done=total-act.length;
   $('eventBox').hidden=false;$('evKind').textContent=e.label;$('evTitle').textContent=e.title;
-  $('evInfo').textContent=e.kind==='riot'?`Митингующих: ${act.length} из ${total} · задержано ${e.arrested}`:`Преступников: ${act.length} из ${total} · обезврежено ${e.killed} · арестовано ${e.arrested}`;
+  e.info=e.kind==='riot'?`Митингующих: ${act.length} из ${total} · задержано ${e.arrested}`:`Преступников: ${act.length} из ${total} · обезврежено ${e.killed} · арестовано ${e.arrested}`;$('evInfo').textContent=e.info;
   if(act.length===0)endEvent()}
 function endEvent(){const e=EV.cur;EV.cur=null;EV.next=rnd(40,60);$('eventBox').hidden=true;P.stats.events++;
   for(const f of figs)if(f.assign===e)f.assign=null;
@@ -803,7 +843,7 @@ function endEvent(){const e=EV.cur;EV.cur=null;EV.next=rnd(40,60);$('eventBox').
 // ---------- player
 const keys={},mouse={x:0,y:0,down:false};const aim=new V3();const ray=new THREE.Raycaster();const aimPlane=new THREE.Plane(new V3(0,1,0),-1.25);
 addEventListener('keydown',e=>{if(!started)return;if(e.code==='Escape'||e.code==='KeyP'){setPause(!paused);e.preventDefault();return}if(paused)return;keys[e.code]=true;const n=parseInt(e.key);if(n>=1&&n<=6){const t=SLOTS[n-1];if(P.inv[t]){P.cur=t;if(player&&player.alive)player.setWeapon(t);renderWeapons()}}
-  if(e.code==='KeyL'){$('laws').hidden=!$('laws').hidden}if(e.code==='KeyN'&&!EV.cur)startEvent(EV.order[EV.k++%EV.order.length]);if(e.code==='KeyE')interact();if(e.code==='Space')e.preventDefault()});
+  if(e.code==='KeyL'){$('laws').hidden=!$('laws').hidden}if(e.code==='KeyN'){if(!isHost())netEmit('act',{type:'event'});else if(!EV.cur)startEvent(EV.order[EV.k++%EV.order.length])}if(e.code==='KeyE')interact();if(e.code==='Space')e.preventDefault()});
 addEventListener('keyup',e=>{keys[e.code]=false});
 cv.addEventListener('mousemove',e=>{mouse.x=e.clientX/innerWidth*2-1;mouse.y=-(e.clientY/innerHeight)*2+1});
 cv.addEventListener('mousedown',e=>{if(e.button===0)mouse.down=true});addEventListener('mouseup',()=>mouse.down=false);
@@ -812,7 +852,7 @@ cv.addEventListener('wheel',e=>{zoom=clamp(zoom+(e.deltaY>0?0.1:-0.1),0.55,1.6);
 addEventListener('blur',()=>{for(const k in keys)keys[k]=false;mouse.down=false;if(started)setPause(true)});
 function setPause(v){if(!started)return;paused=v;$('pause').hidden=!v;$('pauseBtn').hidden=v;for(const k in keys)keys[k]=false;mouse.down=false;
   if(v){$('banner').hidden=true;bannerT=0;$('pauseMenu').hidden=false;$('roles2').hidden=true;$('rolesHint').hidden=true;$('toggleLaws').textContent=$('laws').hidden?'Показать законы':'Скрыть законы';
-    $('pauseStats').textContent=`${ROLES[P.role].name} · монет ${P.money} · обезврежено ${P.stats.kills} · арестовано ${P.stats.arrests} · вылечено ${P.stats.heals} · происшествий ${P.stats.events}`;$('resume').focus()}}
+    $('pauseStats').textContent=`${ROLES[P.role].name} · монет ${P.money} · обезврежено ${P.stats.kills} · арестовано ${P.stats.arrests} · вылечено ${P.stats.heals} · происшествий ${P.stats.events}`+(NET.on&&NET.players.size?` · в городе ${NET.players.size+1} из 5 игроков, город не останавливается`:'');$('resume').focus()}}
 function renderRoles(el){el.innerHTML='';for(const [k,r] of Object.entries(ROLES)){const b=document.createElement('button');b.type='button';b.className='role'+(started&&P.role===k?' cur':'');b.dataset.r=k;
   b.innerHTML=`<span class="fig" style="--c0:${r.c[0]};--c1:${r.c[1]};--c2:${r.c[2]}"><i></i><b></b><em></em></span><span class="rn">${r.name}</span><span class="rd">${r.desc}</span><span class="rg">${r.gear}</span>`;
   b.addEventListener('click',()=>chooseRole(k));el.append(b)}}
@@ -820,13 +860,19 @@ function setRole(r){P.role=r;const R=ROLES[r];P.inv={...R.inv};P.cur=R.cur;P.wan
   if(player){player.alive=false;player.gone=true;scene.remove(player.g)}
   spawnPlayer(SPOTS[R.spawn].clone());renderWeapons();$('role').textContent=R.name;lastHud='';
   camPos.set(player.pos.x,player.pos.y+40,player.pos.z+30);feed('Ты теперь '+R.name.toLowerCase()+'. Удачной смены!','ev')}
-function chooseRole(k){if(!started){started=true;$('start').hidden=true;$('pauseBtn').hidden=false;try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}setRole(k);feed('Добро пожаловать в Кирпичный город! Скоро начнутся происшествия','ev')}
+function readNick(){const v=[...$('nick').value].filter(ch=>{const c=ch.codePointAt(0);return c>=32&&!(c>=127&&c<=159)&&!(c>=0x200b&&c<=0x200f)&&!(c>=0x2028&&c<=0x202e)&&!(c>=0x2060&&c<=0x206f)&&c!==0xfeff}).join('').trim().slice(0,16);P.name=v;try{localStorage.setItem('kg-nick',v)}catch(e){}}
+function chooseRole(k){readNick();if(!started){started=true;$('start').hidden=true;$('pauseBtn').hidden=false;try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}setRole(k);feed('Добро пожаловать в Кирпичный город! Скоро начнутся происшествия','ev')}
   else{setRole(k);setPause(false)}}
 const SHOPS=[{k:'pizza',name:'пиццерии'},{k:'market',name:'супермаркета'},{k:'jewel',name:'ювелирного'}];const shopCd={};
 function interactTarget(){if(!player||!player.alive||P.busy)return null;let best=null,bd=2.4*2.4;
   for(const f of figs){if(!f.alive||f.arrested||f===player)continue;const dd=d2(f.pos,player.pos);if(dd>bd)continue;if(f.team==='crim'&&f.surrendered){best={type:'arrest',f};bd=dd}else if(f.team==='riot'&&!f.leaving&&!f.angryAt){best={type:P.role==='police'?'detain':'talk',f};bd=dd}else if(P.role==='medic'&&['civ','police','riot'].includes(f.team)&&f.hp<f.maxHp-1){best={type:'heal',f};bd=dd}}
   if(best)return best;for(const s of SHOPS){const p=SPOTS[s.k].clone().setZ(14.4);if(d2(p,player.pos)<2.5*2.5)return{type:'rob',s}}return null}
 function interact(){const it=interactTarget();if(!it)return;
+  if(it.f&&it.f.mirror){const f=it.f;netEmit('act',{type:it.type,id:f.hid});NET.evHelp++;f.actT=T;
+    if(it.type==='arrest'||it.type==='detain'){f.arrested=true;f.pose='cuffed';P.stats.arrests++;const r=f.team==='riot'?30:P.role==='police'?150:100;P.money+=r;feed((f.team==='riot'?'Митингующий задержан  +':'Преступник арестован  +')+r,'good')}
+    else if(it.type==='talk'){f.leaving=true;say(f,pick(['Ладно, иду домой','Вы правы…','Ну и ладно!']));P.money+=30;feed('Митингующий согласился уйти  +30','good')}
+    else if(it.type==='heal'){f.hp=f.maxHp;spawnSparks(f.pos.clone().setY(f.pos.y+1.2),C.bgreen,8);P.money+=25;P.stats.heals++;feed('Пациент вылечен  +25','good');sfx('coin')}
+    return}
   if(it.type==='arrest'||it.type==='detain')arrestNpc(it.f,player);
   else if(it.type==='heal'){const f=it.f;f.hp=f.maxHp;spawnSparks(f.pos.clone().setY(f.pos.y+1.2),C.bgreen,8);say(f,pick(['Спасибо, доктор!','Мне уже лучше!','Вы мой спаситель!']));P.money+=25;P.stats.heals++;feed('Пациент вылечен  +25','good');sfx('coin')}
   else if(it.type==='talk'){const f=it.f;f.leaving=true;say(f,pick(['Ладно, иду домой','Вы правы…','Ну и ладно!']));P.money+=30;feed('Митингующий согласился уйти  +30','good');if(f.event)f.event.playerHelp++}
@@ -875,9 +921,9 @@ function drawMapBase(){mmBase=document.createElement('canvas');mmBase.width=mmBa
   g.font='900 9px Rubik, sans-serif';g.textAlign='center';g.fillStyle='#fff';const lbl=(t,x,z)=>{g.fillStyle='rgba(0,0,0,.6)';g.fillText(t,mp(x)+1,mp(z)+1);g.fillStyle='#fff';g.fillText(t,mp(x),mp(z))};
   lbl('ПОЛИЦИЯ',-25,-30);lbl('БОЛЬНИЦА',25,-30);lbl('МАГАЗИНЫ',25,36);lbl('ПЛОЩАДЬ',-25,40)}
 function drawMap(){if(!mmBase)return;mg.drawImage(mmBase,0,0);
-  for(const f of figs){if(!f.alive||f===player||f.team==='statue')continue;mg.fillStyle=f.team==='police'?'#3a7bff':f.team==='crim'?(f.surrendered?'#ffb0a0':'#ff2a1a'):f.team==='riot'?'#fe8a18':'rgba(255,255,255,.75)';const r=f.team==='civ'?1.6:2.6;mg.beginPath();mg.arc(mp(f.pos.x),mp(f.pos.z),r,0,TAU);mg.fill()}
+  for(const f of figs){if(!f.alive||f===player||f.team==='statue')continue;mg.fillStyle=f.team==='player'?'#f2cd37':f.team==='police'?'#3a7bff':f.team==='crim'?(f.surrendered?'#ffb0a0':'#ff2a1a'):f.team==='riot'?'#fe8a18':'rgba(255,255,255,.75)';const r=f.team==='civ'?1.6:f.team==='player'?3.4:2.6;mg.beginPath();mg.arc(mp(f.pos.x),mp(f.pos.z),r,0,TAU);mg.fill();if(f.team==='player'){mg.strokeStyle='#000';mg.lineWidth=1;mg.stroke()}}
   for(const c of cars){mg.fillStyle='#ddd';mg.fillRect(mp(c.g.position.x)-1.5,mp(c.g.position.z)-1.5,3,3)}
-  if(EV.cur){const c=EV.cur.center;mg.strokeStyle='#f2cd37';mg.lineWidth=2;mg.beginPath();mg.arc(mp(c.x),mp(c.z),7+Math.sin(T*5)*2,0,TAU);mg.stroke()}
+  const evc=evCenter();if(evc){const c=evc;mg.strokeStyle='#f2cd37';mg.lineWidth=2;mg.beginPath();mg.arc(mp(c.x),mp(c.z),7+Math.sin(T*5)*2,0,TAU);mg.stroke()}
   if(player&&player.alive){mg.save();mg.translate(mp(player.pos.x),mp(player.pos.z));mg.rotate(-player.yaw+Math.PI);mg.fillStyle='#f2cd37';mg.strokeStyle='#000';mg.lineWidth=1;mg.beginPath();mg.moveTo(0,-6);mg.lineTo(4.5,5);mg.lineTo(-4.5,5);mg.closePath();mg.fill();mg.stroke();mg.restore()}
   mg.fillStyle='rgba(255,255,255,.8)';mg.beginPath();mg.arc(mp(SPOTS.hospital.x),mp(SPOTS.hospital.z),3,0,TAU);mg.fill();mg.fillStyle='#4b9f4a';mg.fillRect(mp(SPOTS.hospital.x)-0.8,mp(SPOTS.hospital.z)-2.4,1.6,4.8);mg.fillRect(mp(SPOTS.hospital.x)-2.4,mp(SPOTS.hospital.z)-0.8,4.8,1.6)}
 function renderWeapons(){const el=$('weapons');el.innerHTML='';SLOTS.forEach((k,i)=>{if(!P.inv[k])return;const d=document.createElement('div');d.className='slot'+(P.cur===k?' on':'');d.innerHTML=`<span>${i+1}</span>`;d.append(WPN[k].name);el.append(d)})}
@@ -888,7 +934,9 @@ function updateHud(){if(!player)return;$('hpFill').style.width=Math.max(0,player
   if(P.wanted===1&&P.arrestProg>0.05){pr.hidden=false;pr.textContent='Полиция задерживает… '+Math.round(P.arrestProg/1.8*100)+'% — убегай!'}
   else if(it){pr.hidden=false;pr.innerHTML='<kbd>E</kbd> '+({arrest:'Арестовать сдавшегося',talk:'Уговорить разойтись',detain:'Задержать митингующего',heal:'Вылечить раненого',rob:'Ограбить кассу (нарушение закона!)'})[it.type]}
   else if(player.alive&&d2(player.pos,SPOTS.hospital)<9&&player.hp<player.maxHp){pr.hidden=false;pr.textContent='Лечение…'}
-  else pr.hidden=true}
+  else pr.hidden=true;
+  if(NET.on&&T>NET.plistT){NET.plistT=T+0.5;renderPlist()}}
+const evCenter=()=>isHost()?(EV.cur&&EV.cur.center):(NET.lastEv?NET.evCenter:null);
 
 // ---------- world assembly
 function buildWorld(){
@@ -932,23 +980,29 @@ function updateRespawns(dt){for(let i=respawns.length-1;i>=0;i--){const r=respaw
 const camPos=new V3(0,60,60),camLook=new V3();let last=performance.now();
 let beam=null;
 function frame(now){requestAnimationFrame(frame);let dt=Math.min(0.05,(now-last)/1000);last=now;
-  if(paused){renderer.render(scene,camera);return}
-  T+=dt;
-  if(player)updatePlayer(dt);
-  for(const f of figs){if(!f.alive||f===player||f.team==='statue')continue;f.cd-=dt;
-    if(f.arrested){f.speedNow=0}
-    else if(f.team==='civ')updateCiv(f,dt);else if(f.team==='police')updatePolice(f,dt);else if(f.team==='crim')updateCrim(f,dt);else if(f.team==='riot')updateRiot(f,dt);
+  // in a shared city the world keeps going while one player sits in the pause menu
+  if(paused&&!(NET.on&&NET.players.size)){renderer.render(scene,camera);return}
+  T+=dt;const sim=isHost();
+  if(player&&!paused)updatePlayer(dt);
+  for(const f of figs){if(!f.alive||f===player||f.team==='statue')continue;
+    if(f.mirror||f.remote)netInterp(f,dt);
+    else{f.cd-=dt;
+      if(f.arrested){f.speedNow=0}
+      else if(f.team==='civ')updateCiv(f,dt);else if(f.team==='police')updatePolice(f,dt);else if(f.team==='crim')updateCrim(f,dt);else if(f.team==='riot')updateRiot(f,dt)}
     animFig(f,dt);
     if(f.bar){if(f.hp>=f.maxHp)dropBar(f);else{f.bar.bg.position.set(f.pos.x,f.pos.y+2.45,f.pos.z);f.bar.fill.position.set(f.pos.x-0.5,f.pos.y+2.45,f.pos.z);f.bar.fill.scale.x=Math.max(0.01,f.hp/f.maxHp)}}}
   if(player&&player.alive){player.cd-=dt;animFig(player,dt)}
   // separation
-  for(let i=0;i<figs.length;i++){const a=figs[i];if(!a.alive||a.team==='statue')continue;for(let j=i+1;j<figs.length;j++){const b=figs[j];if(!b.alive||b.team==='statue')continue;const dx=b.pos.x-a.pos.x,dz=b.pos.z-a.pos.z,dd=dx*dx+dz*dz;if(dd<0.64&&dd>1e-6){const d=Math.sqrt(dd),p=(0.8-d)/2;a.pos.x-=dx/d*p;a.pos.z-=dz/d*p;b.pos.x+=dx/d*p;b.pos.z+=dz/d*p}}}
+  for(let i=0;i<figs.length;i++){const a=figs[i];if(!a.alive||a.team==='statue'||a.mirror||a.remote)continue;for(let j=i+1;j<figs.length;j++){const b=figs[j];if(!b.alive||b.team==='statue'||b.mirror||b.remote)continue;const dx=b.pos.x-a.pos.x,dz=b.pos.z-a.pos.z,dd=dx*dx+dz*dz;if(dd<0.64&&dd>1e-6){const d=Math.sqrt(dd),p=(0.8-d)/2;a.pos.x-=dx/d*p;a.pos.z-=dz/d*p;b.pos.x+=dx/d*p;b.pos.z+=dz/d*p}}}
   if(T%2<dt){for(let i=figs.length-1;i>=0;i--)if(!figs[i].alive&&figs[i]!==player)figs.splice(i,1)}
-  updateBullets(dt);updatePieces(dt);updatePickups(dt);updateCars(dt);updateEvent(dt);updateRespawns(dt);
+  updateBullets(dt);updatePieces(dt);updatePickups(dt);
+  if(sim){updateCars(dt);updateEvent(dt);updateRespawns(dt)}else netCars(dt);
+  if(NET.on)netTick(dt);
   for(let i=bubbles.length-1;i>=0;i--){const b=bubbles[i];b.t-=dt;if(b.t<=0){b.f.g.remove(b.s);b.f.bubble=null;bubbles.splice(i,1)}}
   for(const b of blinkers)b.mat.emissiveIntensity=Math.sin(T*8+b.phase)>0?1.4:0.1;
   for(const s of spinners)s.rotation.y+=dt*1.2;
-  if(EV.cur){if(!beam){beam=new THREE.Mesh(new THREE.CylinderGeometry(1.4,1.4,40,16,1,true),new THREE.MeshBasicMaterial({color:0xff3a2a,transparent:true,opacity:0.18,depthWrite:false,side:THREE.DoubleSide}));scene.add(beam)}beam.visible=true;beam.position.set(EV.cur.center.x,20,EV.cur.center.z)}else if(beam)beam.visible=false;
+  const evc=evCenter();
+  if(evc){if(!beam){beam=new THREE.Mesh(new THREE.CylinderGeometry(1.4,1.4,40,16,1,true),new THREE.MeshBasicMaterial({color:0xff3a2a,transparent:true,opacity:0.18,depthWrite:false,side:THREE.DoubleSide}));scene.add(beam)}beam.visible=true;beam.position.set(evc.x,20,evc.z)}else if(beam)beam.visible=false;
   if(bannerT>0){bannerT-=dt;if(bannerT<=0.5)$('banner').style.opacity='0';if(bannerT<=0)$('banner').hidden=true}
   // camera
   if(started&&player){const tp=player.pos;camLook.lerp(new V3(tp.x,tp.y+1,tp.z),Math.min(1,dt*6));camPos.lerp(new V3(tp.x,tp.y+24*zoom,tp.z+18*zoom),Math.min(1,dt*5))}
@@ -958,13 +1012,223 @@ function frame(now){requestAnimationFrame(frame);let dt=Math.min(0.05,(now-last)
   renderer.render(scene,camera);
   if(Math.floor(T*15)!==Math.floor((T-dt)*15)){drawMap();updateHud()}}
 
+// ---------- multiplayer: up to 5 players share one city through the viewer's live room.
+// One player's page is the host: it runs townspeople, events and traffic and streams them in its presence.
+// Every other page shows copies ("mirrors"), and sends its hits and actions to the host.
+const POSES=['walk','aim','up','sign','cuffed','panic'],WCODES=[null,'fist','bat','crowbar','pistol','mac10','ak47','sign'];
+const MAXP=5,TOPICS=['spawn','need','hit','dmg','kill','pdied','act'],ENC=new TextEncoder();
+async function netInit(){
+  let room=null,user=null,r=null;
+  if(window.claude&&typeof window.claude.use==='function'){try{[room,user]=await Promise.all([window.claude.use('room'),window.claude.use('user')])}catch(e){}}
+  if(room){NET.user=user;NET.via='claude';
+    await new Promise(r=>setTimeout(r,1800));
+    const counts={};for(const p of room.peers()){if(p.sameTab)continue;const g=p.presence&&p.presence.g;if(typeof g==='string')counts[g]=(counts[g]||0)+1}
+    let n=1;while((counts['gorod-'+n]||0)>=MAXP&&n<50)n++;
+    const name='gorod-'+n;room.presence({g:name}).catch(()=>{});
+    try{r=await room.join(name)}catch(e){return}}
+  else{r=await mqttJoin();if(!r)return;NET.via='mqtt'}
+  const name=r.name;
+  NET.room=r;NET.roomName=name;NET.on=true;NET.joinT=performance.now();NET.since=Date.now();
+  for(const t of TOPICS)r.on(t,m=>{try{onNetMsg(m)}catch(e){console.warn(e)}});
+  r.onPeers(ch=>{try{onNetPeers(ch)}catch(e){console.warn(e)}});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)NET.hiddenAt=performance.now();
+    else if(NET.host&&NET.hiddenAt&&performance.now()-NET.hiddenAt>2000){const h=[...NET.players.values()].find(e=>e.pres&&e.pres.H&&e.pres.vis);if(h)setHost(h.peer)}
+    sendPresence()});
+  document.body.classList.add('mp');renderPlist()}
+// Outside claude.ai there is no live room, so the same calls go through a free public MQTT broker over WebSocket.
+// Anyone who opens the game with the same city code shares the topics; nothing is stored there.
+const MQTT_LIB='https://unpkg.com/mqtt@5.10.1/dist/mqtt.min.js',MQTT_BROKERS=['wss://broker.emqx.io:8084/mqtt','wss://broker.hivemq.com:8884/mqtt'],MQ='kirpichgorod/v1';
+function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=rej;document.head.append(s)})}
+function cityCode(){const m=(location.hash+'&'+location.search).match(/[#?&]city=([^&]+)/);const c=m?decodeURIComponent(m[1]).toLowerCase().replace(/[^a-z0-9_-]/g,'').slice(0,20):'';return c?'c-'+c:'gorod'}
+async function mqttConnect(me){
+  for(const url of MQTT_BROKERS){
+    const cl=await new Promise(res=>{let done=false;const finish=v=>{if(!done){done=true;clearTimeout(t);res(v)}};
+      const c=window.mqtt.connect(url,{clientId:'kg_'+me,clean:true,connectTimeout:6000,reconnectPeriod:3000,keepalive:30,will:{topic:MQ+'/bye',payload:JSON.stringify({peer:me}),qos:0,retain:false}});
+      const t=setTimeout(()=>{c.end(true);finish(null)},8000);
+      c.once('connect',()=>finish(c));c.once('error',()=>{c.end(true);finish(null)})});
+    if(cl)return cl}
+  return null}
+async function mqttJoin(){
+  if(!/^https?:|^file:/.test(location.protocol))return null;
+  if(!window.mqtt){try{await loadScript(MQTT_LIB)}catch(e){return null}}
+  const me=Math.random().toString(36).slice(2,10);const cl=await mqttConnect(me);if(!cl)return null;
+  const code=cityCode();
+  for(let n=1;n<=20;n++){const r=mqttRoom(cl,me,code+'-'+n);await new Promise(res=>setTimeout(res,2200));if(r.peers().length-1<MAXP)return r;await r.leave()}
+  return null}
+function mqttRoom(cl,me,name){
+  const base=MQ+'/'+name,peers=new Map(),hs={},ph=[];let pres={},lastSend=0,pend=null,flushT=null,ch={joined:[],left:[],updated:[]};
+  const peerObj=(peer,presence)=>({peer,by:null,isMe:peer===me,sameTab:peer===me,kind:'viewer',guest:false,presence,updatedAt:Date.now()});
+  const list=()=>[peerObj(me,pres),...[...peers.values()].map(p=>p.obj)];
+  const queue=(k,o)=>{ch[k].push(o);if(!flushT)flushT=setTimeout(flush,40)};
+  function flush(){flushT=null;const c={peers:list(),...ch};ch={joined:[],left:[],updated:[]};for(const h of ph)try{h(c)}catch(e){console.warn(e)}}
+  function send(){lastSend=Date.now();if(cl.connected)cl.publish(base+'/p',JSON.stringify({peer:me,pr:pres}),{qos:0})}
+  const onMsg=(topic,buf)=>{let m;try{m=JSON.parse(buf.toString())}catch(e){return}if(!m||typeof m.peer!=='string')return;
+    if(topic===base+'/p'){if(m.peer===me||!m.pr||typeof m.pr!=='object')return;const old=peers.get(m.peer);const obj=peerObj(m.peer,m.pr);peers.set(m.peer,{obj,seen:Date.now()});queue(old?'updated':'joined',obj)}
+    else if(topic===base+'/e'){if(typeof m.topic!=='string')return;const msg={...peerObj(m.peer,null),topic:m.topic,data:m.data};for(const h of (hs[m.topic]||[]))try{h(msg)}catch(e){console.warn(e)}}
+    else if(topic===MQ+'/bye'){const p=peers.get(m.peer);if(p){peers.delete(m.peer);queue('left',p.obj)}}};
+  cl.on('message',onMsg);cl.subscribe([base+'/p',base+'/e',MQ+'/bye']);
+  const reaper=setInterval(()=>{const now=Date.now();for(const [k,p] of peers)if(now-p.seen>6000){peers.delete(k);queue('left',p.obj)}if(now-lastSend>1500)send()},1000);
+  addEventListener('pagehide',()=>{if(cl.connected)cl.publish(MQ+'/bye',JSON.stringify({peer:me}))});
+  return {name,peers:list,connected:()=>cl.connected,
+    presence:async patch=>{pres={...pres,...patch};for(const k in patch)if(patch[k]===null)delete pres[k];const wait=90-(Date.now()-lastSend);if(wait<=0)send();else if(!pend)pend=setTimeout(()=>{pend=null;send()},wait)},
+    emit:async(t,d)=>{if(cl.connected)cl.publish(base+'/e',JSON.stringify({peer:me,topic:t,data:d}),{qos:0})},
+    on:(t,h)=>{(hs[t]=hs[t]||[]).push(h);return()=>{hs[t]=hs[t].filter(x=>x!==h)}},
+    onPeers:h=>{ph.push(h);setTimeout(()=>h({peers:list(),joined:list(),updated:[],left:[]}),0);return()=>{ph.splice(ph.indexOf(h),1)}},
+    leave:async()=>{clearInterval(reaper);cl.removeListener('message',onMsg);cl.unsubscribe([base+'/p',base+'/e']);peers.clear()}}}
+const nameOf=e=>NET.names[e.peer]||(e.pres&&typeof e.pres.nm==='string'&&e.pres.nm.slice(0,16))||'Игрок';
+function onNetPeers(ch){
+  for(const p of ch.peers)if(p.sameTab)NET.me=p.peer;
+  for(const p of ch.left){const e=NET.players.get(p.peer);if(e){removeRemote(e);NET.players.delete(p.peer);feed(nameOf(e)+' вышел из города','info')}}
+  for(const p of ch.joined.concat(ch.updated)){if(p.sameTab||p.kind!=='viewer')continue;const pr=p.presence;if(!pr||typeof pr.x!=='number'||typeof pr.z!=='number')continue;
+    let e=NET.players.get(p.peer);
+    if(!e){if(NET.players.size>=MAXP-1)continue;e={peer:p.peer,by:p.by,fig:null,pres:null};NET.players.set(p.peer,e);resolveName(e);feed('В город зашёл новый игрок','ev')}
+    e.pres=pr;updateRemote(e);e.fresh=true}
+  electHost();
+  const h=!NET.host&&NET.players.get(NET.hostPeer);if(h&&h.fresh&&h.pres&&h.pres.W)applyWorld(h.pres.W);
+  for(const e of NET.players.values())e.fresh=false}
+function resolveName(e){if(!NET.user||!e.by)return;NET.user.profiles([e.by]).then(ps=>{const n=ps&&ps[e.by]&&ps[e.by].name;if(n){NET.names[e.peer]=n;setTag(e)}}).catch(()=>{})}
+function setTag(e){const f=e.fig;if(!f)return;if(f.tag)f.g.remove(f.tag);
+  const txt=nameOf(e)+' · '+((ROLES[e.pres&&e.pres.r]||{}).name||'');
+  const c=document.createElement('canvas');const g=c.getContext('2d');g.font='800 28px Nunito, sans-serif';const w=Math.ceil(g.measureText(txt).width)+28;c.width=w;c.height=44;
+  g.fillStyle='rgba(20,24,34,.88)';g.fillRect(0,0,w,44);g.fillStyle='#f2cd37';g.fillRect(0,40,w,4);g.fillStyle='#fff';g.font='800 28px Nunito, sans-serif';g.textBaseline='middle';g.fillText(txt,14,21);
+  const s=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),depthTest:false}));s.renderOrder=18;s.scale.set(w/44*0.42,0.42,1);s.position.y=2.3;f.g.add(s);f.tag=s}
+function updateRemote(e){const pr=e.pres;const role=ROLES[pr.r]?pr.r:'medic';
+  if(e.fig&&e.fig.role!==role)removeRemote(e);
+  if(pr.dd){if(e.fig&&e.fig.alive){const f=e.fig;f.alive=false;dropBar(f);breakFig(f,null);sfx('break',f.pos);e.fig=null}return}
+  if(!e.fig){const f=new Fig(LOOKS['player_'+role](),'player');f.remote=true;f.peer=e.peer;f.role=role;f.hp=f.maxHp=100;f.pos.set(pr.x,groundY(pr.x,pr.z),pr.z);scene.add(f.g);figs.push(f);e.fig=f;setTag(e);
+    NET.peerSeen.set(e.peer,Math.max(NET.peerSeen.get(e.peer)||0,...(Array.isArray(pr.sh)?pr.sh:[]).map(s=>+s[0]||0)))}
+  const f=e.fig;f.net=pr;f.tx=pr.x;f.tz=pr.z;f.yaw=+pr.y||0;f.pose=POSES[pr.po]||'walk';const w=WCODES[pr.w]||null;if(f.weapon!==w)f.setWeapon(w);f.hp=clamp(+pr.hp||0,0,100);
+  const last=NET.peerSeen.get(e.peer)||0;let mx=last;
+  for(const s of (Array.isArray(pr.sh)?pr.sh:[]))if(Array.isArray(s)&&s[0]>last&&Number.isFinite(s[1])&&Number.isFinite(s[2])){visualShot(s[1],s[2],+s[3]||0);mx=Math.max(mx,s[0])}
+  NET.peerSeen.set(e.peer,mx)}
+function removeRemote(e){if(e.fig){e.fig.alive=false;e.fig.gone=true;scene.remove(e.fig.g);e.fig=null}}
+function netInterp(f,dt){if(f.tx==null)return;const ox=f.pos.x,oz=f.pos.z,dx=f.tx-ox,dz=f.tz-oz;
+  if(dx*dx+dz*dz>100){f.pos.x=f.tx;f.pos.z=f.tz}else{const k=Math.min(1,dt*12);f.pos.x+=dx*k;f.pos.z+=dz*k}
+  f.pos.y=groundY(f.pos.x,f.pos.z);const sp=Math.hypot(f.pos.x-ox,f.pos.z-oz)/Math.max(dt,1e-3);f.speedNow=f.speedNow*0.75+Math.min(sp,10)*0.25}
+function netCars(dt){for(const c of cars){if(c.tx==null)continue;const p=c.g.position;const dx=c.tx-p.x,dz=c.tz-p.z;
+  if(dx*dx+dz*dz>225){p.x=c.tx;p.z=c.tz}else{const k=Math.min(1,dt*8);p.x+=dx*k;p.z+=dz*k}c.yaw=lerpAng(c.yaw,c.ty||0,Math.min(1,dt*8));c.g.rotation.y=c.yaw}}
+// host election: the visible page that is already hosting keeps the city; otherwise the earliest arrival takes it
+function electHost(){if(!NET.me)return;const now=performance.now();const grace=now-NET.joinT<2500;
+  const c=[{peer:NET.me,vis:!document.hidden,H:NET.host&&!grace,hs:NET.hs,since:NET.since}];
+  for(const e of NET.players.values())if(e.pres)c.push({peer:e.peer,vis:!!e.pres.vis,H:!!e.pres.H,hs:+e.pres.hs||0,since:+e.pres.since||0});
+  if(grace){const h=c.find(x=>x.peer!==NET.me&&x.H);if(h&&NET.hostPeer!==h.peer)setHost(h.peer);return}
+  c.sort((a,b)=>((b.vis?1:0)-(a.vis?1:0))||((b.H?1:0)-(a.H?1:0))||(a.H&&b.H?b.hs-a.hs:a.since-b.since)||(a.peer<b.peer?-1:1));
+  const want=c[0].peer;if(want===NET.hostPeer){NET.cand=null;return}
+  const curOk=NET.hostPeer&&(NET.hostPeer===NET.me||NET.players.has(NET.hostPeer));
+  if(!curOk){setHost(want);return}
+  if(NET.cand!==want){NET.cand=want;NET.candT=now;return}
+  if(now-NET.candT>2500)setHost(want)}
+function setHost(peer){NET.cand=null;const was=NET.host;NET.hostPeer=peer;NET.host=peer===NET.me;
+  if(NET.host){if(!NET.hs)NET.hs=Date.now();if(!was)promote()}
+  else{NET.hs=0;NET.fresh=true;NET.seen={s:0,d:0,b:0};if(was)demote()}}
+function demote(){for(const f of figs){if(f.team==='player'||f.team==='statue')continue;f.alive=false;f.gone=true;dropBar(f);scene.remove(f.g)}
+  for(let i=bullets.length-1;i>=0;i--)if(bullets[i].owner!==player){scene.remove(bullets[i].m);bullets.splice(i,1)}
+  respawns.length=0;EV.cur=null;$('eventBox').hidden=true;NET.mirrors.clear();NET.lastEv=null;NET.defsQ.length=0;feed('Ты в городе другого игрока','ev')}
+function segDist(x,z,a,b){const vx=b[0]-a[0],vz=b[1]-a[1];const t=clamp(((x-a[0])*vx+(z-a[1])*vz)/(vx*vx+vz*vz),0,1);return Math.hypot(a[0]+vx*t-x,a[1]+vz*t-z)}
+function promote(){let maxId=FID;
+  for(const f of [...NET.mirrors.values()]){f.mirror=false;f.id=f.hid;maxId=Math.max(maxId,f.hid+1);f.tx=null;f.navT=0;f.think=0;f.path=null;f.wTarget=null;f.node=null;f.cd=0;
+    if(f.team==='crim'||f.team==='riot'||f.arrested||f.leaving)despawn(f);else if(f.team==='police'){f.mode='patrol';if(!f.weapon)f.setWeapon('pistol')}}
+  FID=maxId+1;NET.mirrors.clear();EV.cur=null;EV.next=25;$('eventBox').hidden=true;NET.lastEv=null;
+  const count=t=>figs.filter(f=>f.alive&&f.team===t).length;
+  for(let i=count('police');i<6;i++)respawns.push({t:2+i,kind:'police',team:'police'});
+  for(let i=count('civ');i<20;i++)respawns.push({t:3+i*0.5,kind:'civ',team:'civ'});
+  for(const c of cars){c.tx=null;let best=1e9,bi=c.i;for(let k=0;k<4;k++){const d=segDist(c.g.position.x,c.g.position.z,c.path[k],c.path[(k+1)%4]);if(d<best){best=d;bi=(k+1)%4}}c.i=bi;c.speed=0}
+  for(const f of figs)if(f.alive&&f.team!=='player'&&f.team!=='statue')NET.defsQ.push(f);
+  feed('Теперь твоя страница ведёт город для всех игроков','ev')}
+function snapWorld(){const n=[],civ=[];
+  for(const f of figs){if(!f.alive||f.gone||f.team==='player'||f.team==='statue'||f.mirror)continue;
+    const a=(Math.max(0,POSES.indexOf(f.pose))<<3)|Math.max(0,WCODES.indexOf(f.weapon));const fl=(f.surrendered?1:0)|((f.leaving||f.arrested)?2:0)|(f.angryAt?4:0)|(f.swingT>0?8:0);
+    (f.team==='civ'?civ:n).push([f.id,r1(f.pos.x),r1(f.pos.z),r2(f.yaw),a,(Math.round(clamp(f.hp/f.maxHp,0,1)*100)<<4)|fl])}
+  const e=EV.cur;const ev=e?{id:EV.k,k:e.label,t:e.title,i:e.info||'',x:r1(e.center.x),z:r1(e.center.z),sl:e.slogan||'',e:e.escaped}:null;
+  const ap={};for(const f of figs)if(f.remote&&f.arrestProg>0.05)ap[f.peer]=r2(f.arrestProg);
+  return {n:n.concat(civ),d:NET.deaths.map(d=>d.slice(0,4)),s:NET.shots,b:NET.bub,c:cars.map(c=>[r1(c.g.position.x),r1(c.g.position.z),r2(c.yaw)]),ev,ap}}
+function sendPresence(){if(!NET.on||!player)return;const grace=performance.now()-NET.joinT<2500;
+  const pr={since:NET.since,vis:!document.hidden,H:NET.host&&!grace?1:0,hs:NET.hs,r:P.role,x:r1(player.pos.x),z:r1(player.pos.z),y:r2(player.yaw||0),
+    po:Math.max(0,POSES.indexOf(player.pose)),w:Math.max(0,WCODES.indexOf(player.weapon)),hp:Math.round(Math.max(0,player.hp)),wa:P.wanted,bu:P.busy?1:0,dd:player.alive?0:1,sh:NET.myShots,nm:P.name||''};
+  let W=(NET.host&&!grace)?snapWorld():null;pr.W=W;
+  // presence is capped at 4 KiB: drop speech, then shots, then the townspeople at the end of the list
+  if(W){let len=ENC.encode(JSON.stringify(pr)).length;if(len>3900){W.b=[];len=ENC.encode(JSON.stringify(pr)).length}if(len>3900){W.s=W.s.slice(-3);len=ENC.encode(JSON.stringify(pr)).length}while(len>3900&&W.n.length){W.n.splice(-4);len=ENC.encode(JSON.stringify(pr)).length}}
+  NET.room.presence(pr).catch(()=>{})}
+function netTick(dt){NET.tick-=dt;NET.electT-=dt;
+  if(NET.host)for(const f of figs)if(f.remote&&f.arrestProg)f.arrestProg=Math.max(0,f.arrestProg-dt*0.7);
+  if(NET.electT<=0){NET.electT=1;electHost()}
+  if(NET.tick>0)return;NET.tick=1/15;sendPresence();
+  if(NET.host&&NET.defsQ.length){const batch=[];let size=0;
+    while(NET.defsQ.length){const f=NET.defsQ.shift();if(!f.alive||f.gone)continue;const d={i:f.id,k:f.kind,t:f.team,l:f.look,g:f.gang||null,h:f.maxHp};const s=ENC.encode(JSON.stringify(d)).length;
+      if(size+s>3500&&batch.length){NET.defsQ.unshift(f);break}batch.push(d);size+=s+1}
+    if(batch.length)netEmit('spawn',{l:batch})}
+  if(!NET.host&&NET.need.size&&T>NET.needT){NET.needT=T+0.8;const ids=[...NET.need].slice(0,60);NET.need.clear();netEmit('need',{ids})}}
+function makeMirror(def,x,z){const look=(def.l&&typeof def.l==='object')?def.l:LOOKS.civ();const team=['civ','police','crim','riot'].includes(def.t)?def.t:'civ';
+  let f;try{f=new Fig(look,team)}catch(e){f=new Fig(LOOKS.civ(),team)}
+  f.mirror=true;f.hid=def.i;f.kind=(typeof def.k==='string'&&LOOKS[def.k])?def.k:'civ';f.gang=def.g||'X';f.maxHp=clamp(+def.h||60,1,200);f.hp=f.maxHp;
+  f.pos.set(x,groundY(x,z),z);f.tx=x;f.tz=z;scene.add(f.g);figs.push(f);NET.mirrors.set(def.i,f);return f}
+function mirrorDie(f,dx,dz){f.alive=false;dropBar(f);if(f.bubble){f.g.remove(f.bubble.s);bubbles.splice(bubbles.indexOf(f.bubble),1);f.bubble=null}
+  if(f.weapon&&!['fist','sign'].includes(f.weapon))dropWeapon(f.weapon,f.pos);
+  const coins=f.team==='crim'?rint(4,7):rint(1,3);for(let i=0;i<coins;i++)dropCoin(f.pos,f.team==='crim'&&i<2?50:10);
+  breakFig(f,{x:dx,z:dz});sfx('break',f.pos);NET.mirrors.delete(f.hid)}
+function applyWorld(w){if(!w||typeof w!=='object')return;const fresh=NET.fresh;NET.fresh=false;
+  const D=Array.isArray(w.d)?w.d:[],S=Array.isArray(w.s)?w.s:[],B=Array.isArray(w.b)?w.b:[],N=Array.isArray(w.n)?w.n:[];
+  if(fresh){for(const d of D)NET.seen.d=Math.max(NET.seen.d,+d[0]||0);for(const s of S)NET.seen.s=Math.max(NET.seen.s,+s[0]||0);for(const b of B)NET.seen.b=Math.max(NET.seen.b,+b[0]||0)}
+  for(const d of D){if(!Array.isArray(d)||!(d[0]>NET.seen.d))continue;NET.seen.d=d[0];const f=NET.mirrors.get(d[1]);if(f&&f.alive)mirrorDie(f,+d[2]||0,+d[3]||0)}
+  const present=new Set();
+  for(const e of N){if(!Array.isArray(e))continue;const [id,x,z,y,a,b]=e;if(!Number.isFinite(x)||!Number.isFinite(z))continue;present.add(id);let f=NET.mirrors.get(id);
+    if(!f){const def=NET.defs.get(id);if(!def){NET.need.add(id);continue}f=makeMirror(def,x,z)}
+    f.tx=x;f.tz=z;f.yaw=+y||0;f.pose=POSES[a>>3]||'walk';const wn=WCODES[a&7]||null;if(f.weapon!==wn)f.setWeapon(wn,String((w.ev&&w.ev.sl)||'!').slice(0,24));
+    const fl=b&15;f.hp=((b>>4)/100)*f.maxHp;if(f.hp<f.maxHp-0.5)hpBar(f);
+    const sur=!!(fl&1);if(sur&&!f.surrendered){f.surrendered=true;f.surrT=T}else if(!sur)f.surrendered=false;
+    const lv=!!(fl&2),recent=f.actT>T-1.5;if(lv){f.leaving=true}else if(!recent){f.leaving=false;f.arrested=false}
+    f.angryAt=(fl&4)?f:null;if((fl&8)&&!(f.swingT>0))f.swingT=0.28}
+  for(const [id,f] of NET.mirrors)if(!present.has(id)){NET.mirrors.delete(id);if(f.alive){spawnSparks(f.pos.clone().setY(f.pos.y+1),C.lgrey,6);despawn(f)}}
+  for(const s of S)if(Array.isArray(s)&&s[0]>NET.seen.s){NET.seen.s=s[0];if(Number.isFinite(s[1])&&Number.isFinite(s[2]))visualShot(s[1],s[2],+s[3]||0)}
+  for(const b of B)if(Array.isArray(b)&&b[0]>NET.seen.b){NET.seen.b=b[0];const f=NET.mirrors.get(b[1]);if(f)say(f,String(b[2]).slice(0,40))}
+  if(Array.isArray(w.c))w.c.forEach((c,i)=>{const car=cars[i];if(car&&Array.isArray(c)&&Number.isFinite(c[0])&&Number.isFinite(c[1])){car.tx=c[0];car.tz=c[1];car.ty=+c[2]||0}});
+  netEvent(w.ev&&typeof w.ev==='object'?w.ev:null);
+  P.arrestProg=(w.ap&&NET.me&&+w.ap[NET.me])||0}
+function netEvent(ev){const key=ev?String(ev.id)+'|'+String(ev.t):null;
+  if(key!==NET.lastEv){
+    if(ev){banner(String(ev.t),ev.sl?'Митингующие с табличками: «'+String(ev.sl)+'»':'Происшествие в городе');feed('Происшествие: '+String(ev.t),'ev');sfx('siren',null,1);NET.evHelp=0;NET.evNear=0;NET.evEsc=+ev.e||0}
+    else if(NET.lastEv){P.stats.events++;let sub='Происшествие завершено';if(NET.evHelp>0){P.money+=150;sub+=' · награда за помощь +150'}banner('Порядок восстановлен',sub)}
+    NET.lastEv=key}
+  if(!ev){$('eventBox').hidden=true;return}
+  $('eventBox').hidden=false;$('evKind').textContent=String(ev.k||'');$('evTitle').textContent=String(ev.t||'');$('evInfo').textContent=String(ev.i||'');NET.evCenter=new V3(+ev.x||0,0,+ev.z||0);
+  if(P.role==='bandit'&&player&&player.alive&&d2(player.pos,NET.evCenter)<900)NET.evNear=1;
+  const esc=+ev.e||0;if(esc>NET.evEsc){if(P.role==='bandit'&&NET.evNear&&player.alive){const v=60*(esc-NET.evEsc);P.money+=v;feed('Банда ушла от полиции: твоя доля +'+v,'good')}NET.evEsc=esc}}
+function onNetMsg(m){if(m.sameTab||m.kind!=='viewer')return;const d=(m.data&&typeof m.data==='object')?m.data:{};
+  switch(m.topic){
+    case 'spawn':if(NET.host)return;for(const def of (Array.isArray(d.l)?d.l:[]))if(def&&Number.isInteger(def.i))NET.defs.set(def.i,def);break;
+    case 'need':if(!NET.host)return;{const ids=new Set((Array.isArray(d.ids)?d.ids:[]).slice(0,80));for(const f of figs)if(ids.has(f.id)&&f.alive&&!f.remote&&!f.mirror&&f.team!=='player'&&f.team!=='statue'&&!NET.defsQ.includes(f))NET.defsQ.push(f)}break;
+    case 'hit':if(!NET.host)return;{const t=figs.find(x=>x.id===d.id&&x.alive&&!x.remote&&!x.mirror&&x.team!=='player'&&x.team!=='statue');const e=NET.players.get(m.peer);
+      if(t&&e&&e.fig&&e.fig.alive)damage(t,clamp(+d.amt||0,0,40),e.fig,{x:clamp(+d.dx||0,-1,1),z:clamp(+d.dz||0,-1,1)})}break;
+    case 'dmg':if(d.to!==NET.me||!player||!player.alive||P.busy||P.god)return;{const a=clamp(+d.amt||0,0,40);player.hp-=a;player.hurtT=T;spawnSparks(new V3(player.pos.x,player.pos.y+1.1,player.pos.z),player.look.torso,3);
+      if(player.hp<=0){if(typeof d.from==='string')netEmit('pdied',{by:d.from});kill(player,null,null)}}break;
+    case 'pdied':if(d.by!==NET.me)return;{const e=NET.players.get(m.peer);lawCheckPlayer({net:e?e.pres:{},crimeHit:1},true)}break;
+    case 'kill':if(d.to!==NET.me)return;
+      if(d.team==='crim'){P.stats.kills++;NET.evHelp++;if(P.role==='bandit')feed('Ты поссорился с бандой','info');else{const r=P.role==='police'?75:50;P.money+=r;feed('Бандит обезврежен  +'+r,'good')}}
+      else if(['civ','police','riot'].includes(d.team))lawCheck({team:d.team,crimeHit:1},true);break;
+    case 'act':if(!NET.host)return;hostAct(m.peer,d);break}}
+function hostAct(peer,d){const e=NET.players.get(peer);const src=e&&e.fig;
+  if(d.type==='event'){if(!EV.cur)startEvent(EV.order[EV.k++%EV.order.length]);return}
+  const f=figs.find(x=>x.id===d.id&&x.alive&&!x.remote&&!x.mirror&&!x.arrested);if(!f||!src||d2(f.pos,src.pos)>16)return;
+  if((d.type==='arrest'&&f.team==='crim'&&f.surrendered)||(d.type==='detain'&&f.team==='riot'))arrestNpc(f,src);
+  else if(d.type==='talk'&&f.team==='riot'){f.leaving=true;say(f,pick(['Ладно, иду домой','Вы правы…','Ну и ладно!']))}
+  else if(d.type==='heal'&&['civ','police','riot'].includes(f.team)){f.hp=f.maxHp;spawnSparks(f.pos.clone().setY(f.pos.y+1.2),C.bgreen,8);say(f,pick(['Спасибо, доктор!','Мне уже лучше!']))}}
+function renderPlist(){const el=$('plist');if(!NET.on){el.hidden=true;return}el.hidden=false;
+  const rows=[{n:'Ты',r:P.role,w:P.wanted,h:NET.host&&NET.players.size>0,me:1}];
+  for(const e of NET.players.values())if(e.pres)rows.push({n:nameOf(e),r:e.pres.r,w:+e.pres.wa||0,h:e.peer===NET.hostPeer});
+  el.textContent='';const hd=document.createElement('div');hd.className='label';hd.textContent=`Сетевая игра · ${rows.length} из ${MAXP}`+(NET.via==='mqtt'?' · город '+NET.roomName.replace(/^c-/,''):'');el.append(hd);
+  for(const r of rows){const d=document.createElement('div');const a=document.createElement('span');a.textContent=r.n+' · '+((ROLES[r.r]||{}).name||'');if(r.me)a.className='me';
+    const b=document.createElement('b');b.textContent='★'.repeat(clamp(r.w|0,0,5))+(r.h?' ведущий':'');d.append(a,b);el.append(d)}
+  document.body.style.setProperty('--prows',rows.length+1)}
+
 async function boot(){
   try{await Promise.race([Promise.all([document.fonts.load('900 40px Rubik'),document.fonts.load('800 30px Nunito')]),new Promise(r=>setTimeout(r,2500))])}catch(e){}
   buildWorld();
   const snap=window.claude?.hot?.data;if(snap&&snap.money!=null){P.money=snap.money;Object.assign(P.inv,snap.inv||{});renderWeapons()}
   window.claude?.hot?.snapshot?.(()=>({money:P.money,inv:P.inv}));
-  requestAnimationFrame(frame)}
+  requestAnimationFrame(frame);netInit()}
 renderRoles($('roles'));
+try{$('nick').value=localStorage.getItem('kg-nick')||''}catch(e){}
+$('nick').addEventListener('keydown',e=>e.stopPropagation());
 {const c=$('controls').cloneNode(true);c.id='controls2';$('pauseControls').replaceWith(c)}
 $('resume').addEventListener('click',()=>setPause(false));
 $('pauseBtn').addEventListener('click',()=>setPause(true));
