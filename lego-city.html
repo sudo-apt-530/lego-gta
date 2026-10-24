@@ -141,6 +141,7 @@ body.mp .feed{top:calc(env(safe-area-inset-top,0px) + 200px + var(--prows,1) * 1
   <div class="card">
     <div class="logo"><h1>Кирпичный город</h1><p>Фан-игра в стиле наборов LEGO City: полиция, больница, магазины и много происшествий</p></div>
     <div class="nickrow"><label class="label" for="nick">Имя в сетевой игре</label><input id="nick" type="text" maxlength="16" autocomplete="nickname" placeholder="Например, Кирпичик"></div>
+    <div class="nickrow"><label class="label" for="city">Код города</label><input id="city" type="text" maxlength="20" autocomplete="off" spellcheck="false" placeholder="пусто — общий город"></div>
     <div class="label pick">Выбери профессию, чтобы начать</div>
     <div class="roles" id="roles"></div>
     <div class="brick controls" id="controls">
@@ -154,7 +155,7 @@ body.mp .feed{top:calc(env(safe-area-inset-top,0px) + 200px + var(--prows,1) * 1
       <div><kbd>N</kbd>вызвать происшествие сейчас</div>
       <div><kbd>L</kbd>законы города</div>
     </div>
-    <div class="note">Сетевая игра до 5 человек в одном городе: на claude.ai, в файле с GitHub или на любом сайте. Свой город для друзей: добавь к адресу <b>#city=код</b>, например #city=druzya. Нужны клавиатура и мышь. Лечение — у входа в больницу.</div>
+    <div class="note">Сетевая игра до 5 человек в одном городе. Чтобы играть с друзьями, впишите всем одинаковый код города, например druzya (латиница и цифры). Нужны клавиатура и мышь. Лечение — у входа в больницу.</div>
   </div>
 </div>
 <div class="start" id="pause" hidden>
@@ -861,7 +862,10 @@ function setRole(r){P.role=r;const R=ROLES[r];P.inv={...R.inv};P.cur=R.cur;P.wan
   spawnPlayer(SPOTS[R.spawn].clone());renderWeapons();$('role').textContent=R.name;lastHud='';
   camPos.set(player.pos.x,player.pos.y+40,player.pos.z+30);feed('Ты теперь '+R.name.toLowerCase()+'. Удачной смены!','ev')}
 function readNick(){const v=[...$('nick').value].filter(ch=>{const c=ch.codePointAt(0);return c>=32&&!(c>=127&&c<=159)&&!(c>=0x200b&&c<=0x200f)&&!(c>=0x2028&&c<=0x202e)&&!(c>=0x2060&&c<=0x206f)&&c!==0xfeff}).join('').trim().slice(0,16);P.name=v;try{localStorage.setItem('kg-nick',v)}catch(e){}}
-function chooseRole(k){readNick();if(!started){started=true;$('start').hidden=true;$('pauseBtn').hidden=false;try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}setRole(k);feed('Добро пожаловать в Кирпичный город! Скоро начнутся происшествия','ev')}
+function readCity(){const c=$('city').value.toLowerCase().replace(/[^a-z0-9_-]/g,'').slice(0,20);$('city').value=c;NET.city=c;try{localStorage.setItem('kg-city',c)}catch(e){}
+  try{history.replaceState(null,'',location.pathname+location.search+(c?'#city='+c:''))}catch(e){}}
+// the page joins the network only once the player is in the game, so open start screens don't take seats
+function chooseRole(k){readNick();if(!started){readCity();started=true;$('start').hidden=true;$('pauseBtn').hidden=false;try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}setRole(k);feed('Добро пожаловать в Кирпичный город! Скоро начнутся происшествия','ev');netInit()}
   else{setRole(k);setPause(false)}}
 const SHOPS=[{k:'pizza',name:'пиццерии'},{k:'market',name:'супермаркета'},{k:'jewel',name:'ювелирного'}];const shopCd={};
 function interactTarget(){if(!player||!player.alive||P.busy)return null;let best=null,bd=2.4*2.4;
@@ -1018,42 +1022,51 @@ function frame(now){requestAnimationFrame(frame);let dt=Math.min(0.05,(now-last)
 const POSES=['walk','aim','up','sign','cuffed','panic'],WCODES=[null,'fist','bat','crowbar','pistol','mac10','ak47','sign'];
 const MAXP=5,TOPICS=['spawn','need','hit','dmg','kill','pdied','act'],ENC=new TextEncoder();
 async function netInit(){
-  let room=null,user=null,r=null;
+  let room=null,user=null,r=null;NET.status='Подключение к сетевой игре…';renderPlist();
   if(window.claude&&typeof window.claude.use==='function'){try{[room,user]=await Promise.all([window.claude.use('room'),window.claude.use('user')])}catch(e){}}
   if(room){NET.user=user;NET.via='claude';
     await new Promise(r=>setTimeout(r,1800));
-    const counts={};for(const p of room.peers()){if(p.sameTab)continue;const g=p.presence&&p.presence.g;if(typeof g==='string')counts[g]=(counts[g]||0)+1}
-    let n=1;while((counts['gorod-'+n]||0)>=MAXP&&n<50)n++;
-    const name='gorod-'+n;room.presence({g:name}).catch(()=>{});
-    try{r=await room.join(name)}catch(e){return}}
-  else{r=await mqttJoin();if(!r)return;NET.via='mqtt'}
-  const name=r.name;
-  NET.room=r;NET.roomName=name;NET.on=true;NET.joinT=performance.now();NET.since=Date.now();
-  for(const t of TOPICS)r.on(t,m=>{try{onNetMsg(m)}catch(e){console.warn(e)}});
-  r.onPeers(ch=>{try{onNetPeers(ch)}catch(e){console.warn(e)}});
-  document.addEventListener('visibilitychange',()=>{if(document.hidden)NET.hiddenAt=performance.now();
+    const pre=NET.city?NET.city+'-':'gorod-';const counts={};for(const p of room.peers()){if(p.sameTab)continue;const g=p.presence&&p.presence.g;if(typeof g==='string')counts[g]=(counts[g]||0)+1}
+    let n=1;while((counts[pre+n]||0)>=MAXP&&n<50)n++;
+    const name=pre+n;room.presence({g:name}).catch(()=>{});
+    try{r=await room.join(name)}catch(e){r=null}}
+  else{r=await mqttJoin();NET.via='mqtt'}
+  if(!r){NET.status='Сеть недоступна — одиночная игра';renderPlist();return}
+  NET.status='';netAttach(r);
+  document.addEventListener('visibilitychange',()=>{if(!NET.on)return;if(document.hidden)NET.hiddenAt=performance.now();
     else if(NET.host&&NET.hiddenAt&&performance.now()-NET.hiddenAt>2000){const h=[...NET.players.values()].find(e=>e.pres&&e.pres.H&&e.pres.vis);if(h)setHost(h.peer)}
     sendPresence()});
   document.body.classList.add('mp');renderPlist()}
+function netAttach(r){NET.room=r;NET.roomName=r.name;NET.on=true;NET.joinT=performance.now();NET.since=Date.now();NET.hopT=performance.now();
+  for(const t of TOPICS)r.on(t,m=>{if(NET.room!==r)return;try{onNetMsg(m)}catch(e){console.warn(e)}});
+  r.onPeers(ch=>{if(NET.room!==r)return;try{onNetPeers(ch)}catch(e){console.warn(e)}})}
+// this page joined a city that already had five players at the same moment as others: move to the next one
+async function netHop(){if(NET.via!=='mqtt'||NET.hopping)return;NET.hopping=true;const old=NET.room;
+  for(const e of NET.players.values())removeRemote(e);NET.players.clear();if(!NET.host)setHost(NET.me);NET.hostPeer=NET.me;
+  await old.leave();NET.n++;const r=mqttRoom(NET.cl,NET.me,NET.code+'-'+NET.n);netAttach(r);NET.hopping=false;
+  feed('Город '+old.name.replace(/^c-/,'')+' заполнен, ты в городе '+r.name.replace(/^c-/,''),'info')}
 // Outside claude.ai there is no live room, so the same calls go through a free public MQTT broker over WebSocket.
 // Anyone who opens the game with the same city code shares the topics; nothing is stored there.
 const MQTT_LIB='https://unpkg.com/mqtt@5.10.1/dist/mqtt.min.js',MQTT_BROKERS=['wss://broker.emqx.io:8084/mqtt','wss://broker.hivemq.com:8884/mqtt'],MQ='kirpichgorod/v1';
 function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=rej;document.head.append(s)})}
-function cityCode(){const m=(location.hash+'&'+location.search).match(/[#?&]city=([^&]+)/);const c=m?decodeURIComponent(m[1]).toLowerCase().replace(/[^a-z0-9_-]/g,'').slice(0,20):'';return c?'c-'+c:'gorod'}
+function cityCode(){return NET.city?'c-'+NET.city:'gorod'}
+const isPlayerPres=p=>!p.sameTab&&p.kind==='viewer'&&p.presence&&typeof p.presence.x==='number'&&typeof p.presence.z==='number';
 async function mqttConnect(me){
   for(const url of MQTT_BROKERS){
     const cl=await new Promise(res=>{let done=false;const finish=v=>{if(!done){done=true;clearTimeout(t);res(v)}};
       const c=window.mqtt.connect(url,{clientId:'kg_'+me,clean:true,connectTimeout:6000,reconnectPeriod:3000,keepalive:30,will:{topic:MQ+'/bye',payload:JSON.stringify({peer:me}),qos:0,retain:false}});
-      const t=setTimeout(()=>{c.end(true);finish(null)},8000);
-      c.once('connect',()=>finish(c));c.once('error',()=>{c.end(true);finish(null)})});
+      // the error handler only covers the first attempt; after that mqtt.js keeps reconnecting on its own
+      const fail=()=>{c.removeListener('error',fail);c.end(true);finish(null)};
+      const t=setTimeout(fail,8000);
+      c.once('connect',()=>{c.removeListener('error',fail);c.on('error',()=>{});finish(c)});c.on('error',fail)});
     if(cl)return cl}
   return null}
 async function mqttJoin(){
   if(!/^https?:|^file:/.test(location.protocol))return null;
   if(!window.mqtt){try{await loadScript(MQTT_LIB)}catch(e){return null}}
   const me=Math.random().toString(36).slice(2,10);const cl=await mqttConnect(me);if(!cl)return null;
-  const code=cityCode();
-  for(let n=1;n<=20;n++){const r=mqttRoom(cl,me,code+'-'+n);await new Promise(res=>setTimeout(res,2200));if(r.peers().length-1<MAXP)return r;await r.leave()}
+  const code=cityCode();NET.cl=cl;NET.code=code;NET.me=me;
+  for(let n=1;n<=20;n++){const r=mqttRoom(cl,me,code+'-'+n);await new Promise(res=>setTimeout(res,2200));if(r.peers().filter(isPlayerPres).length<MAXP){NET.n=n;return r}await r.leave()}
   return null}
 function mqttRoom(cl,me,name){
   const base=MQ+'/'+name,peers=new Map(),hs={},ph=[];let pres={},lastSend=0,pend=null,flushT=null,ch={joined:[],left:[],updated:[]};
@@ -1063,6 +1076,7 @@ function mqttRoom(cl,me,name){
   function flush(){flushT=null;const c={peers:list(),...ch};ch={joined:[],left:[],updated:[]};for(const h of ph)try{h(c)}catch(e){console.warn(e)}}
   function send(){lastSend=Date.now();if(cl.connected)cl.publish(base+'/p',JSON.stringify({peer:me,pr:pres}),{qos:0})}
   const onMsg=(topic,buf)=>{let m;try{m=JSON.parse(buf.toString())}catch(e){return}if(!m||typeof m.peer!=='string')return;
+    if(topic===base+'/p'&&m.bye){const p=peers.get(m.peer);if(p&&m.peer!==me){peers.delete(m.peer);queue('left',p.obj)}return}
     if(topic===base+'/p'){if(m.peer===me||!m.pr||typeof m.pr!=='object')return;const old=peers.get(m.peer);const obj=peerObj(m.peer,m.pr);peers.set(m.peer,{obj,seen:Date.now()});queue(old?'updated':'joined',obj)}
     else if(topic===base+'/e'){if(typeof m.topic!=='string')return;const msg={...peerObj(m.peer,null),topic:m.topic,data:m.data};for(const h of (hs[m.topic]||[]))try{h(msg)}catch(e){console.warn(e)}}
     else if(topic===MQ+'/bye'){const p=peers.get(m.peer);if(p){peers.delete(m.peer);queue('left',p.obj)}}};
@@ -1074,15 +1088,22 @@ function mqttRoom(cl,me,name){
     emit:async(t,d)=>{if(cl.connected)cl.publish(base+'/e',JSON.stringify({peer:me,topic:t,data:d}),{qos:0})},
     on:(t,h)=>{(hs[t]=hs[t]||[]).push(h);return()=>{hs[t]=hs[t].filter(x=>x!==h)}},
     onPeers:h=>{ph.push(h);setTimeout(()=>h({peers:list(),joined:list(),updated:[],left:[]}),0);return()=>{ph.splice(ph.indexOf(h),1)}},
-    leave:async()=>{clearInterval(reaper);cl.removeListener('message',onMsg);cl.unsubscribe([base+'/p',base+'/e']);peers.clear()}}}
+    leave:async()=>{clearInterval(reaper);if(pend)clearTimeout(pend);pres={};if(cl.connected)cl.publish(base+'/p',JSON.stringify({peer:me,bye:1}),{qos:0});cl.removeListener('message',onMsg);cl.unsubscribe([base+'/p',base+'/e']);peers.clear()}}}
 const nameOf=e=>NET.names[e.peer]||(e.pres&&typeof e.pres.nm==='string'&&e.pres.nm.slice(0,16))||'Игрок';
 function onNetPeers(ch){
   for(const p of ch.peers)if(p.sameTab)NET.me=p.peer;
   for(const p of ch.left){const e=NET.players.get(p.peer);if(e){removeRemote(e);NET.players.delete(p.peer);feed(nameOf(e)+' вышел из города','info')}}
-  for(const p of ch.joined.concat(ch.updated)){if(p.sameTab||p.kind!=='viewer')continue;const pr=p.presence;if(!pr||typeof pr.x!=='number'||typeof pr.z!=='number')continue;
+  // every page ranks players the same way (earliest arrival first) and keeps the first five, so all of them see the same city and agree on the host
+  const rank=ch.peers.filter(isPlayerPres).map(p=>({peer:p.peer,since:+p.presence.since||0}));rank.push({peer:NET.me,since:NET.since});
+  rank.sort((a,b)=>(a.since-b.since)||(a.peer<b.peer?-1:1));const keep=new Set(rank.slice(0,MAXP).map(x=>x.peer));
+  if(!keep.has(NET.me)&&performance.now()-NET.hopT>3000){netHop();return}
+  for(const [k,e] of NET.players)if(!keep.has(k)){removeRemote(e);NET.players.delete(k)}
+  for(const p of ch.joined.concat(ch.updated)){if(!isPlayerPres(p)||!keep.has(p.peer))continue;const pr=p.presence;
     let e=NET.players.get(p.peer);
-    if(!e){if(NET.players.size>=MAXP-1)continue;e={peer:p.peer,by:p.by,fig:null,pres:null};NET.players.set(p.peer,e);resolveName(e);feed('В город зашёл новый игрок','ev')}
+    if(!e){e={peer:p.peer,by:p.by,fig:null,pres:null};NET.players.set(p.peer,e);resolveName(e);feed((typeof pr.nm==='string'&&pr.nm.slice(0,16)||'Новый игрок')+' в городе','ev')}
     e.pres=pr;updateRemote(e);e.fresh=true}
+  // a kept player whose last update came before the trim still needs a figure
+  for(const p of ch.peers)if(isPlayerPres(p)&&keep.has(p.peer)&&!NET.players.has(p.peer)){const e={peer:p.peer,by:p.by,fig:null,pres:p.presence};NET.players.set(p.peer,e);resolveName(e);updateRemote(e)}
   electHost();
   const h=!NET.host&&NET.players.get(NET.hostPeer);if(h&&h.fresh&&h.pres&&h.pres.W)applyWorld(h.pres.W);
   for(const e of NET.players.values())e.fresh=false}
@@ -1152,7 +1173,8 @@ function sendPresence(){if(!NET.on||!player)return;const grace=performance.now()
 function netTick(dt){NET.tick-=dt;NET.electT-=dt;
   if(NET.host)for(const f of figs)if(f.remote&&f.arrestProg)f.arrestProg=Math.max(0,f.arrestProg-dt*0.7);
   if(NET.electT<=0){NET.electT=1;electHost()}
-  if(NET.tick>0)return;NET.tick=1/15;sendPresence();
+  // the public broker gets 10 updates a second, the Claude room 15
+  if(NET.tick>0)return;NET.tick=NET.via==='mqtt'?0.1:1/15;sendPresence();
   if(NET.host&&NET.defsQ.length){const batch=[];let size=0;
     while(NET.defsQ.length){const f=NET.defsQ.shift();if(!f.alive||f.gone)continue;const d={i:f.id,k:f.kind,t:f.team,l:f.look,g:f.gang||null,h:f.maxHp};const s=ENC.encode(JSON.stringify(d)).length;
       if(size+s>3500&&batch.length){NET.defsQ.unshift(f);break}batch.push(d);size+=s+1}
@@ -1212,10 +1234,10 @@ function hostAct(peer,d){const e=NET.players.get(peer);const src=e&&e.fig;
   if((d.type==='arrest'&&f.team==='crim'&&f.surrendered)||(d.type==='detain'&&f.team==='riot'))arrestNpc(f,src);
   else if(d.type==='talk'&&f.team==='riot'){f.leaving=true;say(f,pick(['Ладно, иду домой','Вы правы…','Ну и ладно!']))}
   else if(d.type==='heal'&&['civ','police','riot'].includes(f.team)){f.hp=f.maxHp;spawnSparks(f.pos.clone().setY(f.pos.y+1.2),C.bgreen,8);say(f,pick(['Спасибо, доктор!','Мне уже лучше!']))}}
-function renderPlist(){const el=$('plist');if(!NET.on){el.hidden=true;return}el.hidden=false;
+function renderPlist(){const el=$('plist');if(!NET.on){el.hidden=!NET.status;el.textContent=NET.status||'';return}el.hidden=false;
   const rows=[{n:'Ты',r:P.role,w:P.wanted,h:NET.host&&NET.players.size>0,me:1}];
   for(const e of NET.players.values())if(e.pres)rows.push({n:nameOf(e),r:e.pres.r,w:+e.pres.wa||0,h:e.peer===NET.hostPeer});
-  el.textContent='';const hd=document.createElement('div');hd.className='label';hd.textContent=`Сетевая игра · ${rows.length} из ${MAXP}`+(NET.via==='mqtt'?' · город '+NET.roomName.replace(/^c-/,''):'');el.append(hd);
+  el.textContent='';const hd=document.createElement('div');hd.className='label';hd.textContent=(NET.cl&&!NET.cl.connected?'Связь потеряна, переподключение…':`Сетевая игра · ${rows.length} из ${MAXP}`)+(NET.via==='mqtt'?' · город '+NET.roomName.replace(/^c-/,''):'');el.append(hd);
   for(const r of rows){const d=document.createElement('div');const a=document.createElement('span');a.textContent=r.n+' · '+((ROLES[r.r]||{}).name||'');if(r.me)a.className='me';
     const b=document.createElement('b');b.textContent='★'.repeat(clamp(r.w|0,0,5))+(r.h?' ведущий':'');d.append(a,b);el.append(d)}
   document.body.style.setProperty('--prows',rows.length+1)}
@@ -1225,10 +1247,13 @@ async function boot(){
   buildWorld();
   const snap=window.claude?.hot?.data;if(snap&&snap.money!=null){P.money=snap.money;Object.assign(P.inv,snap.inv||{});renderWeapons()}
   window.claude?.hot?.snapshot?.(()=>({money:P.money,inv:P.inv}));
-  requestAnimationFrame(frame);netInit()}
+  requestAnimationFrame(frame)}
 renderRoles($('roles'));
 try{$('nick').value=localStorage.getItem('kg-nick')||''}catch(e){}
-$('nick').addEventListener('keydown',e=>e.stopPropagation());
+{const m=(location.hash+'&'+location.search).match(/[#?&]city=([^&]+)/);let c='';try{c=m?decodeURIComponent(m[1]):(localStorage.getItem('kg-city')||'')}catch(e){}$('city').value=c.toLowerCase().replace(/[^a-z0-9_-]/g,'').slice(0,20)}
+$('nick').addEventListener('keydown',e=>e.stopPropagation());$('city').addEventListener('keydown',e=>e.stopPropagation());
+// a city code typed into the address bar of an open page only changes the hash, so start over in that city
+addEventListener('hashchange',()=>{const m=location.hash.match(/city=([^&]+)/);const c=m?decodeURIComponent(m[1]).toLowerCase().replace(/[^a-z0-9_-]/g,'').slice(0,20):'';if(c!==(started?NET.city:$('city').value))location.reload()});
 {const c=$('controls').cloneNode(true);c.id='controls2';$('pauseControls').replaceWith(c)}
 $('resume').addEventListener('click',()=>setPause(false));
 $('pauseBtn').addEventListener('click',()=>setPause(true));
